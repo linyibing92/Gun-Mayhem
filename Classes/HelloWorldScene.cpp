@@ -23,6 +23,9 @@
  ****************************************************************************/
 
 #include "HelloWorldScene.h"
+#include "ui/CocosGUI.h"
+#include"GameScene.h"
+#include"character.h"
 
 USING_NS_CC;
 
@@ -51,69 +54,118 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
+    // 加入背景图
+    auto sprite_bg = Sprite::create("bg(1)(1).jpg");
+    sprite_bg->setContentSize(Size(1400, 960));
+    if (sprite_bg == nullptr)
     {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
+        problemLoading("'bg(1)(1).jpg'");
     }
     else
     {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
+        // position the sprite on the center of the screen
+        sprite_bg->setPosition(Vec2(visibleSize/2));
+
+        // add the sprite as a child to this layer
+        this->addChild(sprite_bg, 0);
     }
 
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
+    //标题显示
+     // add a label shows "Gun-Mayhem"
     // create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
+    auto label_title = Label::createWithTTF("Gun-Mayhem", "fonts/Marker Felt.ttf", 130);
+    if (label_title == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
     }
     else
     {
         // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
+        label_title->setPosition(Vec2(visibleSize.width / 2,
+            visibleSize.height / 2 + label_title->getContentSize().height*1.4f));
 
         // add the label as a child to this layer
-        this->addChild(label, 1);
+        this->addChild(label_title, 1);
     }
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
+    //进入游戏的按钮(菜单实现）
+
+
+    auto replaceItem = MenuItemImage::create(
+        "1a(1).png",
+        "1b(1).png",
+        CC_CALLBACK_1(HelloWorld::menuReplaceCallback, this));
+
+    if (replaceItem == nullptr ||
+        replaceItem->getContentSize().width <= 0 ||
+        replaceItem->getContentSize().height <= 0)
     {
-        problemLoading("'HelloWorld.png'");
+        problemLoading("'1a(1).png' and '1b(1).png'");
     }
     else
     {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
+        replaceItem->setScale(2.f);
+        replaceItem->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        replaceItem->setPosition(Vec2(visibleSize / 2));
     }
+
+    // create menu, it's an autorelease object
+    auto menu_new_game = Menu::create(replaceItem, NULL);
+    menu_new_game->setPosition(Vec2::ZERO);
+    this->addChild(menu_new_game, 1);
+
+
+
+    /////////////////////////////
+    // 2. add a menu item with "X" image, which is clicked to quit the program
+    //    you may modify it.
+
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto closeItem = MenuItemImage::create(
+                                           "2a(1)(1).png",
+                                           "2b(1)(1).png",
+                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+
+    if (closeItem == nullptr ||
+        closeItem->getContentSize().width <= 0 ||
+        closeItem->getContentSize().height <= 0)
+    {
+        problemLoading("'2a(1)(1).png' and '2b(1)(1).png'");
+    }
+    else
+    {
+        closeItem->setPosition(Vec2(visibleSize / 2) - Vec2(0, closeItem->getContentSize().height+30 ));
+    }
+
+    // create menu, it's an autorelease object
+    Menu* menu_close = Menu::create(closeItem, NULL);
+    menu_close->setPosition(Vec2::ZERO);
+    this->addChild(menu_close, 1);
+
+    //设置的按钮
+
+    auto button_setting = ui::Button::create("3a(1).png", "3b(1).png", "3b(1).png");
+    button_setting->setScale(2.f);
+    button_setting->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+    button_setting->setPosition(Vec2(visibleSize / 2)-Vec2(0,button_setting->getContentSize().height*2+160));
+    this->addChild(button_setting);
+    
+
+
+
+    /////////////////////////////
+    // 3. add your codes below...
+
+   
+
+    
+
+    
+
+
+ 
+
     return true;
 }
 
@@ -129,4 +181,15 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+
+void HelloWorld::menuReplaceCallback(Ref* pSender)
+{
+    // 清空缓存
+    Director::getInstance()->purgeCachedData();
+
+    Scene* pScene = CharacterScene::create();
+
+    Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 }
