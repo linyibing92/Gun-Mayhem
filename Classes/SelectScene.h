@@ -5,6 +5,7 @@ USING_NS_CC;//using namespace cocosdµÄºê¶¨Òå
 #include"ui/CocosGUI.h"
 using namespace ui;
 
+#include"MyLayer.h"
 class SelectScene :public Scene
 {
 public:
