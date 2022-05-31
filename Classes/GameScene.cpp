@@ -32,39 +32,10 @@ bool GameSceneMountain::init()
 	this->addChild(_land4);
 	this->addChild(_land5);
 	this->addChild(_land6);
-	 
-
-	auto button_pause = MenuItemImage::create(
-		"sound(1).png",
-		"sound.(1)png");
-	auto button_resume = MenuItemImage::create(
-		"sound(1).png",
-		"sound(1).png");
-	auto button_toggle = MenuItemToggle::createWithCallback
-		(CC_CALLBACK_1(GameSceneMountain::menuPauseCallback, this),
-			button_pause,
-			button_resume, NULL);
-	button_toggle->setPosition(Vec2(visibleSize) - Vec2(35, 35));
-	Menu* menu_sound = Menu::create(button_toggle,NULL);
-	menu_sound->setPosition(Vec2::ZERO);
-	this->addChild(menu_sound, 1);
-
-	MyMenu mymenu;
-	Button* button_end = mymenu.create_button_end();
-	this -> addChild(button_end);
 
 	return true;
 }
 
-void GameSceneMountain::menuPauseCallback(Ref* pSender)
-{
-	static int count = 0;
-	if(count%2==0)
-	    AudioEngine::pause(_backgroundAudioID);
-	else
-		AudioEngine::resume(_backgroundAudioID);
-	count++;
-}
 
 Scene* GameSceneForest::createScene()
 {
@@ -95,56 +66,9 @@ bool GameSceneForest::init()
 	this->addChild(_land5);
 	this->addChild(_land6);
 
-	auto button_pause = MenuItemImage::create(
-		"sound_on.png",
-		"sound_on.png");
-	auto button_resume = MenuItemImage::create(
-		"sound_close.png",
-		"sound_close.png");
-	auto button_toggle = MenuItemToggle::createWithCallback
-	(CC_CALLBACK_1(GameSceneForest::menuPauseCallback, this),
-		button_pause,
-		button_resume, NULL);
-	button_toggle->setPosition(Vec2(visibleSize) - Vec2(35, 35));
-	Menu* menu_sound = Menu::create(button_toggle, NULL);
-	menu_sound->setPosition(Vec2::ZERO);
-	this->addChild(menu_sound, 1);
-
-	MyMenu mymenu;
-	Button* button_end = mymenu.create_button_end();
-	this->addChild(button_end);
-
 	return true;
 }
 
-void GameSceneForest::menuPauseCallback(Ref* pSender)
-{
-	static int count2 = 0;
-	if (count2 % 2 == 0)
-		AudioEngine::pause(_backgroundAudioID);
-	else
-		AudioEngine::resume(_backgroundAudioID);
-	count2++;
-}
-
-void MyMenu::menuCloseCallback(cocos2d::Ref* pSender)
-{
-	Director::getInstance()->end();
-}
-
-Button* MyMenu::create_button_end()
-{
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto button_end = ui::Button::create(
-		"close.png",
-		"close.png", "close.png");
-	button_end->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	button_end->setPosition(Vec2(visibleSize) - Vec2(100, 35));
-	button_end->addClickEventListener([](Ref* sender) {
-		Director::getInstance()->end();
-		});
-	return button_end;
-}
 
 
 void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)
@@ -186,21 +110,37 @@ Menu* MyMenu::create_button_double()
 	return menu_bottle_double;
 }
 
-Menu* ChooseScene::create_button_gun()
+
+
+void ChooseScene::create_button_gun()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Gun", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50, visibleSize.height - 500));
-	this->addChild(label);
+	label->setPosition(Vec2(50, visibleSize.height - 385));
 
-	return nullptr;
+	Sprite* shou = Sprite::create("shou.png");
+	shou->setPosition(Vec2(400, visibleSize.height - 400));
+	Sprite* juji = Sprite::create("juji.png");
+	juji->setPosition(Vec2(700, visibleSize.height - 400));
+	Sprite* jiguan = Sprite::create("jiguan.png");
+	jiguan->setPosition(Vec2(1000, visibleSize.height - 400));
+
+	Label* label2 = Label::createWithTTF("Sorry,no choice here.You can only have pistols now.", "fonts/Marker Felt.ttf", 30);
+	label2->setPosition(Vec2(450, visibleSize.height - 500));
+
+	this->addChild(label);
+	this->addChild(label2);
+	this->addChild(shou);
+	this->addChild(juji);
+	this->addChild(jiguan);
+
 }
 
 void ChooseScene::create_button_scene()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Scene", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50, visibleSize.height - 900));
+	label->setPosition(Vec2(50, visibleSize.height - 650));
 	this->addChild(label);
 
 	_button_mountain->addClickEventListener([&](Ref* sender) {
@@ -213,9 +153,9 @@ void ChooseScene::create_button_scene()
 		});
 
 	_button_mountain->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_mountain->setPosition(Vec2(400, visibleSize.height - 900));
+	_button_mountain->setPosition(Vec2(400, visibleSize.height - 650));
 	_button_forest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_forest->setPosition(Vec2(800, visibleSize.height - 900));
+	_button_forest->setPosition(Vec2(800, visibleSize.height - 650));
 
 	this->addChild(_button_mountain);
 	this->addChild(_button_forest);
@@ -227,7 +167,7 @@ void ChooseScene::create_button_begin()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_button_begin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_begin->setPosition(Vec2(visibleSize.width/2, visibleSize.height - 1200));
+	_button_begin->setPosition(Vec2(visibleSize.width/2, visibleSize.height - 850));
 
 	_button_begin->addClickEventListener([&](Ref* sender) {
 		if (_scene_forest_status == true) {
@@ -242,8 +182,6 @@ void ChooseScene::create_button_begin()
 		});
 	this->addChild(_button_begin);
 }
-
-
 
 
 Scene* ChooseSingle::createScene()
@@ -265,30 +203,21 @@ Menu* ChooseSingle::create_button_char()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
 	Label* label = Label::createWithTTF("Character", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50,visibleSize.height -100) );
+	label->setPosition(Vec2(80,visibleSize.height -100) );
 	this->addChild(label);
 
-	Sprite* sprite1 = Sprite::create("wmale.png");
-	Sprite* sprite2 = Sprite::create("bmale.png");
-	Sprite* sprite3 = Sprite::create("robot.png");
-	sprite1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite1->setPosition(Vec2(50, visibleSize.height - 100));
-	sprite2->setPosition(Vec2(300, visibleSize.height - 100));
-	sprite3->setPosition(Vec2(600, visibleSize.height - 100));
-	this->addChild(sprite1);
-	this->addChild(sprite2);
-	this->addChild(sprite3);
-
-	_button_wmale->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_bmale->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_robot->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_wmale->setPosition(Vec2(50, visibleSize.height - 400));
-	_button_bmale->setPosition(Vec2(300, visibleSize.height - 400));
-	_button_robot->setPosition(Vec2(600, visibleSize.height - 400));
-
-
+	Button* button1 = Button::create("wmale2.png", "wmale(1).png", "wmale.png");
+	Button* button2 = Button::create("bmale.png", "bmale(1).png", "bmale.png");
+	Button* button3 = Button::create("robot.png", "robot(1).png", "robot.png");
+	button1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button1->setPosition(Vec2(350, visibleSize.height - 100));
+	button2->setPosition(Vec2(650, visibleSize.height - 100));
+	button3->setPosition(Vec2(950, visibleSize.height - 100));
+	this->addChild(button1);
+	this->addChild(button2);
+	this->addChild(button3);
 
 	return nullptr;
 }
@@ -300,6 +229,12 @@ bool ChooseSingle::init()
 	SetBG();
 	this->addChild(_bg);
 	create_button_scene();
+	create_button_gun();
+	create_button_char();
+	create_button_begin();
+	auto layer = MyLayer::create();
+	this->addChild(layer);
+	return true;
 }
 
 Scene* ChooseDouble::createScene()
@@ -319,16 +254,31 @@ void ChooseDouble::SetBG()
 Menu* ChooseDouble::create_button_char()
 {
 
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+
+	Label* label = Label::createWithTTF("Character", "fonts/Marker Felt.ttf", 40);
+	label->setPosition(Vec2(80, visibleSize.height - 100));
+	this->addChild(label);
+
+	Button* button1 = Button::create("wmale2.png", "wmale(1).png", "wmale.png");
+	Button* button2 = Button::create("bmale.png", "bmale(1).png", "bmale.png");
+	Button* button3 = Button::create("robot.png", "robot(1).png", "robot.png");
+	button1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button1->setPosition(Vec2(350, visibleSize.height - 100));
+	button2->setPosition(Vec2(650, visibleSize.height - 100));
+	button3->setPosition(Vec2(950, visibleSize.height - 100));
 
 
-
-
-
-
-
-
+	this->addChild(button1);
+	this->addChild(button2);
+	this->addChild(button3);
 
 	return nullptr;
+
+
+
 }
 
 bool ChooseDouble::init()
@@ -338,4 +288,10 @@ bool ChooseDouble::init()
 	SetBG();
 	this->addChild(_bg);
 	create_button_scene();
+	create_button_gun();
+	create_button_char();
+	create_button_begin();
+	auto layer = MyLayer::create();
+	this->addChild(layer);
+	return true;
 }

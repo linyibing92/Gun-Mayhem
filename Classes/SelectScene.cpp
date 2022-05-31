@@ -30,5 +30,8 @@ bool SelectScene::init()
 	menu_button_double->setPosition(Vec2::ZERO);
 	this->addChild(menu_button_double);
 
+	auto layer = MyLayer::create(); 
+	this->addChild(layer);
+
 	return true;
 }
