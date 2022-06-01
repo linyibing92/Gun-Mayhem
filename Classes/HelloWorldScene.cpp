@@ -146,20 +146,14 @@ bool HelloWorld::init()
     menu_close->setPosition(Vec2::ZERO);
     this->addChild(menu_close, 1);
 
-    ////设置的按钮
-
-    //auto button_setting = ui::Button::create("3a(1).png", "3b(1).png", "3b(1).png");
-    //button_setting->setScale(2.f);
-    //button_setting->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    //button_setting->setPosition(Vec2(visibleSize / 2)-Vec2(0,button_setting->getContentSize().height*2+160));
-    //this->addChild(button_setting);
+ 
     
 
 //音乐等菜单
   
 
      auto layer = MyLayer::create();
-    this->addChild(layer);
+    this->addChild(layer,10);
 
     return true;
 }
