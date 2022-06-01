@@ -3,6 +3,8 @@
 #include"HelloWorldScene.h"
 #include "ui/CocosGUI.h"
 #include "GameScene.h"
+#include "Gun.h"
+#include "weapon.h"
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
 {
@@ -32,6 +34,116 @@ bool GameSceneMountain::init()
 	this->addChild(_land4);
 	this->addChild(_land5);
 	this->addChild(_land6);
+
+
+	//林怡冰
+
+	//创建机器人角色
+	Sprite* character_robot = Sprite::create("character_robot_idle.png");
+	character_robot->setScale(1.0f);
+	this->addChild(character_robot, 0);
+	//隐藏精灵   
+	character_robot->setVisible(true);
+
+	//创建枪角色
+	Gun98K Gun;
+	Gun.spriteGun->setScale(0.2f);
+	Gun.sprite_bullet->setPosition(240, 160);
+	this->addChild(Gun.spriteGun, 0);
+	this->addChild(Gun.sprite_bullet);
+
+	//实现通过键盘控制人物移动
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//创建一个事件监听器监听键盘事件(监视按的键位)
+	{
+		character_robot->setPosition(robot_position + offset);
+		Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
+		//机器人动画(向右)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
+		auto cache_right = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_right;
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk0.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk1.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk2.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk3.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk4.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk5.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk6.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.5f / 10);
+		//机器人动画(向左)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
+		auto cache_left = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_left;
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk01.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk11.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk21.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk31.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk41.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk51.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk61.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk71.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.5f / 10);
+		//机器人动画(向上)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
+		auto cache_up = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_up;
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
+
+		FiniteTimeAction* move_up = MoveBy::create(0.25f, Vec2(0, 10.f));
+		FiniteTimeAction* move_down = MoveBy::create(0.25f, Vec2(0, -10.f));
+		FiniteTimeAction* move_left = MoveBy::create(0.25f, Vec2(-10.f, 0));
+		FiniteTimeAction* move_right = MoveBy::create(0.25f, Vec2(10.f, 0));
+		switch (code)
+		{
+			case EventKeyboard::KeyCode::KEY_UP_ARROW:
+				offset.y += 20.f;
+				robot_up = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_up_animation), nullptr);
+				Gun.spriteGun->runAction(Repeat::create(move_up, 1));
+				character_robot->runAction(robot_up);
+				break;
+			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+				offset.y -= 20.f;
+				character_robot->runAction(Repeat::create(move_down, 2));
+				Gun.spriteGun->runAction(Repeat::create(move_down, 1));
+				break;
+			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+				offset.x -= 20.f;
+				robot_left = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_left_animation), nullptr);
+				character_robot->runAction(robot_left);
+				Gun.spriteGun->runAction(Repeat::create(move_left, 2));
+				break;
+			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+				offset.x += 20.f;
+				robot_right = Spawn::create(Repeat::create(move_right, 2), Animate::create(robotmove_right_animation), nullptr);
+				Gun.spriteGun->runAction(Repeat::create(move_right, 2));
+				character_robot->runAction(robot_right);
+				break;
+			default:
+				break;
+		}
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+
+	//创建事件监听器鼠标事件
+	auto myMouseListener = EventListenerMouse::create();
+	//鼠标被按下
+	myMouseListener->onMouseDown = [=](Event* event)
+	{
+		Gun.bulletmove();
+	};
+
+	//将事件监听器与场景绑定
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
 
 	return true;
 }
