@@ -22,7 +22,14 @@ private:
 	Sprite* _land4 = Sprite::create("land3(2).png");
 	Sprite* _land5 = Sprite::create("land3(1).png");
 	Sprite* _land6 = Sprite::create("land3(1).png");
-	
+	Sprite* character_robot;
+	Vec2 offset = Vec2::ZERO;
+	Vec2 robot_position = Director::getInstance()->getVisibleSize() / 2;
+	Spawn* robot_right;
+	Spawn* robot_left;
+	Spawn* robot_up;
+	Sequence* robot_up1;
+	Spawn* robot_down;
 	
 }; 
 
