@@ -8,7 +8,9 @@ bool MyLayer::init()
 		return false;
 	static int _backgroundAudioID = AudioEngine::play2d("bgmusic.mp3", true);
 
+
 	_button_sound->setPosition(Vec2(visibleSize) - Vec2(180, 35));
+
 	_button_sound->addClickEventListener([this,visibleSize](Ref* sender) {
         auto sprite_bg = Sprite::create("musiclayer(1).png");
 		sprite_bg->setPosition(Vec2(visibleSize/2));
@@ -16,13 +18,16 @@ bool MyLayer::init()
 		auto label=Label::createWithTTF("music", "fonts/Marker Felt.ttf", 40);
 		label->setPosition(Vec2(visibleSize / 2) + Vec2(0, 42));
 		MyLayerMusic mymusiclayer;
+
 		MyLayerMusic* m1=& mymusiclayer;
+
 		auto pLayer = mymusiclayer._pLayer;
 		pLayer->addChild(sprite_bg);
 		pLayer->addChild(label);
 		mymusiclayer.create_button_music_pause(_backgroundAudioID);
 		mymusiclayer.create_button_music_up(_backgroundAudioID);
 		mymusiclayer.create_button_music_down(_backgroundAudioID);
+
 		Button* _button_return = ui::Button::create("return.png", "return.png");
 		_button_return->setScale(1.8f);
 		_button_return->setPosition(Vec2(pLayer->getContentSize()) / 2 + Vec2(200, 30));
@@ -30,6 +35,7 @@ bool MyLayer::init()
 			pLayer->removeAllChildren();
 			});
 		pLayer->addChild(_button_return);
+
 		pLayer->setContentSize(Size(500, 150));
 		
 		this->addChild(pLayer);
@@ -39,8 +45,10 @@ bool MyLayer::init()
 
 	Button* button_end = create_button_end();
 	this->addChild(button_end);
+
 	Button* button_pause = create_button_pause();
 	this->addChild(button_pause);
+
 	return true;
 }
 
@@ -59,6 +67,7 @@ Button* MyLayer::create_button_end()
 		});
 	return button_end;
 }
+
 
 Button* MyLayer::create_button_pause()
 {
@@ -129,6 +138,7 @@ void MyLayerMusic::create_button_music_down(int _backgroundAudioID)
 }
 
 
+
 bool MyLayerWinner::init()
 {
 	if(!Layer::create())
@@ -197,4 +207,5 @@ Button* MyLayerEnd::create_button_exit()
 		});
 	this->addChild(button_exit);
 	return button_exit;
+
 }

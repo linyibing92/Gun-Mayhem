@@ -2,53 +2,45 @@
 #include"weapon.h"
 #include "cocos2d.h"
 USING_NS_CC;
-#define GunLeft 0
-#define GunRight 1
-
-/* ´´½¨Ç¹Àà */
-class Gun :public weapon
+/* åˆ›å»ºæªç±» */
+class Gun :public weapon 
 {
 public:
-	Sprite* sprite_bullet = Sprite::create("bullet.png");/* ´´½¨×Óµ¯¾«Áé */
-	mutable int flip = GunLeft;/* ³õÊ¼Ç¹¿Ú·½ÏòÎª×ó */
-	/* ¹¥»÷º¯Êı */
-	//int attack(Vec2 characterposition);
+	Vec2 getgunPosition();/* è·å–æªçš„ä½ç½® */
+	Sprite* sprite_bullet = Sprite::create("bullet.png");/* åˆ›å»ºå­å¼¹ç²¾çµ */
 protected:
 	Sprite* spriteGun;
 };
-
-/* ´´½¨Í»»÷Ç¹×ÓÀà */
+/* åˆ›å»ºçªå‡»æªå­ç±» */
 class GunM249 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("M249.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove() const
 	{
 		auto moveTo = MoveBy::create(1, Point(240, 0));
 		sprite_bullet->runAction(moveTo);
 	}
 };
-
-/* ´´½¨ÊÖÇ¹×ÓÀà */
+/* åˆ›å»ºæ‰‹æªå­ç±» */
 class GunP92 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("P92.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove() const
 	{
 		auto moveTo = MoveBy::create(1, Point(240, 0));
 		sprite_bullet->runAction(moveTo);
 	}
 };
-
-/* ´´½¨¾Ñ»÷Ç¹×ÓÀà */
+/* åˆ›å»ºç‹™å‡»æªå­ç±» */
 class Gun98K : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("98K.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove() const
 	{
 		auto moveTo = MoveBy::create(1, Point(240, 0));
@@ -57,7 +49,7 @@ public:
 };
 
 
-/* ´´½¨ÁË·ÅÖÃ¾«ÁéµÄ³¡¾° */
+/* åˆ›å»ºäº†æ”¾ç½®ç²¾çµçš„åœºæ™¯ */
 class SpriteScene : public Scene
 {
 public:
