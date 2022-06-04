@@ -7,23 +7,25 @@ class weapon
 {
 public:
 
-	/*ÉèÖÃÎäÆ÷×´Ì¬*/
+	/*è®¾ç½®æ­¦å™¨çŠ¶æ€*/
 	void SetWeaponState(bool Is_picked);
 
-	/* »ñÈ¡ÎäÆ÷×´Ì¬ */
+	/* è·å–æ­¦å™¨çŠ¶æ€ */
 	bool GetweaponState();
 
-	/* ÎäÆ÷¹¥»÷ÓëÍæ¼Ò½»»¥ */
-	void Weaponpower(int power);/* ÉèÖÃ¹¥»÷Á¦ */
-	int GetWeaponpower();/* »ñÈ¡¹¥»÷Á¦ */
+	/* æ­¦å™¨æ”»å‡»ä¸ç©å®¶äº¤äº’ */
+	void Weaponpower(int power);/* è®¾ç½®æ”»å‡»åŠ› */
+	int GetWeaponpower();/* è·å–æ”»å‡»åŠ› */
 	Vec2 getWeaponPosition();
 
-	/* ÊµÏÖ²»Í¬ÎäÆ÷µÄ¹¥»÷·½Ê½ */
+	/* å®ç°ä¸åŒæ­¦å™¨çš„æ”»å‡»æ–¹å¼ */
+
 	//virtual int attack()=0;
+
 protected:
 
-	bool _Is_picked = false; /* ÎäÆ÷µÄ×´Ì¬ */
-	int MyPower = 0; /* ÎäÆ÷¹¥»÷Á¦ */
+	bool _Is_picked = false; /* æ­¦å™¨çš„çŠ¶æ€ */
+	int MyPower = 0; /* æ­¦å™¨æ”»å‡»åŠ› */
 };
 
 

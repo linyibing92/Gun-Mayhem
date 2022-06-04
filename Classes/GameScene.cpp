@@ -1,10 +1,12 @@
 #include<iostream>
-#include "audio/include/AudioEngine.h"
 #include"HelloWorldScene.h"
-#include "ui/CocosGUI.h"
 #include "GameScene.h"
+
+#include"Box.h"
+
 #include "Gun.h"
 #include "weapon.h"
+
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
 {
@@ -21,6 +23,7 @@ bool GameSceneMountain::init()
 	_gamebg->setPosition(visibleSize/2);
 	this->addChild(_gamebg);
 
+	
 	_land1->setPosition(Vec2(230, 350));
 	_land2->setPosition(Vec2(970, 280));
 	_land3->setPosition(Vec2(700, 170));
@@ -36,29 +39,41 @@ bool GameSceneMountain::init()
 	this->addChild(_land6);
 
 
-	//ÁÖâù±ù
 
-	//´´½¨»úÆ÷ÈË½ÇÉ«
+	auto mylayer = MyLayer::create();
+	this->addChild(mylayer);
+
+	auto myloadingbar = MyLoadingBar::create();
+	this->addChild(myloadingbar);
+
+	auto box = Box::create();
+	this->addChild(box);
+	box->drop();
+
+
+	//æž—æ€¡å†°
+
+	//åˆ›å»ºæœºå™¨äººè§’è‰²
 	Sprite* character_robot = Sprite::create("character_robot_idle.png");
 	character_robot->setScale(1.0f);
 	this->addChild(character_robot, 0);
-	//Òþ²Ø¾«Áé   
+	//éšè—ç²¾çµ   
 	character_robot->setVisible(true);
 
-	//´´½¨Ç¹½ÇÉ«
+	//åˆ›å»ºæžªè§’è‰²
 	Gun98K Gun;
 	Gun.spriteGun->setScale(0.2f);
 	Gun.sprite_bullet->setPosition(240, 160);
 	this->addChild(Gun.spriteGun, 0);
 	this->addChild(Gun.sprite_bullet);
 
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
 	auto keyListener = EventListenerKeyboard::create();
-	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ°´µÄ¼üÎ»)
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†æŒ‰çš„é”®ä½)
 	{
 		character_robot->setPosition(robot_position + offset);
 		Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
-		//»úÆ÷ÈË¶¯»­(ÏòÓÒ)
+		//æœºå™¨äººåŠ¨ç”»(å‘å³)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
 		auto cache_right = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_right;
@@ -73,7 +88,7 @@ bool GameSceneMountain::init()
 		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
 		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
 		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.5f / 10);
-		//»úÆ÷ÈË¶¯»­(Ïò×ó)
+		//æœºå™¨äººåŠ¨ç”»(å‘å·¦)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
 		auto cache_left = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_left;
@@ -88,7 +103,7 @@ bool GameSceneMountain::init()
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk71.png"));
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
 		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.5f / 10);
-		//»úÆ÷ÈË¶¯»­(ÏòÉÏ)
+		//æœºå™¨äººåŠ¨ç”»(å‘ä¸Š)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
 		auto cache_up = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_up;
@@ -134,19 +149,24 @@ bool GameSceneMountain::init()
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
-	//´´½¨ÊÂ¼þ¼àÌýÆ÷Êó±êÊÂ¼þ
+	//åˆ›å»ºäº‹ä»¶ç›‘å¬å™¨é¼ æ ‡äº‹ä»¶
 	auto myMouseListener = EventListenerMouse::create();
-	//Êó±ê±»°´ÏÂ
+	//é¼ æ ‡è¢«æŒ‰ä¸‹
 	myMouseListener->onMouseDown = [=](Event* event)
 	{
 		Gun.bulletmove();
 	};
 
-	//½«ÊÂ¼þ¼àÌýÆ÷Óë³¡¾°°ó¶¨
+	//å°†äº‹ä»¶ç›‘å¬å™¨ä¸Žåœºæ™¯ç»‘å®š
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
 
+	/*auto layerwinner = MyLayerWinner::create();
+	this->addChild(layerwinner);*/
 	return true;
 }
+
+
+//æ¨ä¹é›…
 
 
 Scene* GameSceneForest::createScene()
@@ -177,6 +197,13 @@ bool GameSceneForest::init()
 	this->addChild(_land4);
 	this->addChild(_land5);
 	this->addChild(_land6);
+
+
+	auto mylayer = MyLayer::create();
+	this->addChild(mylayer);
+
+	auto myloadingbar = MyLoadingBar::create();
+	this->addChild(myloadingbar);
 
 	return true;
 }
@@ -283,12 +310,11 @@ void ChooseScene::create_button_begin()
 
 	_button_begin->addClickEventListener([&](Ref* sender) {
 		if (_scene_forest_status == true) {
-			static Scene* pScene = GameSceneForest::createScene();
+			Scene* pScene = GameSceneForest::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 		}
-
 		else {
-			static Scene* pScene = GameSceneMountain::createScene();
+			Scene* pScene = GameSceneMountain::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 		}
 		});
@@ -382,13 +408,11 @@ Menu* ChooseDouble::create_button_char()
 	button2->setPosition(Vec2(650, visibleSize.height - 100));
 	button3->setPosition(Vec2(950, visibleSize.height - 100));
 
-
 	this->addChild(button1);
 	this->addChild(button2);
 	this->addChild(button3);
 
 	return nullptr;
-
 
 
 }
