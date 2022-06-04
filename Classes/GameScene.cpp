@@ -1,8 +1,7 @@
 #include<iostream>
-#include "audio/include/AudioEngine.h"
 #include"HelloWorldScene.h"
-#include "ui/CocosGUI.h"
 #include "GameScene.h"
+#include"Box.h"
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
 {
@@ -19,6 +18,7 @@ bool GameSceneMountain::init()
 	_gamebg->setPosition(visibleSize/2);
 	this->addChild(_gamebg);
 
+	
 	_land1->setPosition(Vec2(230, 350));
 	_land2->setPosition(Vec2(970, 280));
 	_land3->setPosition(Vec2(700, 170));
@@ -32,39 +32,133 @@ bool GameSceneMountain::init()
 	this->addChild(_land4);
 	this->addChild(_land5);
 	this->addChild(_land6);
-	 
 
-	auto button_pause = MenuItemImage::create(
-		"sound(1).png",
-		"sound.(1)png");
-	auto button_resume = MenuItemImage::create(
-		"sound(1).png",
-		"sound(1).png");
-	auto button_toggle = MenuItemToggle::createWithCallback
-		(CC_CALLBACK_1(GameSceneMountain::menuPauseCallback, this),
-			button_pause,
-			button_resume, NULL);
-	button_toggle->setPosition(Vec2(visibleSize) - Vec2(35, 35));
-	Menu* menu_sound = Menu::create(button_toggle,NULL);
-	menu_sound->setPosition(Vec2::ZERO);
-	this->addChild(menu_sound, 1);
+	auto mylayer = MyLayer::create();
+	this->addChild(mylayer);
 
-	MyMenu mymenu;
-	Button* button_end = mymenu.create_button_end();
-	this -> addChild(button_end);
+	auto myloadingbar = MyLoadingBar::create();
+	this->addChild(myloadingbar);
 
+	auto box = Box::create();
+	this->addChild(box);
+	box->drop();
+
+
+	//林怡冰
+
+	//创建机器人角色
+	Sprite* character_robot = Sprite::create("character_robot_idle.png");
+	character_robot->setScale(1.0f);
+	this->addChild(character_robot, 0);
+	//隐藏精灵   
+	character_robot->setVisible(true);
+
+	//创建枪角色
+	Gun98K Gun;
+	Gun.spriteGun->setScale(0.2f);
+	Gun.sprite_bullet->setPosition(240, 160);
+	this->addChild(Gun.spriteGun, 0);
+	this->addChild(Gun.sprite_bullet);
+
+	//实现通过键盘控制人物移动
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//创建一个事件监听器监听键盘事件(监视按的键位)
+	{
+		character_robot->setPosition(robot_position + offset);
+		Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
+		//机器人动画(向右)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
+		auto cache_right = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_right;
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk0.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk1.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk2.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk3.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk4.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk5.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk6.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.5f / 10);
+		//机器人动画(向左)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
+		auto cache_left = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_left;
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk01.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk11.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk21.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk31.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk41.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk51.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk61.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk71.png"));
+		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.5f / 10);
+		//机器人动画(向上)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
+		auto cache_up = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_up;
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
+
+		FiniteTimeAction* move_up = MoveBy::create(0.25f, Vec2(0, 10.f));
+		FiniteTimeAction* move_down = MoveBy::create(0.25f, Vec2(0, -10.f));
+		FiniteTimeAction* move_left = MoveBy::create(0.25f, Vec2(-10.f, 0));
+		FiniteTimeAction* move_right = MoveBy::create(0.25f, Vec2(10.f, 0));
+		switch (code)
+		{
+			case EventKeyboard::KeyCode::KEY_UP_ARROW:
+				offset.y += 20.f;
+				robot_up = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_up_animation), nullptr);
+				Gun.spriteGun->runAction(Repeat::create(move_up, 1));
+				character_robot->runAction(robot_up);
+				break;
+			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+				offset.y -= 20.f;
+				character_robot->runAction(Repeat::create(move_down, 2));
+				Gun.spriteGun->runAction(Repeat::create(move_down, 1));
+				break;
+			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+				offset.x -= 20.f;
+				robot_left = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_left_animation), nullptr);
+				character_robot->runAction(robot_left);
+				Gun.spriteGun->runAction(Repeat::create(move_left, 2));
+				break;
+			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+				offset.x += 20.f;
+				robot_right = Spawn::create(Repeat::create(move_right, 2), Animate::create(robotmove_right_animation), nullptr);
+				Gun.spriteGun->runAction(Repeat::create(move_right, 2));
+				character_robot->runAction(robot_right);
+				break;
+			default:
+				break;
+		}
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+
+	//创建事件监听器鼠标事件
+	auto myMouseListener = EventListenerMouse::create();
+	//鼠标被按下
+	myMouseListener->onMouseDown = [=](Event* event)
+	{
+		Gun.bulletmove();
+	};
+
+	//将事件监听器与场景绑定
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
+
+	/*auto layerwinner = MyLayerWinner::create();
+	this->addChild(layerwinner);*/
 	return true;
 }
 
-void GameSceneMountain::menuPauseCallback(Ref* pSender)
-{
-	static int count = 0;
-	if(count%2==0)
-	    AudioEngine::pause(_backgroundAudioID);
-	else
-		AudioEngine::resume(_backgroundAudioID);
-	count++;
-}
+//杨乐雅
 
 Scene* GameSceneForest::createScene()
 {
@@ -95,56 +189,14 @@ bool GameSceneForest::init()
 	this->addChild(_land5);
 	this->addChild(_land6);
 
-	auto button_pause = MenuItemImage::create(
-		"sound_on.png",
-		"sound_on.png");
-	auto button_resume = MenuItemImage::create(
-		"sound_close.png",
-		"sound_close.png");
-	auto button_toggle = MenuItemToggle::createWithCallback
-	(CC_CALLBACK_1(GameSceneForest::menuPauseCallback, this),
-		button_pause,
-		button_resume, NULL);
-	button_toggle->setPosition(Vec2(visibleSize) - Vec2(35, 35));
-	Menu* menu_sound = Menu::create(button_toggle, NULL);
-	menu_sound->setPosition(Vec2::ZERO);
-	this->addChild(menu_sound, 1);
+	auto mylayer = MyLayer::create();
+	this->addChild(mylayer);
 
-	MyMenu mymenu;
-	Button* button_end = mymenu.create_button_end();
-	this->addChild(button_end);
-
+	auto myloadingbar = MyLoadingBar::create();
+	this->addChild(myloadingbar);
 	return true;
 }
 
-void GameSceneForest::menuPauseCallback(Ref* pSender)
-{
-	static int count2 = 0;
-	if (count2 % 2 == 0)
-		AudioEngine::pause(_backgroundAudioID);
-	else
-		AudioEngine::resume(_backgroundAudioID);
-	count2++;
-}
-
-void MyMenu::menuCloseCallback(cocos2d::Ref* pSender)
-{
-	Director::getInstance()->end();
-}
-
-Button* MyMenu::create_button_end()
-{
-	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto button_end = ui::Button::create(
-		"close.png",
-		"close.png", "close.png");
-	button_end->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	button_end->setPosition(Vec2(visibleSize) - Vec2(100, 35));
-	button_end->addClickEventListener([](Ref* sender) {
-		Director::getInstance()->end();
-		});
-	return button_end;
-}
 
 
 void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)
@@ -186,21 +238,37 @@ Menu* MyMenu::create_button_double()
 	return menu_bottle_double;
 }
 
-Menu* ChooseScene::create_button_gun()
+
+
+void ChooseScene::create_button_gun()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Gun", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50, visibleSize.height - 500));
-	this->addChild(label);
+	label->setPosition(Vec2(50, visibleSize.height - 385));
 
-	return nullptr;
+	Sprite* shou = Sprite::create("shou.png");
+	shou->setPosition(Vec2(400, visibleSize.height - 400));
+	Sprite* juji = Sprite::create("juji.png");
+	juji->setPosition(Vec2(700, visibleSize.height - 400));
+	Sprite* jiguan = Sprite::create("jiguan.png");
+	jiguan->setPosition(Vec2(1000, visibleSize.height - 400));
+
+	Label* label2 = Label::createWithTTF("Sorry,no choice here.You can only have pistols now.", "fonts/Marker Felt.ttf", 30);
+	label2->setPosition(Vec2(450, visibleSize.height - 500));
+
+	this->addChild(label);
+	this->addChild(label2);
+	this->addChild(shou);
+	this->addChild(juji);
+	this->addChild(jiguan);
+
 }
 
 void ChooseScene::create_button_scene()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Scene", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50, visibleSize.height - 900));
+	label->setPosition(Vec2(50, visibleSize.height - 650));
 	this->addChild(label);
 
 	_button_mountain->addClickEventListener([&](Ref* sender) {
@@ -213,9 +281,9 @@ void ChooseScene::create_button_scene()
 		});
 
 	_button_mountain->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_mountain->setPosition(Vec2(400, visibleSize.height - 900));
+	_button_mountain->setPosition(Vec2(400, visibleSize.height - 650));
 	_button_forest->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_forest->setPosition(Vec2(800, visibleSize.height - 900));
+	_button_forest->setPosition(Vec2(800, visibleSize.height - 650));
 
 	this->addChild(_button_mountain);
 	this->addChild(_button_forest);
@@ -227,23 +295,20 @@ void ChooseScene::create_button_begin()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_button_begin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_begin->setPosition(Vec2(visibleSize.width/2, visibleSize.height - 1200));
+	_button_begin->setPosition(Vec2(visibleSize.width/2, visibleSize.height - 850));
 
 	_button_begin->addClickEventListener([&](Ref* sender) {
 		if (_scene_forest_status == true) {
-			static Scene* pScene = GameSceneForest::createScene();
+			Scene* pScene = GameSceneForest::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 		}
-
 		else {
-			static Scene* pScene = GameSceneMountain::createScene();
+			Scene* pScene = GameSceneMountain::createScene();
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 		}
 		});
 	this->addChild(_button_begin);
 }
-
-
 
 
 Scene* ChooseSingle::createScene()
@@ -265,30 +330,21 @@ Menu* ChooseSingle::create_button_char()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
 	Label* label = Label::createWithTTF("Character", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(50,visibleSize.height -100) );
+	label->setPosition(Vec2(80,visibleSize.height -100) );
 	this->addChild(label);
 
-	Sprite* sprite1 = Sprite::create("wmale.png");
-	Sprite* sprite2 = Sprite::create("bmale.png");
-	Sprite* sprite3 = Sprite::create("robot.png");
-	sprite1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	sprite1->setPosition(Vec2(50, visibleSize.height - 100));
-	sprite2->setPosition(Vec2(300, visibleSize.height - 100));
-	sprite3->setPosition(Vec2(600, visibleSize.height - 100));
-	this->addChild(sprite1);
-	this->addChild(sprite2);
-	this->addChild(sprite3);
-
-	_button_wmale->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_bmale->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_robot->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_wmale->setPosition(Vec2(50, visibleSize.height - 400));
-	_button_bmale->setPosition(Vec2(300, visibleSize.height - 400));
-	_button_robot->setPosition(Vec2(600, visibleSize.height - 400));
-
-
+	Button* button1 = Button::create("wmale2.png", "wmale(1).png", "wmale.png");
+	Button* button2 = Button::create("bmale.png", "bmale(1).png", "bmale.png");
+	Button* button3 = Button::create("robot.png", "robot(1).png", "robot.png");
+	button1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button1->setPosition(Vec2(350, visibleSize.height - 100));
+	button2->setPosition(Vec2(650, visibleSize.height - 100));
+	button3->setPosition(Vec2(950, visibleSize.height - 100));
+	this->addChild(button1);
+	this->addChild(button2);
+	this->addChild(button3);
 
 	return nullptr;
 }
@@ -300,6 +356,12 @@ bool ChooseSingle::init()
 	SetBG();
 	this->addChild(_bg);
 	create_button_scene();
+	create_button_gun();
+	create_button_char();
+	create_button_begin();
+	auto layer = MyLayer::create();
+	this->addChild(layer);
+	return true;
 }
 
 Scene* ChooseDouble::createScene()
@@ -319,16 +381,28 @@ void ChooseDouble::SetBG()
 Menu* ChooseDouble::create_button_char()
 {
 
+	auto visibleSize = Director::getInstance()->getVisibleSize();
 
+	Label* label = Label::createWithTTF("Character", "fonts/Marker Felt.ttf", 40);
+	label->setPosition(Vec2(80, visibleSize.height - 100));
+	this->addChild(label);
 
+	Button* button1 = Button::create("wmale2.png", "wmale(1).png", "wmale.png");
+	Button* button2 = Button::create("bmale.png", "bmale(1).png", "bmale.png");
+	Button* button3 = Button::create("robot.png", "robot(1).png", "robot.png");
+	button1->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button2->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button3->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+	button1->setPosition(Vec2(350, visibleSize.height - 100));
+	button2->setPosition(Vec2(650, visibleSize.height - 100));
+	button3->setPosition(Vec2(950, visibleSize.height - 100));
 
-
-
-
-
-
+	this->addChild(button1);
+	this->addChild(button2);
+	this->addChild(button3);
 
 	return nullptr;
+
 }
 
 bool ChooseDouble::init()
@@ -338,4 +412,10 @@ bool ChooseDouble::init()
 	SetBG();
 	this->addChild(_bg);
 	create_button_scene();
+	create_button_gun();
+	create_button_char();
+	create_button_begin();
+	auto layer = MyLayer::create();
+	this->addChild(layer);
+	return true;
 }

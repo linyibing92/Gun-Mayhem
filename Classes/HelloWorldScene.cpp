@@ -25,7 +25,9 @@
 #include "HelloWorldScene.h"
 #include "ui/CocosGUI.h"
 #include"GameScene.h"
-#include"character.h"
+#include"MyLayer.h"
+#include"SelectScene.h"
+
 
 USING_NS_CC;
 
@@ -50,6 +52,8 @@ bool HelloWorld::init()
     {
         return false;
     }
+
+   
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -135,7 +139,7 @@ bool HelloWorld::init()
     }
     else
     {
-        closeItem->setPosition(Vec2(visibleSize / 2) - Vec2(0, closeItem->getContentSize().height+30 ));
+        closeItem->setPosition(Vec2(visibleSize / 2) - Vec2(0, closeItem->getContentSize().height+50 ));
     }
 
     // create menu, it's an autorelease object
@@ -143,28 +147,14 @@ bool HelloWorld::init()
     menu_close->setPosition(Vec2::ZERO);
     this->addChild(menu_close, 1);
 
-    //设置的按钮
-
-    auto button_setting = ui::Button::create("3a(1).png", "3b(1).png", "3b(1).png");
-    button_setting->setScale(2.f);
-    button_setting->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    button_setting->setPosition(Vec2(visibleSize / 2)-Vec2(0,button_setting->getContentSize().height*2+160));
-    this->addChild(button_setting);
-    
-
-
-
-    /////////////////////////////
-    // 3. add your codes below...
-
-   
-
-    
-
-    
-
-
  
+    
+
+//音乐等菜单
+  
+
+     auto layer = MyLayer::create();
+    this->addChild(layer,10);
 
     return true;
 }
@@ -179,8 +169,6 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
 
 
@@ -189,7 +177,7 @@ void HelloWorld::menuReplaceCallback(Ref* pSender)
     // 清空缓存
     Director::getInstance()->purgeCachedData();
 
-    Scene* pScene = CharacterScene::create();
+    Scene* pScene = SelectScene::create();
 
     Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 }
