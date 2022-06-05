@@ -1,11 +1,8 @@
 #include<iostream>
+#include "audio/include/AudioEngine.h"
 #include"HelloWorldScene.h"
+#include "ui/CocosGUI.h"
 #include "GameScene.h"
-
-#include"Box.h"
-
-#include "Gun.h"
-#include "weapon.h"
 
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
@@ -20,10 +17,10 @@ bool GameSceneMountain::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_gamebg->setPosition(visibleSize/2);
+	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
 
-	
+
 	_land1->setPosition(Vec2(230, 350));
 	_land2->setPosition(Vec2(970, 280));
 	_land3->setPosition(Vec2(700, 170));
@@ -38,8 +35,6 @@ bool GameSceneMountain::init()
 	this->addChild(_land5);
 	this->addChild(_land6);
 
-
-
 	auto mylayer = MyLayer::create();
 	this->addChild(mylayer);
 
@@ -51,29 +46,32 @@ bool GameSceneMountain::init()
 	box->drop();
 
 
-	//æž—æ€¡å†°
-
-	//åˆ›å»ºæœºå™¨äººè§’è‰²
+	//ÁÖâù±ù
+	GunP92 Gun;
+	//´´½¨»úÆ÷ÈË½ÇÉ«
 	Sprite* character_robot = Sprite::create("character_robot_idle.png");
 	character_robot->setScale(1.0f);
 	this->addChild(character_robot, 0);
-	//éšè—ç²¾çµ   
+	//Òþ²Ø¾«Áé   
 	character_robot->setVisible(true);
 
-	//åˆ›å»ºæžªè§’è‰²
-	Gun98K Gun;
+	//´´½¨Ç¹µÄ½ÇÉ«
 	Gun.spriteGun->setScale(0.2f);
-	Gun.sprite_bullet->setPosition(240, 160);
 	this->addChild(Gun.spriteGun, 0);
-	this->addChild(Gun.sprite_bullet);
+	this->addChild(Gun.sprite_bullet, 0);
 
-	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	//´´½¨Õ¨µ¯µÄ½ÇÉ«
+	Bomb bomb;
+	this->addChild(bomb.sprite_bomb);
+
+
+	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
 	auto keyListener = EventListenerKeyboard::create();
-	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†æŒ‰çš„é”®ä½)
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ°´µÄ¼üÎ»)
 	{
 		character_robot->setPosition(robot_position + offset);
 		Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
-		//æœºå™¨äººåŠ¨ç”»(å‘å³)
+		//»úÆ÷ÈË¶¯»­(ÏòÓÒ)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
 		auto cache_right = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_right;
@@ -88,7 +86,7 @@ bool GameSceneMountain::init()
 		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
 		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
 		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.5f / 10);
-		//æœºå™¨äººåŠ¨ç”»(å‘å·¦)
+		//»úÆ÷ÈË¶¯»­(Ïò×ó)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
 		auto cache_left = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_left;
@@ -103,7 +101,7 @@ bool GameSceneMountain::init()
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk71.png"));
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
 		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.5f / 10);
-		//æœºå™¨äººåŠ¨ç”»(å‘ä¸Š)
+		//»úÆ÷ÈË¶¯»­(ÏòÉÏ)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
 		auto cache_up = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_up;
@@ -118,56 +116,75 @@ bool GameSceneMountain::init()
 		FiniteTimeAction* move_down = MoveBy::create(0.25f, Vec2(0, -10.f));
 		FiniteTimeAction* move_left = MoveBy::create(0.25f, Vec2(-10.f, 0));
 		FiniteTimeAction* move_right = MoveBy::create(0.25f, Vec2(10.f, 0));
+
+		//Ç¹µÄÒÆ¶¯²ÎÊý
+		FiniteTimeAction* move_up_Gun = MoveBy::create(0.25f, Vec2(0, 10.f));
+		FiniteTimeAction* move_down_Gun = MoveBy::create(0.25f, Vec2(0, -10.f));
+		FiniteTimeAction* move_left_Gun = MoveBy::create(0.25f, Vec2(-10.f, 0));
+		FiniteTimeAction* move_right_Gun = MoveBy::create(0.25f, Vec2(10.f, 0));
+
+
 		switch (code)
 		{
 			case EventKeyboard::KeyCode::KEY_UP_ARROW:
 				offset.y += 20.f;
 				robot_up = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_up_animation), nullptr);
-				Gun.spriteGun->runAction(Repeat::create(move_up, 1));
+				Gun.spriteGun->runAction(Repeat::create(move_left_Gun, 2));
 				character_robot->runAction(robot_up);
 				break;
 			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 				offset.y -= 20.f;
 				character_robot->runAction(Repeat::create(move_down, 2));
-				Gun.spriteGun->runAction(Repeat::create(move_down, 1));
+				Gun.spriteGun->runAction(Repeat::create(move_down_Gun, 2));
 				break;
 			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 				offset.x -= 20.f;
 				robot_left = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_left_animation), nullptr);
 				character_robot->runAction(robot_left);
-				Gun.spriteGun->runAction(Repeat::create(move_left, 2));
+				//Ç¹Ö§ÒÆ¶¯
+				//Ïò×óÒÆ¶¯Ê±£¬·­×ª²»ÏÔÊ¾
+				Gun.spriteGun->setFlippedX(false);
+				Gunflip = GunLeft;
+				Gun.spriteGun->runAction(Repeat::create(move_left_Gun, 2));
 				break;
 			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 				offset.x += 20.f;
 				robot_right = Spawn::create(Repeat::create(move_right, 2), Animate::create(robotmove_right_animation), nullptr);
-				Gun.spriteGun->runAction(Repeat::create(move_right, 2));
 				character_robot->runAction(robot_right);
+				//Ç¹Ö§ÒÆ¶¯
+				//ÏòÓÒÒÆ¶¯Ê±£¬·­×ªÏÔÊ¾
+				Gun.spriteGun->setFlippedX(true);
+				Gunflip = GunRight;
+				Gun.spriteGun->runAction(Repeat::create(move_right_Gun, 2));
+				break;
+			case EventKeyboard::KeyCode::KEY_SPACE:
+				bomb.sprite_bomb->setPosition(robot_position.x + offset.x, robot_position.y + offset.y);
+				bomb.bomb_move(Point(robot_position.x + offset.x, robot_position.y + offset.y));
 				break;
 			default:
 				break;
 		}
 	};
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
-	//åˆ›å»ºäº‹ä»¶ç›‘å¬å™¨é¼ æ ‡äº‹ä»¶
+
+	//´´½¨ÊÂ¼þ¼àÌýÆ÷Êó±êÊÂ¼þ
 	auto myMouseListener = EventListenerMouse::create();
-	//é¼ æ ‡è¢«æŒ‰ä¸‹
+	//Êó±ê×ó¼ü°´ÏÂ
 	myMouseListener->onMouseDown = [=](Event* event)
 	{
-		Gun.bulletmove();
+		Gun.sprite_bullet->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
+		Gun.bulletmove(Gunflip);
 	};
 
-	//å°†äº‹ä»¶ç›‘å¬å™¨ä¸Žåœºæ™¯ç»‘å®š
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
 
-	/*auto layerwinner = MyLayerWinner::create();
-	this->addChild(layerwinner);*/
+
+	//½«ÊÂ¼þ¼àÌýÆ÷Óë³¡¾°°ó¶¨
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 	return true;
 }
 
-
-//æ¨ä¹é›…
-
+//ÑîÀÖÑÅ
 
 Scene* GameSceneForest::createScene()
 {
@@ -198,13 +215,11 @@ bool GameSceneForest::init()
 	this->addChild(_land5);
 	this->addChild(_land6);
 
-
 	auto mylayer = MyLayer::create();
 	this->addChild(mylayer);
 
 	auto myloadingbar = MyLoadingBar::create();
 	this->addChild(myloadingbar);
-
 	return true;
 }
 
@@ -228,9 +243,9 @@ void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)
 Menu* MyMenu::create_button_single()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	auto button_single= MenuItemImage::create(
+	auto button_single = MenuItemImage::create(
 		"single(1).png",
-		"single(1).png",CC_CALLBACK_1(MyMenu::menuSingleCallback, this));
+		"single(1).png", CC_CALLBACK_1(MyMenu::menuSingleCallback, this));
 	button_single->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	button_single->setPosition(Vec2(visibleSize / 2) - Vec2(200, 0));
 	auto menu_bottle_single = Menu::create(button_single, NULL);
@@ -244,7 +259,7 @@ Menu* MyMenu::create_button_double()
 		"double.png",
 		"double.png", CC_CALLBACK_1(MyMenu::menuDoubleCallback, this));
 	button_double->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	button_double->setPosition(Vec2(visibleSize / 2) +Vec2(200, 0));
+	button_double->setPosition(Vec2(visibleSize / 2) + Vec2(200, 0));
 	auto menu_bottle_double = Menu::create(button_double, NULL);
 	return menu_bottle_double;
 }
@@ -306,7 +321,7 @@ void ChooseScene::create_button_begin()
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_button_begin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-	_button_begin->setPosition(Vec2(visibleSize.width/2, visibleSize.height - 850));
+	_button_begin->setPosition(Vec2(visibleSize.width / 2, visibleSize.height - 850));
 
 	_button_begin->addClickEventListener([&](Ref* sender) {
 		if (_scene_forest_status == true) {
@@ -341,7 +356,7 @@ Menu* ChooseSingle::create_button_char()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
 	Label* label = Label::createWithTTF("Character", "fonts/Marker Felt.ttf", 40);
-	label->setPosition(Vec2(80,visibleSize.height -100) );
+	label->setPosition(Vec2(80, visibleSize.height - 100));
 	this->addChild(label);
 
 	Button* button1 = Button::create("wmale2.png", "wmale(1).png", "wmale.png");
@@ -413,7 +428,6 @@ Menu* ChooseDouble::create_button_char()
 	this->addChild(button3);
 
 	return nullptr;
-
 
 }
 
