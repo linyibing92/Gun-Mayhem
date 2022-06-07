@@ -45,47 +45,102 @@ bool GameSceneMountain::init()
 	this->addChild(box);
 	box->drop();
 
+	
+	
+	this->scheduleUpdate();
+
+	//创建机器人角色
+	character_robot->setScale(1.15f);
+	this->addChild(character_robot, 7);
+
+	//设置精灵起始位置在最高障碍正中间 
+	robot_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height / 2);
+
+	//隐藏精灵
+	character_robot->setVisible(true);
+	character_robot->setPosition(robot_position + offset);
 
 	//林怡冰
-	GunP92 Gun;
-	//创建机器人角色
-	Sprite* character_robot = Sprite::create("character_robot_idle.png");
-	character_robot->setScale(1.0f);
-	this->addChild(character_robot, 0);
-	//隐藏精灵   
-	character_robot->setVisible(true);
+	GunM249 Gun;
 
 	//创建枪的角色
 	Gun.spriteGun->setScale(0.2f);
-	this->addChild(Gun.spriteGun, 0);
-	this->addChild(Gun.sprite_bullet, 0);
+	//设置起始位置状态
+	Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
+	this->addChild(Gun.spriteGun, 7);
+	this->addChild(Gun.sprite_bullet, 7);
+
+
 
 	//创建炸弹的角色
 	Bomb bomb;
 	this->addChild(bomb.sprite_bomb);
 
-
 	//实现通过键盘控制人物移动
-	auto keyListener = EventListenerKeyboard::create();
-	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode code, Event* e)//创建一个事件监听器监听键盘事件(监视按的键位)
+	auto keyListener = EventListenerKeyboard::create();//创建一个事件监听器监听键盘事件(监视键位的按下和松开)
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
-		character_robot->setPosition(robot_position + offset);
+		keyMap[keycode] = true;
 		Gun.spriteGun->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
-		//机器人动画(向右)
-		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
-		auto cache_right = SpriteFrameCache::getInstance();
-		Vector<SpriteFrame*> robotmove_images_right;
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk0.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk1.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk2.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk3.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk4.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk5.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk6.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
-		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
-		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.5f / 10);
+		if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW)
+		{
+			//机器人动画(向上\向下)——不区分长按短按
+			SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
+			auto cache_up = SpriteFrameCache::getInstance();
+			Vector<SpriteFrame*> robotmove_images_up;
+			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
+			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
+			Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
+			FiniteTimeAction* robot_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
+			robot_up = Spawn::create(robot_jump, Animate::create(robotmove_up_animation), nullptr);
+			character_robot->runAction(robot_up);
+
+			Gun.spriteGun->runAction(robot_jump->clone());
+			
+		}
+		else if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
+		{
+			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -20.f));
+			offset.y -= 20.f;
+			character_robot->runAction(move_down);
+			Gun.spriteGun->runAction(move_down->clone());
+			
+		}
+		else if (keycode == EventKeyboard::KeyCode::KEY_SPACE) 
+		{
+			bomb.sprite_bomb->setPosition(robot_position.x + offset.x, robot_position.y + offset.y);
+			bomb.bomb_move(Point(robot_position.x + offset.x, robot_position.y + offset.y));
+		}
+		
+	};
+	keyListener->onKeyReleased = [=](EventKeyboard::KeyCode keycode, Event* event)
+	{
+		keyMap[keycode] = false;
+	};
+
+	
+
+	//创建鼠标监听事件，控制子弹射击
+	auto myMouseListener = EventListenerMouse::create();
+	//鼠标左键按下
+	myMouseListener->onMouseDown = [=](Event* event)
+	{
+		Gun.sprite_bullet->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
+		Gun.bulletmove(Gunflip);
+	};
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+	return true;
+}
+
+ActionInterval* GameSceneMountain::robotmove(EventKeyboard::KeyCode keycode) //存放机器人移动的动画
+{
+	if (keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
+	{
 		//机器人动画(向左)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
 		auto cache_left = SpriteFrameCache::getInstance();
@@ -100,90 +155,60 @@ bool GameSceneMountain::init()
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk61.png"));
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_walk71.png"));
 		robotmove_images_left.pushBack(cache_left->getSpriteFrameByName("character_robot_idle.png"));
-		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.5f / 10);
-		//机器人动画(向上)
-		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
-		auto cache_up = SpriteFrameCache::getInstance();
-		Vector<SpriteFrame*> robotmove_images_up;
-		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
-		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
-		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
-		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_jump.png"));
-		robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
-		Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
-
-		FiniteTimeAction* move_up = MoveBy::create(0.25f, Vec2(0, 10.f));
-		FiniteTimeAction* move_down = MoveBy::create(0.25f, Vec2(0, -10.f));
-		FiniteTimeAction* move_left = MoveBy::create(0.25f, Vec2(-10.f, 0));
-		FiniteTimeAction* move_right = MoveBy::create(0.25f, Vec2(10.f, 0));
-
-		//枪的移动参数
-		FiniteTimeAction* move_up_Gun = MoveBy::create(0.25f, Vec2(0, 10.f));
-		FiniteTimeAction* move_down_Gun = MoveBy::create(0.25f, Vec2(0, -10.f));
-		FiniteTimeAction* move_left_Gun = MoveBy::create(0.25f, Vec2(-10.f, 0));
-		FiniteTimeAction* move_right_Gun = MoveBy::create(0.25f, Vec2(10.f, 0));
-
-
-		switch (code)
-		{
-			case EventKeyboard::KeyCode::KEY_UP_ARROW:
-				offset.y += 20.f;
-				robot_up = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_up_animation), nullptr);
-				Gun.spriteGun->runAction(Repeat::create(move_left_Gun, 2));
-				character_robot->runAction(robot_up);
-				break;
-			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-				offset.y -= 20.f;
-				character_robot->runAction(Repeat::create(move_down, 2));
-				Gun.spriteGun->runAction(Repeat::create(move_down_Gun, 2));
-				break;
-			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-				offset.x -= 20.f;
-				robot_left = Spawn::create(Repeat::create(move_left, 2), Animate::create(robotmove_left_animation), nullptr);
-				character_robot->runAction(robot_left);
-				//枪支移动
-				//向左移动时，翻转不显示
-				Gun.spriteGun->setFlippedX(false);
-				Gunflip = GunLeft;
-				Gun.spriteGun->runAction(Repeat::create(move_left_Gun, 2));
-				break;
-			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-				offset.x += 20.f;
-				robot_right = Spawn::create(Repeat::create(move_right, 2), Animate::create(robotmove_right_animation), nullptr);
-				character_robot->runAction(robot_right);
-				//枪支移动
-				//向右移动时，翻转显示
-				Gun.spriteGun->setFlippedX(true);
-				Gunflip = GunRight;
-				Gun.spriteGun->runAction(Repeat::create(move_right_Gun, 2));
-				break;
-			case EventKeyboard::KeyCode::KEY_SPACE:
-				bomb.sprite_bomb->setPosition(robot_position.x + offset.x, robot_position.y + offset.y);
-				bomb.bomb_move(Point(robot_position.x + offset.x, robot_position.y + offset.y));
-				break;
-			default:
-				break;
-		}
-	};
-
-
-	//创建事件监听器鼠标事件
-	auto myMouseListener = EventListenerMouse::create();
-	//鼠标左键按下
-	myMouseListener->onMouseDown = [=](Event* event)
+		Animation* robotmove_left_animation = Animation::createWithSpriteFrames(robotmove_images_left, 0.7f / 10);
+		ActionInterval* robotmove_left_animation1 = Animate::create(robotmove_left_animation);
+		return robotmove_left_animation1;
+	}
+	else if (keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
 	{
-		Gun.sprite_bullet->setPosition(robot_position.x + offset.x + 10, robot_position.y - 35 + offset.y);
-		Gun.bulletmove(Gunflip);
-	};
+		//机器人动画(向右)
+		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
+		auto cache_right = SpriteFrameCache::getInstance();
+		Vector<SpriteFrame*> robotmove_images_right;
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk0.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk1.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk2.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk3.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk4.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk5.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk6.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_walk7.png"));
+		robotmove_images_right.pushBack(cache_right->getSpriteFrameByName("character_robot_idle.png"));
+		Animation* robotmove_right_animation = Animation::createWithSpriteFrames(robotmove_images_right, 0.7f / 10);
+		ActionInterval* robotmove_right_animation1 = Animate::create(robotmove_right_animation);
+		return robotmove_right_animation1;
+	}
+}
+void GameSceneMountain::update(float delta)//长按实现连续移动
+{
+	auto moveBy_left = MoveBy::create(0.7f, Vec2(-5.f, 0));
+	auto moveBy_right = MoveBy::create(0.7f, Vec2(5.f, 0));
+	robot_left = Spawn::create(moveBy_left, robotmove(EventKeyboard::KeyCode::KEY_LEFT_ARROW), nullptr);
+	robot_right = Spawn::create(moveBy_right, robotmove(EventKeyboard::KeyCode::KEY_RIGHT_ARROW), nullptr);
+	if (keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
+	{
+		offset.x -= 5.f;
+		character_robot->runAction(robot_left);
+		
+	}
+	else if (keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
+	{
+		offset.x += 5.f;
+		character_robot->runAction(robot_right);
+	}
 
-
-
-	//将事件监听器与场景绑定
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
-	return true;
 }
 
+void GameSceneMountain::falling_judge()
+{
+	_land1->setPosition(Vec2(230, 350));
+	_land2->setPosition(Vec2(970, 280));
+	_land3->setPosition(Vec2(700, 170));
+	_land4->setPosition(Vec2(1170, 500));
+	_land5->setPosition(Vec2(750, 620));
+	_land6->setPosition(Vec2(550, 450));
+}
 //杨乐雅
 
 Scene* GameSceneForest::createScene()
