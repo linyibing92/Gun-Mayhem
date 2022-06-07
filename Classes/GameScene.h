@@ -21,6 +21,13 @@ public:
 	CREATE_FUNC(GameSceneMountain);
 	static Scene* createScene();
 	virtual bool init();
+
+	//新加机器人移动函数
+	ActionInterval* robotmove(EventKeyboard::KeyCode keycode);
+	//机器人持续移动函数
+	virtual void update(float delta);
+	//判断机器人是否走出边界
+	void falling_judge();
 private:
 	//背景图
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
@@ -30,15 +37,17 @@ private:
 	Sprite* _land4 = Sprite::create("land3(2).png");
 	Sprite* _land5 = Sprite::create("land3(1).png");
 	Sprite* _land6 = Sprite::create("land3(1).png");
-	Sprite* character_robot;
+	//0607新添加
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//存放按键的状态是不是按压中
+	Sprite* character_robot = Sprite::create("character_robot_idle.png");
 	Vec2 offset = Vec2::ZERO;
-	Vec2 robot_position = Director::getInstance()->getVisibleSize() / 2;
-	Spawn* robot_right;
-	Spawn* robot_left;
+	Vec2 robot_position;
+	ActionInterval* robot_right;
+	ActionInterval* robot_left;
 	Spawn* robot_up;
-	Sequence* robot_up1;
 	Spawn* robot_down;
-	int Gunflip = 0;/* 设置枪口的方向 */
+	friend GunM249;
+	int Gunflip = GunLeft;//设置枪口方向
 };
 
 class GameSceneForest :public Scene

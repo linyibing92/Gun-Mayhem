@@ -40,6 +40,7 @@ bool GameSceneMountain::init()
 	this->addChild(myloadingbar);
 
 
+
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -60,7 +61,8 @@ bool GameSceneMountain::init()
 	auto robot = CharacterRobot::create();
 	this->addChild(robot);
 }
-//ÑîÀÖÑÅ
+
+//æ¨ä¹é›…
 
 Scene* GameSceneForest::createScene()
 {
