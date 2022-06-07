@@ -6,12 +6,15 @@ USING_NS_CC;//using namespace cocosdµÄºê¶¨Òå
 using namespace ui;
 
 #include "audio/include/AudioEngine.h"
+#include"HelloWorldScene.h"
 #include "Gun.h"
 #include "weapon.h"
 #include"MyLayer.h"
 #include"MyLoadingBar.h"
 #include "bomb.h"
 #include "Box.h"
+#include"Character_wmale.h"
+#include"Character_robot.h"
 class GameSceneMountain :public Scene
 {
 public:
