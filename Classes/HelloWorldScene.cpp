@@ -29,7 +29,6 @@
 #include"SelectScene.h"
 
 
-
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -59,7 +58,7 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    // ì†í™êµì’¼æš 
+    // ¼ÓÈë±³¾°Í¼
     auto sprite_bg = Sprite::create("bg(1)(1).jpg");
     sprite_bg->setContentSize(Size(1400, 960));
     if (sprite_bg == nullptr)
@@ -75,7 +74,7 @@ bool HelloWorld::init()
         this->addChild(sprite_bg, 0);
     }
 
-    //ê¹ƒç—™éž«åˆ»
+    //±êÌâÏÔÊ¾
      // add a label shows "Gun-Mayhem"
     // create and initialize a label
 
@@ -94,7 +93,7 @@ bool HelloWorld::init()
         this->addChild(label_title, 1);
     }
 
-    //ìµí™è¸ç‹—ë¨ê°í(ê½‰ë°èŒ„å›ï¼‰
+    //½øÈëÓÎÏ·µÄ°´Å¥(²Ëµ¥ÊµÏÖ£©
 
 
     auto replaceItem = MenuItemImage::create(
@@ -151,7 +150,7 @@ bool HelloWorld::init()
  
     
 
-//ï¥–ìžˆëœê½‰ë°
+//ÒôÀÖµÈ²Ëµ¥
   
 
      auto layer = MyLayer::create();
@@ -175,7 +174,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::menuReplaceCallback(Ref* pSender)
 {
-    // í—Œì™•ë» ë‹¸
+    // Çå¿Õ»º´æ
     Director::getInstance()->purgeCachedData();
 
     Scene* pScene = SelectScene::create();

@@ -1,61 +1,121 @@
 #pragma once
 #include"weapon.h"
 #include "cocos2d.h"
+#include "Character_wmale.h"
+#include "bomb.h"
+#define GunLeft 0
+#define GunRight 1
+#define gunp92_choice 2
+#define gunm249_choice 3
+#define gun98k_choice 4
 USING_NS_CC;
-/* åˆ›å»ºæªç±» */
+
+/* ´´½¨Ç¹Àà */
 class Gun :public weapon 
 {
 public:
-	Vec2 getgunPosition();/* è·å–æªçš„ä½ç½® */
-	Sprite* sprite_bullet = Sprite::create("bullet.png");/* åˆ›å»ºå­å¼¹ç²¾çµ */
+	Sprite* sprite_bullet = Sprite::create("bullet.png");/* ´´½¨×Óµ¯¾«Áé */
+	mutable int flip = GunLeft;/* ³õÊ¼Ç¹¿Ú·½ÏòÎª×ó */
 protected:
 	Sprite* spriteGun;
 };
-/* åˆ›å»ºçªå‡»æªå­ç±» */
+
+/* ´´½¨Í»»÷Ç¹×ÓÀà */
 class GunM249 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("M249.png");
-	/* ç§»åŠ¨å­å¼¹ */
-	void bulletmove() const
-	{
-		auto moveTo = MoveBy::create(1, Point(240, 0));
-		sprite_bullet->runAction(moveTo);
-	}
+	/* ÒÆ¶¯×Óµ¯ */
+	void bulletmove(int _flip) const;
+	/* ¹¥»÷º¯Êı */
+	int attack(Vec2 characterposition);
+protected:
+	int Mypower = 5;
 };
-/* åˆ›å»ºæ‰‹æªå­ç±» */
+
+/* ´´½¨ÊÖÇ¹×ÓÀà */
 class GunP92 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("P92.png");
-	/* ç§»åŠ¨å­å¼¹ */
-	void bulletmove() const
-	{
-		auto moveTo = MoveBy::create(1, Point(240, 0));
-		sprite_bullet->runAction(moveTo);
-	}
+	/* ÒÆ¶¯×Óµ¯ */
+	void bulletmove(int _flip) const;
+	/* ¹¥»÷º¯Êı */
+	int attack(Vec2 characterposition);
+protected:
+	int Mypower = 5;
 };
-/* åˆ›å»ºç‹™å‡»æªå­ç±» */
+
+/* ´´½¨¾Ñ»÷Ç¹×ÓÀà */
 class Gun98K : public Gun
 {
 public:
-	Sprite* spriteGun = Sprite::create("98K.png");
-	/* ç§»åŠ¨å­å¼¹ */
-	void bulletmove() const
-	{
-		auto moveTo = MoveBy::create(1, Point(240, 0));
-		sprite_bullet->runAction(moveTo);
-	}
+	mutable Sprite* spriteGun = Sprite::create("98K.png");
+	/* ÒÆ¶¯×Óµ¯ */
+	void bulletmove(int _flip) const;
+	/* ¹¥»÷º¯Êı */
+	int attack(Vec2 characterposition);
+protected:
+	int Mypower = 10;
 };
 
 
-/* åˆ›å»ºäº†æ”¾ç½®ç²¾çµçš„åœºæ™¯ */
-class SpriteScene : public Scene
+//´´Ôì·ÅÖÃÇ¹µÄ²ã¡ª¡ªÈËÎïwmale
+class GunLayer_wmale:public Layer
 {
 public:
-	CREATE_FUNC(SpriteScene);
-
+	CREATE_FUNC(GunLayer_wmale);
 	virtual bool init();
+	//³ÖĞøÒÆ¶¯º¯Êı
+	virtual void update(float delta);
+	//ÅĞ¶ÏÊÇ·ñ×ß³ö±ß½ç
+	void falling_judge();
+	//µ÷ÓÃ¹¥»÷º¯Êı
+	int bullet_attack(Vec2 characterposition);
+	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+private:
+	Bomb bomb;
+	Gun98K gun98k;
+	GunP92 gunp92;
+	GunM249 gunm249;
+	Sprite* _land1 = Sprite::create("land3(2).png");
+	Sprite* _land2 = Sprite::create("land3(2).png");
+	Sprite* _land3 = Sprite::create("land3(1).png");
+	Sprite* _land4 = Sprite::create("land3(2).png");
+	Sprite* _land5 = Sprite::create("land3(1).png");
+	Sprite* _land6 = Sprite::create("land3(1).png");
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//´æ·Å°´¼üµÄ×´Ì¬ÊÇ²»ÊÇ°´Ñ¹ÖĞ
+	Vec2 offset = Vec2::ZERO;
+	Vec2 gun_position;
+	int Gunflip = GunLeft;/* ÉèÖÃÇ¹¿ÚµÄ·½Ïò */
 };
 
-
+//´´Ôì·ÅÖÃÇ¹µÄ²ã¡ª¡ªÈËÎïrobot
+class GunLayer_robot :public Layer
+{
+public:
+	CREATE_FUNC(GunLayer_robot);
+	virtual bool init();
+	//³ÖĞøÒÆ¶¯º¯Êı
+	virtual void update(float delta);
+	//ÅĞ¶ÏÊÇ·ñ×ß³ö±ß½ç
+	void falling_judge();
+	//µ÷ÓÃ¹¥»÷º¯Êı
+	int bullet_attack(Vec2 characterposition);
+	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+private:
+	Bomb bomb;
+	Gun98K gun98k;
+	GunP92 gunp92;
+	GunM249 gunm249;
+	Sprite* _land1 = Sprite::create("land3(2).png");
+	Sprite* _land2 = Sprite::create("land3(2).png");
+	Sprite* _land3 = Sprite::create("land3(1).png");
+	Sprite* _land4 = Sprite::create("land3(2).png");
+	Sprite* _land5 = Sprite::create("land3(1).png");
+	Sprite* _land6 = Sprite::create("land3(1).png");
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//´æ·Å°´¼üµÄ×´Ì¬ÊÇ²»ÊÇ°´Ñ¹ÖĞ
+	Vec2 offset = Vec2::ZERO;
+	Vec2 gun_position;
+	int Gunflip = GunLeft;/* ÉèÖÃÇ¹¿ÚµÄ·½Ïò */
+};

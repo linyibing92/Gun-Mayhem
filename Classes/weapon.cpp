@@ -19,3 +19,15 @@ int weapon::GetWeaponpower()
 {
 	return MyPower;
 }
+
+Vec2 weapon::getWeaponPosition()
+{
+
+	return Vec2();
+}
+
+int weapon::attack()
+{
+	return 0;
+}
+
