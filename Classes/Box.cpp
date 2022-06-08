@@ -36,7 +36,7 @@ Sprite* Box::drop()
 		jiguan->setScale(0.43f);
 		this->addChild(jiguan);
 		jiguan->setPosition(static_cast<float>(_position_x), static_cast<float>(visibleSize.height));
-		jiguan->runAction(drop);
+        jiguan->runAction(drop);
 		return jiguan;
 	}
 	else {

@@ -10,8 +10,10 @@ Scene* GameSceneMountain::createScene()
 
 bool GameSceneMountain::init()
 {
-	if (!Scene::create())
+	if (!Scene::initWithPhysics())
 		return false;
+
+	//����lable1-6�����о�̬����
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -20,11 +22,42 @@ bool GameSceneMountain::init()
 
 
 	_land1->setPosition(Vec2(230, 350));
+	_land1->setTag(2);
+	auto body1 = PhysicsBody::createBox(_land1->getContentSize());
+	body1->setDynamic(false);
+	_land1->setPhysicsBody(body1);
+	
+
 	_land2->setPosition(Vec2(970, 280));
+	_land2->setTag(2);
+	auto body2 = PhysicsBody::createBox(_land2->getContentSize());
+	body2->setDynamic(false);
+	_land2->setPhysicsBody(body2);
+
 	_land3->setPosition(Vec2(700, 170));
+	_land3->setTag(2);
+	auto body3 = PhysicsBody::createBox(_land3->getContentSize());
+	body3->setDynamic(false);
+	_land3->setPhysicsBody(body3);
+
 	_land4->setPosition(Vec2(1170, 500));
+	_land4->setTag(2);
+	auto body4 = PhysicsBody::createBox(_land4->getContentSize());
+	body4->setDynamic(false);
+	_land4->setPhysicsBody(body4);
+
 	_land5->setPosition(Vec2(750, 620));
+	_land5->setTag(2);
+	auto body5 = PhysicsBody::createBox(_land5->getContentSize());
+	body5->setDynamic(false);
+	_land5->setPhysicsBody(body5);
+
+
 	_land6->setPosition(Vec2(550, 450));
+	_land6->setTag(2);
+	auto body6 = PhysicsBody::createBox(_land1->getContentSize());
+	body6->setDynamic(false);
+	_land6->setPhysicsBody(body6);
 
 	this->addChild(_land1);
 	this->addChild(_land2);
@@ -55,14 +88,26 @@ bool GameSceneMountain::init()
 		}
 		}, 15.f, "schedule");
 
+
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
 
 	auto robot = CharacterRobot::create();
 	this->addChild(robot);
+
+	auto gun_wmale = GunLayer_wmale::create();
+	this->addChild(gun_wmale);
+
+	auto gun_robot = GunLayer_robot::create();
+	this->addChild(gun_robot);
+
+	
+	
+
 }
 
 //杨乐雅
+
 
 Scene* GameSceneForest::createScene()
 {
