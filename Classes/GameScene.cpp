@@ -2,7 +2,6 @@
 #include "audio/include/AudioEngine.h"
 #include "ui/CocosGUI.h"
 #include "GameScene.h"
-
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
 {
@@ -14,7 +13,7 @@ bool GameSceneMountain::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-	//ÉèÖÃlable1-6µÄËùÓĞ¾²Ì¬¸ÕÌå
+	//ï¿½ï¿½ï¿½ï¿½lable1-6ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¾ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -74,6 +73,7 @@ bool GameSceneMountain::init()
 	this->addChild(myloadingbar);
 
 
+
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -87,6 +87,7 @@ bool GameSceneMountain::init()
 			++drop_times;
 		}
 		}, 15.f, "schedule");
+
 
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
@@ -102,10 +103,11 @@ bool GameSceneMountain::init()
 
 	
 	
-	
 
 }
-//ÑîÀÖÑÅ
+
+//æ¨ä¹é›…
+
 
 Scene* GameSceneForest::createScene()
 {
