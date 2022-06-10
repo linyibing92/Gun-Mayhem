@@ -13,6 +13,7 @@ public :
 	virtual bool init();
 	void setHP_robot(int harm);//设置人物1robot的血量
 	void setHP_wmale(int harm);//设置人物2wmale的血量
+	virtual void update(float delta);
 private:
 	LoadingBar* _myLoadingBar_1 = LoadingBar::create();
 	LoadingBar* _myLoadingBar_2 = LoadingBar::create();

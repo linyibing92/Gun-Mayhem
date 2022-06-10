@@ -4,6 +4,7 @@
 #include "bomb.h"
 USING_NS_CC;
 
+//子弹移动函数
 void GunM249::bulletmove(int _flip) const
 {
 	if (_flip == GunRight)
@@ -76,54 +77,34 @@ void Gun98K::bulletmove(int _flip) const
 	}
 }
 
-//攻击函数M249
-int GunM249::attack(Vec2 characterposition)
+//获取武器状态函数
+int GunM249::GetWeaponpower()
 {
-	int harm = 0;
-	auto bulletposition = sprite_bullet->getPosition();
-	if ((abs(bulletposition.x - characterposition.x) < 3))
-	{
-		harm =GunM249::GetWeaponpower();
-	}
-
-	return harm;
+	return GunM249::MyPower;
 }
 
-//攻击函数98K
-int Gun98K::attack(Vec2 characterposition)
+int GunP92::GetWeaponpower()
 {
-	int harm = 0;
-	auto bulletposition = sprite_bullet->getPosition();
-	if ((abs(bulletposition.x - characterposition.x) < 3))
-	{
-		harm = Gun98K::GetWeaponpower();
-	}
-
-	return harm;
+	return GunP92::MyPower;
 }
-//攻击函数P92
-int GunP92::attack(Vec2 characterposition)
-{
-	int harm = 0;
-	auto bulletposition = sprite_bullet->getPosition();
-	if ((abs(bulletposition.x - characterposition.x) < 3))
-	{
-		harm = GunP92::GetWeaponpower();
-	}
 
-	return harm;
+int Gun98K::GetWeaponpower()
+{
+	return Gun98K::MyPower;
 }
 
 
-int GunLayer_robot::bullet_attack(Vec2 characterposition)
+
+//攻击函数
+int GunLayer_robot::bullet_attack()
 {
 	int harm = 0;
 	if (gunp92.GetweaponState())
-		harm = gunp92.attack(characterposition);
+		harm = gunp92.GetWeaponpower();
 	else if (gunm249.GetweaponState())
-		harm = gunm249.attack(characterposition);
-	else if (gun98k.GetweaponState())
-		harm = gun98k.attack(characterposition);
+		harm = gunm249.GetWeaponpower();
+	else if (bomb.GetWeaponpower())
+		harm = bomb.GetWeaponpower();
 	else
 		harm = 0;
 	return harm;
@@ -132,15 +113,17 @@ int GunLayer_robot::bullet_attack(Vec2 characterposition)
 
 
 
-int GunLayer_wmale::bullet_attack(Vec2 characterposition)
+int GunLayer_wmale::bullet_attack()
 {
 	int harm = 0;
 	if (gunp92.GetweaponState())
-		harm = gunp92.attack(characterposition);
+		harm = gunp92.GetWeaponpower();
 	else if (gunm249.GetweaponState())
-		harm = gunm249.attack(characterposition);
+		harm = gunm249.GetWeaponpower();
 	else if (gun98k.GetweaponState())
-		harm = gun98k.attack(characterposition);
+		harm = gun98k.GetWeaponpower();
+	else if (bomb.GetWeaponpower())
+		harm = bomb.GetWeaponpower();
 	else
 		harm = 0;
 	return harm;
@@ -168,10 +151,10 @@ bool GunLayer_wmale::init()
 
 	//子弹
 	this->addChild(gunp92.sprite_bullet);
+	//刚体设置
 	gunp92.sprite_bullet->setTag(1);
-	auto body = PhysicsBody::createCircle(gunp92.sprite_bullet->getContentSize().width / 2);
-	body->setGravityEnable(false);
-	gunp92.sprite_bullet->setPhysicsBody(body);
+	body_bullet->setGravityEnable(false);
+	gunp92.sprite_bullet->setPhysicsBody(body_bullet);
 
 
 	//设置枪支状态为picked
@@ -179,6 +162,10 @@ bool GunLayer_wmale::init()
 
 	//创建炸弹的角色
 	this->addChild(bomb.sprite_bomb);
+	//刚体设置
+	bomb.sprite_bomb->setTag(1);
+	body_bomb->setGravityEnable(false);
+	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
 	//设置精灵起始位置在最高障碍正中间 
 	gun_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2);
@@ -212,6 +199,8 @@ bool GunLayer_wmale::init()
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_K) //按键K作为人物wmale炸弹的投放
 		{
+			//设置炸弹状态 
+			bomb.SetWeaponState(true);
 			bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 			bomb.bomb_move(gunp92.spriteGun->getPosition());
 		}
@@ -278,16 +267,19 @@ bool GunLayer_robot::init()
 
 	//子弹
 	this->addChild(gunp92.sprite_bullet);
-	gunp92.sprite_bullet->setTag(1);
-	auto body = PhysicsBody::createCircle(gunp92.sprite_bullet->getContentSize().width / 2);
-	body->setGravityEnable(false);
-	gunp92.sprite_bullet->setPhysicsBody(body);
+	//刚体设置
+	gunp92.sprite_bullet->setTag(2);
+	body_bullet->setGravityEnable(false);
+	gunp92.sprite_bullet->setPhysicsBody(body_bullet);
 
 	//设置枪支状态为picked
 	gunp92.SetWeaponState(true);
 
 	//创建炸弹的角色
 	this->addChild(bomb.sprite_bomb);
+	bomb.sprite_bomb->setTag(2);
+	body_bomb->setGravityEnable(false);
+	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
 	//设置精灵起始位置在最高障碍正中间 
 	gun_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2 );
@@ -316,8 +308,10 @@ bool GunLayer_robot::init()
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_SPACE) 
 		{
-			bomb.sprite_bomb->setPosition(gun_position + offset);
-			bomb.bomb_move(gun_position + offset);
+			//设置炸弹状态 
+			bomb.SetWeaponState(true);
+			bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
+			bomb.bomb_move(gunp92.spriteGun->getPosition());
 		}
 	};
 	keyListener->onKeyReleased = [=](EventKeyboard::KeyCode keycode, Event* event)

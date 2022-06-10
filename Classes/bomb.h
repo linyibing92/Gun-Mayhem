@@ -7,5 +7,10 @@ class Bomb : public weapon
 {
 public:
 	Sprite* sprite_bomb = Sprite::create("bomb.png");
+	//炸弹运动轨迹
 	void bomb_move(Vec2 characterposition) const;
+	//设置攻击力
+	int GetWeaponpower();
+protected:
+	int MyPower = 20;
 };

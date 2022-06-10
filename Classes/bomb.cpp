@@ -13,3 +13,8 @@ void Bomb::bomb_move(Vec2 characterposition) const
 	auto seq = Sequence::create(bombShow, BezierTo, bombHide, NULL);
 	sprite_bomb->runAction(seq);
 }
+
+int Bomb::GetWeaponpower()
+{
+	return Bomb::MyPower;
+}

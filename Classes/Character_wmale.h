@@ -15,7 +15,7 @@ public:
 	void falling_judge();
 	//传递机器人坐标
 	Vec2 getchacaterWmaleposition();
-	PhysicsBody* body = PhysicsBody::createBox(Size(1.10f, 0.7f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body = PhysicsBody::createBox(Size(1.15f, 1.15f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 private:
 	Sprite* _land1 = Sprite::create("land3(2).png");
 	Sprite* _land2 = Sprite::create("land3(2).png");
