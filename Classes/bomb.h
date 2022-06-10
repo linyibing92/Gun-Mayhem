@@ -6,11 +6,14 @@ USING_NS_CC;
 class Bomb : public weapon
 {
 public:
+
 	Sprite* sprite_bomb = Sprite::create("bomb.png");
-	//Õ¨µ¯ÔË¶¯¹ì¼£
+	//Õ¨ï¿½ï¿½ï¿½Ë¶ï¿½ï¿½ì¼£
 	void bomb_move(Vec2 characterposition) const;
-	//ÉèÖÃ¹¥»÷Á¦
+
+	//ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½
 	int GetWeaponpower();
 protected:
 	int MyPower = 20;
 };
+

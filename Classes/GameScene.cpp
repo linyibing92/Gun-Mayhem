@@ -2,7 +2,6 @@
 #include "audio/include/AudioEngine.h"
 #include "ui/CocosGUI.h"
 #include "GameScene.h"
-
 USING_NS_CC;
 Scene* GameSceneMountain::createScene()
 {
@@ -14,8 +13,10 @@ bool GameSceneMountain::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-	//ÉèÖÃÎïÀíÊÀ½çËÙ¶È
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 	this -> getPhysicsWorld() ->setSpeed(1.3);
+
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
@@ -23,7 +24,7 @@ bool GameSceneMountain::init()
 	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
 
-	//ÉèÖÃlable1-6µÄËùÓÐ¾²Ì¬¸ÕÌå
+	//ï¿½ï¿½ï¿½ï¿½lable1-6ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½
 	_land1->setPosition(Vec2(230, 350));
 	_land1->setTag(3);
 	auto body1 = PhysicsBody::createBox(_land1->getContentSize());
@@ -81,6 +82,7 @@ bool GameSceneMountain::init()
 	this->addChild(myloadingbar);
 
 
+
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -95,6 +97,7 @@ bool GameSceneMountain::init()
 		}
 		}, 15.f, "schedule");
 
+
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
 
@@ -107,11 +110,13 @@ bool GameSceneMountain::init()
 	auto gun_robot = GunLayer_robot::create();
 	this->addChild(gun_robot);
 
-	//ÉèÖÃÑÚÂë
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	robot->body->setContactTestBitmask(1);
 	robot->body->setCategoryBitmask(1);
 	robot->body->setCollisionBitmask(1);
 	robot->body->setContactTestBitmask(1);
+
 	
 
 	wmale->body->setContactTestBitmask(2);
@@ -149,14 +154,14 @@ bool GameSceneMountain::init()
 	gun_robot->body_bomb->setCollisionBitmask(2);
 	gun_robot->body_bomb->setContactTestBitmask(2);
 
-	// ×¢²áÅö×²¼àÌýÊÂ¼þ
+	// ×¢ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
 	hitListener->onContactBegin = [=](PhysicsContact& contact) 
 	{
-		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //·¢ÉúÅö×²µÄÎïÌå1¡ª¡ªgun_wmaleµÄ×Óµ¯ºÍrobot
-		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //·¢ÉúÅö×²µÄÎïÌå2¡ª¡ªgun_robotµÄ×Óµ¯ºÍwmale
+		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½gun_wmaleï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½robot
+		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½gun_robotï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½wmale
 
-		//×Óµ¯¹¥»÷
+		//ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
 		if (body_1->getTag() == 1) {
 			myloadingbar->setHP_robot(gun_wmale->bullet_attack());
 		}
@@ -170,6 +175,7 @@ bool GameSceneMountain::init()
 		->addEventListenerWithSceneGraphPriority(hitListener, this);
 	
 }
+
 
 
 

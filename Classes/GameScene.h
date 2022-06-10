@@ -1,15 +1,3 @@
-#pragma once
-#include"cocos2d.h"
-USING_NS_CC;//using namespace cocosdµÄºê¶¨Òå
-
-#include"ui/CocosGUI.h"
-using namespace ui;
-
-#include "audio/include/AudioEngine.h"
-#include"HelloWorldScene.h"
-#include "Gun.h"
-#include "weapon.h"
-#include"MyLayer.h"
 #include"MyLoadingBar.h"
 #include "bomb.h"
 #include "Box.h"
@@ -22,7 +10,7 @@ public:
 	static Scene* createScene();
 	virtual bool init();
 private:
-	//±³¾°Í¼
+	//èƒŒæ™¯å›¾
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
 	Sprite* _land1 = Sprite::create("land3(2).png");
 	Sprite* _land2 = Sprite::create("land3(2).png");
@@ -47,10 +35,10 @@ public:
 	static Scene* createScene();
 	virtual bool init();
 private:
-	//±³¾°Í¼
+	//èƒŒæ™¯å›¾
 	Sprite* _gamebg = Sprite::create("gamebg2.jpg");
 
-	//ÍÁµØ
+	//åœŸåœ°
 	Sprite* _land1 = Sprite::create("land1(1)(1).png");
 	Sprite* _land2 = Sprite::create("land1(1)(1).png");
 	Sprite* _land3 = Sprite::create("land1(1)(1).png");
@@ -74,11 +62,11 @@ public:
 class ChooseScene :public Scene
 {
 public:
-	void create_button_scene();//Ñ¡Ôñ³¡¾°°´Å¥
-	void create_button_gun();//Ñ¡ÔñÇ¹Àà°´Å¥
-	void create_button_begin();//½øÈëÓÎÏ·°´Å¥
-	virtual void SetBG() = 0;//ÉèÖÃ±³¾°Í¼Æ¬
-	virtual Menu* create_button_char() = 0;//Ñ¡ÔñÈËÎï°´Å¥
+	void create_button_scene();//é€‰æ‹©åœºæ™¯æŒ‰é’®
+	void create_button_gun();//é€‰æ‹©æªç±»æŒ‰é’®
+	void create_button_begin();//è¿›å…¥æ¸¸æˆæŒ‰é’®
+	virtual void SetBG() = 0;//è®¾ç½®èƒŒæ™¯å›¾ç‰‡
+	virtual Menu* create_button_char() = 0;//é€‰æ‹©äººç‰©æŒ‰é’®
 protected:
 	Sprite* _bg;
 	bool  _char_whitemale_status = false;
@@ -91,10 +79,6 @@ protected:
 	Button* _button_begin = ui::Button::create("begin.png", "begin.png", "begin.png");
 
 };
-
-
-
-
 
 
 

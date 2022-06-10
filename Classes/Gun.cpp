@@ -1,10 +1,14 @@
 #include "Gun.h"
 #include "weapon.h"
+
 #include "Character_wmale.h"
 #include "bomb.h"
+
+
+
 USING_NS_CC;
 
-//×Óµ¯ÒÆ¶¯º¯Êý
+//ï¿½Óµï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 void GunM249::bulletmove(int _flip) const
 {
 	if (_flip == GunRight)
@@ -12,10 +16,13 @@ void GunM249::bulletmove(int _flip) const
 		sprite_bullet->setFlippedX(false);
 		auto moveTo = MoveBy::create(1, Point(240, 0));
 
-		auto bulletHide = Hide::create();//Ö´ÐÐÍê¶¯×÷ºóÒþ²Ø¾«Áé
+		auto bulletHide = Hide::create();//æ‰§è¡Œå®ŒåŠ¨ä½œåŽéšè—ç²¾çµ
 		auto bulletShow = Show::create();
+
 		auto seq = Sequence::create(bulletShow, moveTo, bulletHide, NULL);
-		//ÉèÖÃÖØ¸´¶¯×÷£¬Íê³É»ú¹ØÇ¹µÄ¶à´ÎÉä»÷
+
+
+		//è®¾ç½®é‡å¤åŠ¨ä½œï¼Œå®Œæˆæœºå…³æžªçš„å¤šæ¬¡å°„å‡»
 		auto repeat = Repeat::create(seq, 3);
 		sprite_bullet->runAction(repeat);
 	}
@@ -23,13 +30,16 @@ void GunM249::bulletmove(int _flip) const
 	{
 		sprite_bullet->setFlippedX(true);
 		auto moveToLeft = MoveBy::create(1, Point(-240, 0));
-		auto bulletHide = Hide::create();//Ö´ÐÐÍê¶¯×÷ºóÒþ²Ø¾«Áé
+		auto bulletHide = Hide::create();//æ‰§è¡Œå®ŒåŠ¨ä½œåŽéšè—ç²¾çµ
 		auto bulletShow = Show::create();
+
 		auto seq = Sequence::create(bulletShow, moveToLeft, bulletHide, NULL);
-		//ÉèÖÃÖØ¸´¶¯×÷£¬Íê³É»ú¹ØÇ¹µÄ¶à´ÎÉä»÷
+
+		//è®¾ç½®é‡å¤åŠ¨ä½œï¼Œå®Œæˆæœºå…³æžªçš„å¤šæ¬¡å°„å‡»
 		auto repeat = Repeat::create(seq, 3);
 		sprite_bullet->runAction(repeat);
 	}
+
 
 }
 
@@ -42,7 +52,10 @@ void GunP92::bulletmove(int _flip) const
 		auto moveToRight = MoveBy::create(1, Point(200, 0));
 		auto bulletHide = Hide::create();
 		auto bulletShow = Show::create();
-		auto seq = Sequence::create(bulletShow, moveToRight, bulletHide, NULL);
+
+
+		auto seq = Sequence::create(bulletShow,moveToRight, bulletHide, NULL);
+
 		sprite_bullet->runAction(seq);
 	}
 	else
@@ -51,6 +64,7 @@ void GunP92::bulletmove(int _flip) const
 		auto moveToLeft = MoveBy::create(1, Point(-200, 0));
 		auto bulletHide = Hide::create();
 		auto bulletShow = Show::create();
+
 		auto seq = Sequence::create(bulletShow, moveToLeft, bulletHide, NULL);
 		sprite_bullet->runAction(seq);
 	}
@@ -63,7 +77,9 @@ void Gun98K::bulletmove(int _flip) const
 		auto moveToRight = MoveBy::create(0.5, Point(480, 0));
 		auto bulletHide = Hide::create();
 		auto bulletShow = Show::create();
+
 		auto seq = Sequence::create(bulletShow, moveToRight, bulletHide, NULL);
+
 		sprite_bullet->runAction(seq);
 	}
 	else
@@ -72,12 +88,15 @@ void Gun98K::bulletmove(int _flip) const
 		auto moveToLeft = MoveBy::create(0.5, Point(-480, 0));
 		auto bulletHide = Hide::create();
 		auto bulletShow = Show::create();
+
 		auto seq = Sequence::create(bulletShow, moveToLeft, bulletHide, NULL);
+
 		sprite_bullet->runAction(seq);
 	}
 }
 
-//»ñÈ¡ÎäÆ÷×´Ì¬º¯Êý
+
+//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
 int GunM249::GetWeaponpower()
 {
 	return GunM249::MyPower;
@@ -88,6 +107,7 @@ int GunP92::GetWeaponpower()
 	return GunP92::MyPower;
 }
 
+
 int Gun98K::GetWeaponpower()
 {
 	return Gun98K::MyPower;
@@ -95,7 +115,8 @@ int Gun98K::GetWeaponpower()
 
 
 
-//¹¥»÷º¯Êý
+
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int GunLayer_robot::bullet_attack()
 {
 	int harm = 0;
@@ -133,7 +154,7 @@ int GunLayer_wmale::bullet_attack()
 
 
 
-//ÉèÖÃÈËÎïwmaleµÄÇ¹Ö§Í¼²ã
+//è®¾ç½®äººç‰©wmaleçš„æžªæ”¯å›¾å±‚
 bool GunLayer_wmale::init()
 {
 	if (!Scene::create())
@@ -142,47 +163,47 @@ bool GunLayer_wmale::init()
 	_land5->setPosition(Vec2(750, 620));
 	this->scheduleUpdate();
 
-	//´´½¨Ç¹µÄ½ÇÉ«
+	//åˆ›å»ºæžªçš„è§’è‰²
 	gunp92.spriteGun->setScale(0.2f);
 	this->addChild(gunp92.spriteGun);
 
 	gunp92.spriteGun->setPhysicsBody(body_gun);
 
 
-	//×Óµ¯
+	//å­å¼¹
 	this->addChild(gunp92.sprite_bullet);
-	//¸ÕÌåÉèÖÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	gunp92.sprite_bullet->setTag(1);
 	body_bullet->setGravityEnable(false);
 	gunp92.sprite_bullet->setPhysicsBody(body_bullet);
 
 
-	//ÉèÖÃÇ¹Ö§×´Ì¬Îªpicked
+	//è®¾ç½®æžªæ”¯çŠ¶æ€ä¸ºpicked
 	gunp92.SetWeaponState(true);
 
-	//´´½¨Õ¨µ¯µÄ½ÇÉ«
+	//åˆ›å»ºç‚¸å¼¹çš„è§’è‰²
 	this->addChild(bomb.sprite_bomb);
-	//¸ÕÌåÉèÖÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bomb.sprite_bomb->setTag(1);
 	body_bomb->setGravityEnable(false);
 	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­ÕýÖÐ¼ä 
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢æ­£ä¸­é—´ 
 	gun_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2);
 
 
-	//Òþ²Ø¾«Áé
+	//éšè—ç²¾çµ
 	gunp92.spriteGun->setVisible(true);
 	gunp92.spriteGun->setPosition(gun_position + offset);
 
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_W)
 		{
-			//Ç¹ÐµÏòÉÏÏòÏÂ
+			//æžªæ¢°å‘ä¸Šå‘ä¸‹
 			FiniteTimeAction* gun_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
 			gunp92.spriteGun->runAction(gun_jump);
 		}
@@ -192,14 +213,14 @@ bool GunLayer_wmale::init()
 			offset.y -= 20.f;
 			gunp92.spriteGun->runAction(gun_down);
 		}
-		else if (keycode == EventKeyboard::KeyCode::KEY_J) //½«°´¼üJ×÷ÎªÈËÎïwmaleµÄ×Óµ¯Éä»÷·½Ê½
+		else if (keycode == EventKeyboard::KeyCode::KEY_J) //å°†æŒ‰é”®Jä½œä¸ºäººç‰©wmaleçš„å­å¼¹å°„å‡»æ–¹å¼
 		{
 			gunp92.sprite_bullet->setPosition(gunp92.spriteGun->getPosition());
 			gunp92.bulletmove(Gunflip);
 		}
-		else if (keycode == EventKeyboard::KeyCode::KEY_K) //°´¼üK×÷ÎªÈËÎïwmaleÕ¨µ¯µÄÍ¶·Å
+		else if (keycode == EventKeyboard::KeyCode::KEY_K) //æŒ‰é”®Kä½œä¸ºäººç‰©wmaleç‚¸å¼¹çš„æŠ•æ”¾
 		{
-			//ÉèÖÃÕ¨µ¯×´Ì¬ 
+			//ï¿½ï¿½ï¿½ï¿½Õ¨ï¿½ï¿½×´Ì¬ 
 			bomb.SetWeaponState(true);
 			bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 			bomb.bomb_move(gunp92.spriteGun->getPosition());
@@ -223,7 +244,7 @@ void GunLayer_wmale::update(float delta)
 	if (keyMap[EventKeyboard::KeyCode::KEY_A])
 	{
 		offset.x -= 5.f;
-		//Ç¹¿Ú·½Ïò·­×ª
+		//æžªå£æ–¹å‘ç¿»è½¬
 		Gunflip = GunLeft;
 		gunp92.spriteGun->setFlippedX(false);
 		gunp92.spriteGun->runAction(moveBy_left);
@@ -250,7 +271,7 @@ void GunLayer_wmale::falling_judge()
 
 
 
-//ÉèÖÃÈËÎïrobotµÄÇ¹Ö§Í¼²ã
+//è®¾ç½®äººç‰©robotçš„æžªæ”¯å›¾å±‚
 bool GunLayer_robot::init()
 {
 	if (!Scene::create())
@@ -259,44 +280,44 @@ bool GunLayer_robot::init()
 	_land5->setPosition(Vec2(750, 620));
 	this->scheduleUpdate();
 
-	//´´½¨Ç¹µÄ½ÇÉ«
+	//åˆ›å»ºæžªçš„è§’è‰²
 	gunp92.spriteGun->setScale(0.2f);
 	this->addChild(gunp92.spriteGun);
 	gunp92.spriteGun->setPhysicsBody(body_gun);
 
 
-	//×Óµ¯
+	//å­å¼¹
 	this->addChild(gunp92.sprite_bullet);
-	//¸ÕÌåÉèÖÃ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	gunp92.sprite_bullet->setTag(2);
 	body_bullet->setGravityEnable(false);
 	gunp92.sprite_bullet->setPhysicsBody(body_bullet);
 
-	//ÉèÖÃÇ¹Ö§×´Ì¬Îªpicked
+	//è®¾ç½®æžªæ”¯çŠ¶æ€ä¸ºpicked
 	gunp92.SetWeaponState(true);
 
-	//´´½¨Õ¨µ¯µÄ½ÇÉ«
+	//åˆ›å»ºç‚¸å¼¹çš„è§’è‰²
 	this->addChild(bomb.sprite_bomb);
 	bomb.sprite_bomb->setTag(2);
 	body_bomb->setGravityEnable(false);
 	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­ÕýÖÐ¼ä 
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢æ­£ä¸­é—´ 
 	gun_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2 );
 
 
-	//Òþ²Ø¾«Áé
+	//éšè—ç²¾çµ
 	gunp92.spriteGun->setVisible(true);
 	gunp92.spriteGun->setPosition(gun_position + offset);
 
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW)
 		{
-			//Ç¹ÐµÏòÉÏÏòÏÂ
+			//æžªæ¢°å‘ä¸Šå‘ä¸‹
 			FiniteTimeAction* gun_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
 			gunp92.spriteGun->runAction(gun_jump);
 		}
@@ -308,7 +329,7 @@ bool GunLayer_robot::init()
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_SPACE) 
 		{
-			//ÉèÖÃÕ¨µ¯×´Ì¬ 
+			//ï¿½ï¿½ï¿½ï¿½Õ¨ï¿½ï¿½×´Ì¬ 
 			bomb.SetWeaponState(true);
 			bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 			bomb.bomb_move(gunp92.spriteGun->getPosition());
@@ -321,16 +342,16 @@ bool GunLayer_robot::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
 
-	//´´½¨ÊÂ¼þ¼àÌýÆ÷Êó±êÊÂ¼þ¡ª¡ª¿ØÖÆ×Óµ¯Éä»÷
+	//åˆ›å»ºäº‹ä»¶ç›‘å¬å™¨é¼ æ ‡äº‹ä»¶â€”â€”æŽ§åˆ¶å­å¼¹å°„å‡»
 	auto myMouseListener = EventListenerMouse::create();
-	//Êó±ê×ó¼ü°´ÏÂ
+	//é¼ æ ‡å·¦é”®æŒ‰ä¸‹
 	myMouseListener->onMouseDown = [=](Event* event)
 	{
 		gunp92.sprite_bullet->setPosition(gunp92.spriteGun->getPosition());
 		gunp92.bulletmove(Gunflip);
 	};
 
-	//½«ÊÂ¼þ¼àÌýÆ÷Óë³¡¾°°ó¶¨
+	//å°†äº‹ä»¶ç›‘å¬å™¨ä¸Žåœºæ™¯ç»‘å®š
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
 	return  true;
 }
@@ -344,7 +365,7 @@ void GunLayer_robot::update(float delta)
 	if (keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		offset.x -= 5.f;
-		//Ç¹¿Ú·½Ïò·­×ª
+		//æžªå£æ–¹å‘ç¿»è½¬
 		Gunflip = GunLeft;
 		gunp92.spriteGun->setFlippedX(false);
 		gunp92.spriteGun->runAction(moveBy_left);
@@ -368,5 +389,6 @@ void GunLayer_robot::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 
 }
+
 
 
