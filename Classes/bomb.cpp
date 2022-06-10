@@ -20,3 +20,8 @@ void Bomb::bomb_move(Vec2 characterposition) const
 	sprite_bomb->runAction(seq);
 
 }
+
+int Bomb::GetWeaponpower()
+{
+	return Bomb::MyPower;
+}

@@ -33,8 +33,10 @@ public:
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
 
+	//���ù����
+	int GetWeaponpower();
 protected:
-	int Mypower = 5;
+	int MyPower = 5;
 };
 
 /* 创建手枪子类 */
@@ -48,25 +50,28 @@ public:
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
 
-	
+	//���ù����
+	int GetWeaponpower();
 
 protected:
-	int Mypower = 5;
+	int MyPower = 5;
 };
 
 /* 创建狙击枪子类 */
 class Gun98K : public Gun
 {
 public:
-	mutable Sprite* spriteGun = Sprite::create("98K.png");
-	/* 移动子弹 */
+
+	Sprite* spriteGun = Sprite::create("98K.png");
+	/* �ƶ��ӵ� */
 	void bulletmove(int _flip) const;
 
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
-
+	//���ù����
+	int GetWeaponpower();
 protected:
-	int Mypower = 10;
+	int MyPower = 10;
 };
 
 
@@ -81,9 +86,13 @@ public:
 	virtual void update(float delta);
 	//判断是否走出边界
 	void falling_judge();
-	//调用攻击函数
-	int bullet_attack(Vec2 characterposition);
+
+	//���ù�����
+	int bullet_attack();
+
 	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 private:
 	Bomb bomb;
 	Gun98K gun98k;
@@ -111,9 +120,13 @@ public:
 	virtual void update(float delta);
 	//判断是否走出边界
 	void falling_judge();
-	//调用攻击函数
-	int bullet_attack(Vec2 characterposition);
+
+	//���ù�����
+	int bullet_attack();
+
 	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f,1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 private:
 	Bomb bomb;
 	Gun98K gun98k;

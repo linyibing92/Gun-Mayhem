@@ -6,18 +6,20 @@ bool CharacterRobot::init()
 		return false;
 
 
-	//设置刚体形状、参数
+	_land5->setPosition(Vec2(750, 620));
+
+	this->scheduleUpdate();//�ص���º���
+	//���������˽�ɫ
+	character_robot->setScale(1.15f);
+	this->addChild(character_robot, 7);
+
+	//���ø�����״������
 	character_robot->setTag(1);
 	character_robot->setPhysicsBody(body);
 
 
-	_land5->setPosition(Vec2(750, 620));
-	this->scheduleUpdate();
-	//创建机器人角色
-	character_robot->setScale(1.15f);
-	this->addChild(character_robot, 7);
+	//���þ�����ʼλ��������ϰ�ƫ�� 
 
-	//设置精灵起始位置在最高障碍偏左 
 	robot_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height / 2);
 
 	

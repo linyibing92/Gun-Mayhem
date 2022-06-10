@@ -13,51 +13,60 @@ bool GameSceneMountain::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-	//����lable1-6�����о�̬����
+
+	//������������ٶ�
+	this -> getPhysicsWorld() ->setSpeed(1.3);
+
+
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
 
-
+	//����lable1-6�����о�̬����
 	_land1->setPosition(Vec2(230, 350));
-	_land1->setTag(2);
+	_land1->setTag(3);
 	auto body1 = PhysicsBody::createBox(_land1->getContentSize());
 	body1->setDynamic(false);
 	_land1->setPhysicsBody(body1);
-	
+	body1->setContactTestBitmask(0);
 
 	_land2->setPosition(Vec2(970, 280));
-	_land2->setTag(2);
+	_land2->setTag(3);
 	auto body2 = PhysicsBody::createBox(_land2->getContentSize());
 	body2->setDynamic(false);
 	_land2->setPhysicsBody(body2);
+	body2->setContactTestBitmask(0);
 
 	_land3->setPosition(Vec2(700, 170));
-	_land3->setTag(2);
+	_land3->setTag(3);
 	auto body3 = PhysicsBody::createBox(_land3->getContentSize());
 	body3->setDynamic(false);
 	_land3->setPhysicsBody(body3);
+	body3->setContactTestBitmask(0);
 
 	_land4->setPosition(Vec2(1170, 500));
-	_land4->setTag(2);
+	_land4->setTag(3);
 	auto body4 = PhysicsBody::createBox(_land4->getContentSize());
 	body4->setDynamic(false);
 	_land4->setPhysicsBody(body4);
+	body4->setContactTestBitmask(0);
 
 	_land5->setPosition(Vec2(750, 620));
-	_land5->setTag(2);
+	_land5->setTag(3);
 	auto body5 = PhysicsBody::createBox(_land5->getContentSize());
 	body5->setDynamic(false);
 	_land5->setPhysicsBody(body5);
+	body5->setContactTestBitmask(0);
 
 
 	_land6->setPosition(Vec2(550, 450));
-	_land6->setTag(2);
-	auto body6 = PhysicsBody::createBox(_land1->getContentSize());
+	_land6->setTag(3);
+	auto body6 = PhysicsBody::createBox(_land6->getContentSize());
 	body6->setDynamic(false);
 	_land6->setPhysicsBody(body6);
+	body6->setContactTestBitmask(0);
 
 	this->addChild(_land1);
 	this->addChild(_land2);
@@ -101,12 +110,73 @@ bool GameSceneMountain::init()
 	auto gun_robot = GunLayer_robot::create();
 	this->addChild(gun_robot);
 
-	
+
+	//��������
+	robot->body->setContactTestBitmask(1);
+	robot->body->setCategoryBitmask(1);
+	robot->body->setCollisionBitmask(1);
+	robot->body->setContactTestBitmask(1);
+
 	
 
+	wmale->body->setContactTestBitmask(2);
+	wmale->body->setCategoryBitmask(2);
+	wmale->body->setCollisionBitmask(2);
+	wmale->body->setContactTestBitmask(2);
+
+	gun_wmale->body_gun->setContactTestBitmask(8);
+	gun_wmale->body_gun->setCategoryBitmask(8);
+	gun_wmale->body_gun->setCollisionBitmask(8);
+	gun_wmale->body_gun->setContactTestBitmask(8);
+
+	gun_robot->body_gun->setContactTestBitmask(8);
+	gun_robot->body_gun->setCategoryBitmask(8);
+	gun_robot->body_gun->setCollisionBitmask(8);
+	gun_robot->body_gun->setContactTestBitmask(8);
+
+	gun_wmale->body_bullet->setContactTestBitmask(1);
+	gun_wmale->body_bullet->setCategoryBitmask(1);
+	gun_wmale->body_bullet->setCollisionBitmask(1);
+	gun_wmale->body_bullet->setContactTestBitmask(1);
+
+	gun_wmale->body_bomb->setContactTestBitmask(1);
+	gun_wmale->body_bomb->setCategoryBitmask(1);
+	gun_wmale->body_bomb->setCollisionBitmask(1);
+	gun_wmale->body_bomb->setContactTestBitmask(1);
+
+	gun_robot->body_bullet->setContactTestBitmask(2);
+	gun_robot->body_bullet->setCategoryBitmask(2);
+	gun_robot->body_bullet->setCollisionBitmask(2);
+	gun_robot->body_bullet->setContactTestBitmask(2);
+
+	gun_robot->body_bomb->setContactTestBitmask(2);
+	gun_robot->body_bomb->setCategoryBitmask(2);
+	gun_robot->body_bomb->setCollisionBitmask(2);
+	gun_robot->body_bomb->setContactTestBitmask(2);
+
+	// ע����ײ�����¼�
+	EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
+	hitListener->onContactBegin = [=](PhysicsContact& contact) 
+	{
+		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //������ײ������1����gun_wmale���ӵ���robot
+		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //������ײ������2����gun_robot���ӵ���wmale
+
+		//�ӵ�����
+		if (body_1->getTag() == 1) {
+			myloadingbar->setHP_robot(gun_wmale->bullet_attack());
+		}
+		if (body_2->getTag() == 2) {
+			myloadingbar->setHP_wmale(gun_robot->bullet_attack());
+		}
+
+		return true;
+	};
+	Director::getInstance()->getEventDispatcher()
+		->addEventListenerWithSceneGraphPriority(hitListener, this);
+	
 }
 
-//杨乐雅
+
 
 
 Scene* GameSceneForest::createScene()

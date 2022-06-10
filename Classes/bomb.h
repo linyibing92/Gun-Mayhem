@@ -8,6 +8,12 @@ class Bomb : public weapon
 public:
 
 	Sprite* sprite_bomb = Sprite::create("bomb.png");
+	//ը���˶��켣
 	void bomb_move(Vec2 characterposition) const;
+
+	//���ù����
+	int GetWeaponpower();
+protected:
+	int MyPower = 20;
 };
 

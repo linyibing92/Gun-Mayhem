@@ -14,16 +14,13 @@ public:
 	bool GetweaponState();
 
 	/* 武器攻击与玩家交互 */
-	void Weaponpower(int power);/* 设置攻击力 */
-	int GetWeaponpower();/* 获取攻击力 */
+	virtual int GetWeaponpower();/* 获取攻击力 */
 	Vec2 getWeaponPosition();
 
 	/* 实现不同武器的攻击方式 */
 	virtual int attack();
 protected:
-
 	bool _Is_picked = false; /* 武器的状态 */
-	int MyPower = 0; /* 武器攻击力 */
 };
 
 

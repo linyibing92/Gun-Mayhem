@@ -6,19 +6,23 @@ bool CharacterWmale::init()
 		return false;
 
 
-	//设置刚体形状、参数
-	character_wmale->setTag(1);
-	character_wmale->setPhysicsBody(body);
-
-
+	
 	_land5->setPosition(Vec2(750, 620));
-	this->scheduleUpdate();
-	//创建机器人角色
+
+	this->scheduleUpdate();//�ص���º���
+	//���������˽�ɫ
 	character_wmale->setScale(1.15f);
 	this->addChild(character_wmale, 7);
-	//设置精灵起始位置在最高障碍正中间 
+
+	//���ø�����״������
+	character_wmale->setTag(2);
+	character_wmale->setPhysicsBody(body);
+
+	//���þ�����ʼλ��������ϰ����м� 
 	wmale_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height / 2);
-	//隐藏精灵
+
+	//���ؾ���
+
 	character_wmale->setVisible(true);
 	character_wmale->setPosition(wmale_position + offset);
 	//实现通过键盘控制人物移动

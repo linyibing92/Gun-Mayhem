@@ -10,14 +10,10 @@ bool weapon::GetweaponState()
 	return _Is_picked;
 }
 
-void weapon::Weaponpower(int power)
-{
-	MyPower = power;
-}
 
 int weapon::GetWeaponpower()
 {
-	return MyPower;
+	return 0;
 }
 
 Vec2 weapon::getWeaponPosition()
