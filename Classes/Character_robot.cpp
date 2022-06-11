@@ -14,11 +14,11 @@ bool CharacterRobot::init()
 
 	//设置刚体形状、参数
 	character_robot->setTag(1);
-	character_robot->setPhysicsBody(body);
+    character_robot->setPhysicsBody(body);
 
 
 	//设置精灵起始位置在最高障碍偏左 
-	robot_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height / 2);
+	robot_position = _land5->getPosition() +Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height * 2);
 	//隐藏精灵
 	character_robot->setVisible(true);
 	character_robot->setPosition(robot_position + offset);
@@ -132,8 +132,8 @@ void CharacterRobot::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 }
 
-Vec2 CharacterRobot::getchacaterRobotposition()
-{
-	Vec2 chacaterRobotposition = character_robot->getPosition();
-	return chacaterRobotposition;
-}
+//Vec2 CharacterRobot::getchacaterRobotposition()
+//{
+//	Vec2 chacaterRobotposition = character_robot->getPosition();
+//	return chacaterRobotposition;
+//}

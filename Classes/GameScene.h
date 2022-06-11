@@ -15,12 +15,18 @@ using namespace ui;
 #include "Box.h"
 #include"Character_wmale.h"
 #include"Character_robot.h"
+
+class Box;
+
 class GameSceneMountain :public Scene
 {
 public:
 	CREATE_FUNC(GameSceneMountain);
 	static Scene* createScene();
 	virtual bool init();
+	int* getBoxesType();
+	int* getBoxesPositionx();
+	Box* getBoxes();
 private:
 	//背景图
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
@@ -38,6 +44,10 @@ private:
 	Spawn* robot_up;
 	Sequence* robot_up1;
 	Spawn* robot_down;
+	static int _boxes_type[15]; //= { 0 };
+	static int _boxes_positionx[15]; //= { 0 };//两个数组分别记录宝箱的类型和位置
+	static Box* box;
+	
 };
 
 class GameSceneForest :public Scene
@@ -71,7 +81,7 @@ public:
 };
 
 
-class ChooseScene :public Scene
+class ChooseScene :public Scene//父类，两个选择场景共有的成员
 {
 public:
 	void create_button_scene();//选择场景按钮
@@ -84,10 +94,10 @@ protected:
 	bool  _char_whitemale_status = false;
 	bool _char_blackmale_status = false;
 	bool _char_robot_status = false;
-	bool _scene_mountain_status = false;
-	bool _scene_forest_status = false;;
-	Button* _button_mountain = ui::Button::create("button_mountain.png", "button_mountain(1).png", "button_mountain.png");
-	Button* _button_forest = ui::Button::create("button_forest.png", "button_forest(1).png", "button_forest.png");
+	bool _scene_mountain_status = true;
+	bool _scene_forest_status = true;
+	Button* _button_mountain = ui::Button::create("button_mountain.png", "button_mountain.png", "button_mountain.png");
+	Button* _button_forest = ui::Button::create("button_forest.png", "button_forest.png", "button_forest.png");
 	Button* _button_begin = ui::Button::create("begin.png", "begin.png", "begin.png");
 
 };

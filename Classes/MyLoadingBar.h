@@ -5,7 +5,7 @@ USING_NS_CC;
 #include"ui/CocosGUI.h"
 using namespace ui;
 #include"Gun.h"
-
+#include"MyLayer.h"
 class MyLoadingBar:public Layer
 {
 public :
@@ -17,8 +17,8 @@ public :
 private:
 	LoadingBar* _myLoadingBar_1 = LoadingBar::create();
 	LoadingBar* _myLoadingBar_2 = LoadingBar::create();
-	int HP_robot = 100;//人物1血量
-	int HP_wmale = 100;//人物2血量
+	int HP_robot = 120;//人物1血量
+	int HP_wmale = 120;//人物2血量
 };
 
 

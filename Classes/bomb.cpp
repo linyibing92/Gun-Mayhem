@@ -1,4 +1,5 @@
-#include "bomb.h"
+#include <bomb.h>
+
 //ÉèÖÃÕ¨µ¯Å×ÎïÏß
 void Bomb::bomb_move(Vec2 characterposition) const
 {

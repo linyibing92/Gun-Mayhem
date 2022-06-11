@@ -1,6 +1,7 @@
 #pragma once
 #include<cstdlib>
 #include<time.h>
+#include<vector>
 #include"GameScene.h"
 
 
@@ -9,12 +10,9 @@ class Box:public Layer
 public:
 	CREATE_FUNC(Box);
 	 virtual bool init();
-	 Sprite* drop();
-private:
-	Sprite* _box;
-	Sprite* _land1 = Sprite::create("land3(1).png");
-	Sprite* _land2 = Sprite::create("land3(2).png");
-};
+	 void drop(int* boxes_type, int* boxes_position, int times);
+	 int producePositionx(int width2)const;//降落位置随机生成
+	 int produceType()const;//两种枪加炸弹随机生成
 
-int producePositionx(int width2);
-int produceType();
+private:
+};
