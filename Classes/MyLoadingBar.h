@@ -11,14 +11,16 @@ class MyLoadingBar:public Layer
 public :
 	CREATE_FUNC(MyLoadingBar);
 	virtual bool init();
-	void setHP_robot(int harm);//ÉèÖÃÈËÎï1robotµÄÑªÁ¿
-	void setHP_wmale(int harm);//ÉèÖÃÈËÎï2wmaleµÄÑªÁ¿
+	void setHP_robot(int harm);//è®¾ç½®äººç‰©1robotçš„è¡€é‡
+	void setHP_wmale(int harm);//è®¾ç½®äººç‰©2wmaleçš„è¡€é‡
 	virtual void update(float delta);
 private:
 	LoadingBar* _myLoadingBar_1 = LoadingBar::create();
 	LoadingBar* _myLoadingBar_2 = LoadingBar::create();
-	float HP_robot = 100;//ÈËÎï1ÑªÁ¿
-	float HP_wmale = 100;//ÈËÎï2ÑªÁ¿
+
+	float HP_robot = 100;//äººç‰©1è¡€é‡
+	float HP_wmale = 100;//äººç‰©2è¡€é‡
+
 };
 
 

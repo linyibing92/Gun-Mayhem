@@ -14,7 +14,7 @@ bool MyLoadingBar::init()
 	_myLoadingBar_1->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	_myLoadingBar_1->setPosition(Vec2(10,visibleSize.height-40));
 	_myLoadingBar_1->loadTexture("myloadingbar(2).png");
-	this->scheduleUpdate();//ÆôÓÃ¶¨Ê±Æ÷»Øµ÷º¯Êý
+	this->scheduleUpdate();//å¯ç”¨å®šæ—¶å™¨å›žè°ƒå‡½æ•°
 	_myLoadingBar_1->setPercent(HP_robot);
 	_myLoadingBar_1->setDirection(LoadingBar::Direction::LEFT);
 	if (HP_robot < 0) {
@@ -25,7 +25,9 @@ bool MyLoadingBar::init()
 	_myLoadingBar_2->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	_myLoadingBar_2->setPosition(Vec2(610, visibleSize.height - 40));
 	_myLoadingBar_2->loadTexture("myloadingbar(2).png");
-	//this->scheduleUpdate();//ÆôÓÃ¶¨Ê±Æ÷»Øµ÷º¯Êý
+
+	//this->scheduleUpdate();//å¯ç”¨å®šæ—¶å™¨å›žè°ƒå‡½æ•°
+
 	_myLoadingBar_2->setPercent(HP_wmale);
 	_myLoadingBar_2->setDirection(LoadingBar::Direction::LEFT);
 	if (HP_wmale < 0) {
