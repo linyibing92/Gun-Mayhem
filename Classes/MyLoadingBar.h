@@ -13,12 +13,14 @@ public :
 	virtual bool init();
 	void setHP_robot(int harm);//设置人物1robot的血量
 	void setHP_wmale(int harm);//设置人物2wmale的血量
+	float getHP_robot();
+	float getHP_wmale();
 	virtual void update(float delta);
 private:
 	LoadingBar* _myLoadingBar_1 = LoadingBar::create();
 	LoadingBar* _myLoadingBar_2 = LoadingBar::create();
-	float HP_robot = 100;//人物1血量
-	float HP_wmale = 100;//人物2血量
+	float HP_robot = 120;//人物1血量
+	float HP_wmale = 120;//人物2血量
 };
 
 

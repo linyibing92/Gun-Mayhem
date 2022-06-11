@@ -83,12 +83,18 @@ bool GameSceneMountain::init()
 
 
 	//血条显示
+	this->scheduleUpdate();//启用定时器回调函数
 	auto myloadingbar = MyLoadingBar::create();
 	this->addChild(myloadingbar);
+	if (myloadingbar->getHP_wmale() <= 0|| myloadingbar->getHP_robot()<=0) {
+		auto layerend = MyLayerWinner::create();
+		this->addChild(layerend);
+	}
+
 
 	box = Box::create();
     this->addChild(box);
-	//每十五秒掉落一个宝箱，最多十五个
+	//每十秒掉落一个宝箱，最多十五个
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -101,7 +107,7 @@ bool GameSceneMountain::init()
 			box->drop(_boxes_type,_boxes_positionx,_boxes_positiony,drop_times);
 			++drop_times;
 		}
-		}, 15.f, "schedule");
+		}, 10.f, "schedule");
 
 	//人物角色
 	auto wmale=CharacterWmale::create();

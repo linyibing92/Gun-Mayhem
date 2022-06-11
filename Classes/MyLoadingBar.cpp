@@ -17,10 +17,6 @@ bool MyLoadingBar::init()
 	this->scheduleUpdate();//启用定时器回调函数
 	_myLoadingBar_1->setPercent(HP_robot);
 	_myLoadingBar_1->setDirection(LoadingBar::Direction::LEFT);
-	if (HP_robot < 0) {
-		auto layerend = MyLayerWinner::create();
-		this->addChild(layerend);
-	}
 	this->addChild(_myLoadingBar_1);
 	_myLoadingBar_2->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	_myLoadingBar_2->setPosition(Vec2(610, visibleSize.height - 40));
@@ -28,10 +24,6 @@ bool MyLoadingBar::init()
 	//this->scheduleUpdate();//启用定时器回调函数
 	_myLoadingBar_2->setPercent(HP_wmale);
 	_myLoadingBar_2->setDirection(LoadingBar::Direction::LEFT);
-	if (HP_wmale < 0) {
-		auto layerend = MyLayerWinner::create();
-		this->addChild(layerend);
-	}
 	this->addChild(_myLoadingBar_2);
 
 
@@ -44,6 +36,16 @@ bool MyLoadingBar::init()
 void MyLoadingBar::setHP_wmale(int harm)
 {
 	HP_wmale = HP_wmale-harm;
+}
+
+float MyLoadingBar::getHP_robot()
+{
+	return HP_robot;
+}
+
+float MyLoadingBar::getHP_wmale()
+{
+	return HP_wmale;
 }
 
 void MyLoadingBar::setHP_robot(int harm)
