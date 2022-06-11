@@ -8,29 +8,29 @@ bool CharacterWmale::init()
 	
 	_land5->setPosition(Vec2(750, 620));
 
-	this->scheduleUpdate();//»Øµ÷¸üÐÂº¯Êý
-	//´´½¨»úÆ÷ÈË½ÇÉ«
+	this->scheduleUpdate();//å›žè°ƒæ›´æ–°å‡½æ•°
+	//åˆ›å»ºäººè§’è‰²
 	character_wmale->setScale(1.15f);
 	this->addChild(character_wmale, 7);
 
-	//ÉèÖÃ¸ÕÌåÐÎ×´¡¢²ÎÊý
+	//è®¾ç½®åˆšä½“å½¢çŠ¶ã€å‚æ•°
 	character_wmale->setTag(2);
 	character_wmale->setPhysicsBody(body);
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­ÕýÖÐ¼ä 
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢æ­£ä¸­é—´ 
 	wmale_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height * 2);
 
-	//Òþ²Ø¾«Áé
+	//éšè—ç²¾çµ
 	character_wmale->setVisible(true);
 	character_wmale->setPosition(wmale_position + offset);
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_W)
 		{
-			//»úÆ÷ÈË¶¯»­(ÏòÉÏ\ÏòÏÂ)¡ª¡ª²»Çø·Ö³¤°´¶Ì°´
+			//æœºå™¨äººåŠ¨ç”»(å‘ä¸Š\å‘ä¸‹)â€”â€”ä¸åŒºåˆ†é•¿æŒ‰çŸ­æŒ‰
 			SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_wmale_Jump.plist", "character_wmale_jump.png");
 			auto cache_up = SpriteFrameCache::getInstance();
 			Vector<SpriteFrame*> wmalemove_images_up;
@@ -65,7 +65,7 @@ ActionInterval* CharacterWmale::wmalemove(EventKeyboard::KeyCode keycode)
 	ActionInterval* wmalemove_animation;
 	if (keycode == EventKeyboard::KeyCode::KEY_A)
 	{
-		//ÈË¶¯»­(Ïò×ó)
+		//äººåŠ¨ç”»(å‘å·¦)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_wmale_walk1.plist", "character_wmale_walk1.png");
 		auto cache_left = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> wmalemove_images_left;
@@ -85,7 +85,7 @@ ActionInterval* CharacterWmale::wmalemove(EventKeyboard::KeyCode keycode)
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_D)
 	{
-		//ÈË¶¯»­(ÏòÓÒ)
+		//äººåŠ¨ç”»(å‘å³)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_wmale_walk.plist", "character_wmale_walk.png");
 		auto cache_right = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> wmalemove_images_right;

@@ -7,11 +7,11 @@ class CharacterRobot :public Layer
 public:
 	CREATE_FUNC(CharacterRobot);
 	virtual bool init();
-	//ĞÂ¼Ó»úÆ÷ÈËÒÆ¶¯º¯Êı
+	//æ–°åŠ æœºå™¨äººç§»åŠ¨å‡½æ•°
 	ActionInterval* robotmove(EventKeyboard::KeyCode keycode);
-	//»úÆ÷ÈË³ÖĞøÒÆ¶¯º¯Êı
+	//æœºå™¨äººæŒç»­ç§»åŠ¨å‡½æ•°
 	virtual void update(float delta);
-	//ÅĞ¶Ï»úÆ÷ÈËÊÇ·ñ×ß³ö±ß½ç
+	//åˆ¤æ–­æœºå™¨äººæ˜¯å¦èµ°å‡ºè¾¹ç•Œ
 	void falling_judge();
 	PhysicsBody* body = PhysicsBody::createBox(Size(10.0f, 9.0f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 private:
@@ -21,7 +21,7 @@ private:
 	Sprite* _land4 = Sprite::create("land3(2).png");
 	Sprite* _land5 = Sprite::create("land3(1).png");
 	Sprite* _land6 = Sprite::create("land3(1).png");
-	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//´æ·Å°´¼üµÄ×´Ì¬ÊÇ²»ÊÇ°´Ñ¹ÖĞ
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//å­˜æ”¾æŒ‰é”®çš„çŠ¶æ€æ˜¯ä¸æ˜¯æŒ‰å‹ä¸­
 	Sprite* character_robot = Sprite::create("character_robot_idle.png");
 	Vec2 offset = Vec2::ZERO;
 	Vec2 robot_position;
