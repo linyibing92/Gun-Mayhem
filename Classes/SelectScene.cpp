@@ -17,7 +17,7 @@ bool SelectScene::init()
 	this->addChild(sprite_bg, 0);
 
 
-	auto label_title = Label::createWithTTF("Let's create a room!\n\nPls choose a mode: ", "fonts/Marker Felt.ttf", 80);
+	auto label_title = Label::createWithTTF("Pls choose a mode: ", "fonts/Marker Felt.ttf", 80);
 	label_title->setPosition(Vec2(visibleSize / 2)-Vec2(50,-250));
 	this->addChild(label_title);
 

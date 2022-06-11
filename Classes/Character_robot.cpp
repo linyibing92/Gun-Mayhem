@@ -5,31 +5,39 @@ bool CharacterRobot::init()
 	if (!Layer::create())
 		return false;
 
-	_land5->setPosition(Vec2(750, 620));
 
-	this->scheduleUpdate();//»Øµ÷¸üÐÂº¯Êý
-	//´´½¨»úÆ÷ÈË½ÇÉ«
+  _land5->setPosition(Vec2(750, 620));
+
+	this->scheduleUpdate();//å›žè°ƒæ›´æ–°å‡½æ•°
+	//åˆ›å»ºæœºå™¨äººè§’è‰²
 	character_robot->setScale(1.15f);
 	this->addChild(character_robot, 7);
 
-	//ÉèÖÃ¸ÕÌåÐÎ×´¡¢²ÎÊý
+		//è®¾ç½®åˆšä½“å½¢çŠ¶ã€å‚æ•°
 	character_robot->setTag(1);
-    character_robot->setPhysicsBody(body);
+
+  character_robot->setPhysicsBody(body);
 
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­Æ«×ó 
+
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢åå·¦ 
+	robot_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height+20 ); //Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height * 2);
+	//éšè—ç²¾çµ
+
+	//ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½Æ«ï¿½ï¿½ 
 	robot_position = _land5->getPosition() +Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height * 2);
-	//Òþ²Ø¾«Áé
+	//ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
+
 	character_robot->setVisible(true);
 	character_robot->setPosition(robot_position + offset);
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW)
 		{
-			//»úÆ÷ÈË¶¯»­(ÏòÉÏ\ÏòÏÂ)¡ª¡ª²»Çø·Ö³¤°´¶Ì°´
+			//æœºå™¨äººåŠ¨ç”»(å‘ä¸Š\å‘ä¸‹)â€”â€”ä¸åŒºåˆ†é•¿æŒ‰çŸ­æŒ‰
 			SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_Jump.plist", "character_robot_jump.png");
 			auto cache_up = SpriteFrameCache::getInstance();
 			Vector<SpriteFrame*> robotmove_images_up;
@@ -39,13 +47,13 @@ bool CharacterRobot::init()
 			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
 			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
 			Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
-			FiniteTimeAction* robot_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
+			FiniteTimeAction* robot_jump = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			robot_up = Spawn::create(robot_jump, Animate::create(robotmove_up_animation), nullptr);
 			character_robot->runAction(robot_up);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
 		{
-			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -20.f));
+			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -40.f));
 			offset.y -= 20.f;
 			character_robot->runAction(move_down);
 		}
@@ -63,7 +71,7 @@ ActionInterval* CharacterRobot::robotmove(EventKeyboard::KeyCode keycode)
 {
 	if (keycode == EventKeyboard::KeyCode::KEY_LEFT_ARROW)
 	{
-		//»úÆ÷ÈË¶¯»­(Ïò×ó)
+		//æœºå™¨äººåŠ¨ç”»(å‘å·¦)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk1.plist", "character_robot_walk1.png");
 		auto cache_left = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_left;
@@ -83,7 +91,7 @@ ActionInterval* CharacterRobot::robotmove(EventKeyboard::KeyCode keycode)
 	}
 	else if (keycode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW)
 	{
-		//»úÆ÷ÈË¶¯»­(ÏòÓÒ)
+		//æœºå™¨äººåŠ¨ç”»(å‘å³)
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile("character_robot_walk.plist", "character_robot_walk.png");
 		auto cache_right = SpriteFrameCache::getInstance();
 		Vector<SpriteFrame*> robotmove_images_right;
@@ -132,8 +140,4 @@ void CharacterRobot::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 }
 
-//Vec2 CharacterRobot::getchacaterRobotposition()
-//{
-//	Vec2 chacaterRobotposition = character_robot->getPosition();
-//	return chacaterRobotposition;
-//}
+

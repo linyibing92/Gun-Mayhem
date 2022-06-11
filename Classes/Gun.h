@@ -18,57 +18,59 @@ class GunLayer_robot;
 
 
 
-/* ´´½¨Ç¹Àà */
+
+/* åˆ›å»ºæªç±» */
+
 class Gun :public weapon 
 {
 public:
-	Sprite* sprite_bullet = Sprite::create("bullet.png");/* ´´½¨×Óµ¯¾«Áé */
-	mutable int flip = GunLeft;/* ³õÊ¼Ç¹¿Ú·½ÏòÎª×ó */
+	Sprite* sprite_bullet = Sprite::create("bullet.png");/* åˆ›å»ºå­å¼¹ç²¾çµ */
+	mutable int flip = GunLeft;/* åˆå§‹æªå£æ–¹å‘ä¸ºå·¦ */
 protected:
 	Sprite* spriteGun;
 };
 
-/* ´´½¨Í»»÷Ç¹×ÓÀà */
+/* åˆ›å»ºçªå‡»æªå­ç±» */
 class GunM249 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("M249.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove(int _flip) const;
-	/* ¹¥»÷º¯Êı */
+	/* æ”»å‡»å‡½æ•° */
 	int attack(Vec2 characterposition);
-	//ÉèÖÃ¹¥»÷Á¦
+	//è®¾ç½®æ”»å‡»åŠ›
 	int GetWeaponpower();
 protected:
 
 	int MyPower = 5;
 };
 
-/* ´´½¨ÊÖÇ¹×ÓÀà */
+/* åˆ›å»ºæ‰‹æªå­ç±» */
 class GunP92 : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("P92.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove(int _flip) const;
-	/* ¹¥»÷º¯Êı */
+	/* æ”»å‡»å‡½æ•° */
 	int attack(Vec2 characterposition);
-	//ÉèÖÃ¹¥»÷Á¦
+	//è®¾ç½®æ”»å‡»åŠ›
 	int GetWeaponpower();
 protected:
 	int MyPower = 5;
 };
 
-/* ´´½¨¾Ñ»÷Ç¹×ÓÀà */
+/* åˆ›å»ºç‹™å‡»æªå­ç±» */
 class Gun98K : public Gun
 {
 public:
 	Sprite* spriteGun = Sprite::create("98K.png");
-	/* ÒÆ¶¯×Óµ¯ */
+	/* ç§»åŠ¨å­å¼¹ */
 	void bulletmove(int _flip) const;
-	/* ¹¥»÷º¯Êı */
+	/* æ”»å‡»å‡½æ•° */
 	int attack(Vec2 characterposition);
-	//ÉèÖÃ¹¥»÷Á¦
+	//è®¾ç½®æ”»å‡»åŠ›
 	int GetWeaponpower();
 protected:
 	int MyPower = 10;
@@ -76,18 +78,21 @@ protected:
 
 
 
-//´´Ôì·ÅÖÃÇ¹µÄ²ã¡ª¡ªÈËÎïwmale
+
+//åˆ›é€ æ”¾ç½®æªçš„å±‚â€”â€”äººç‰©wmale
+
 class GunLayer_wmale :public Layer
 {
 public:
 	CREATE_FUNC(GunLayer_wmale);
 	virtual bool init();
-	//³ÖĞøÒÆ¶¯º¯Êı
+	//æŒç»­ç§»åŠ¨å‡½æ•°
 	virtual void update(float delta);
-	//ÅĞ¶ÏÊÇ·ñ×ß³ö±ß½ç
+	//åˆ¤æ–­æ˜¯å¦èµ°å‡ºè¾¹ç•Œ
 	void falling_judge();
-	//µ÷ÓÃ¹¥»÷º¯Êı
+	//è°ƒç”¨æ”»å‡»å‡½æ•°
 	int bullet_attack();
+
 	
 	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
@@ -109,26 +114,27 @@ private:
 	Sprite* _land4 = Sprite::create("land3(2).png");
 	Sprite* _land5 = Sprite::create("land3(1).png");
 	Sprite* _land6 = Sprite::create("land3(1).png");
-	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//´æ·Å°´¼üµÄ×´Ì¬ÊÇ²»ÊÇ°´Ñ¹ÖĞ
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//å­˜æ”¾æŒ‰é”®çš„çŠ¶æ€æ˜¯ä¸æ˜¯æŒ‰å‹ä¸­
 	Vec2 offset = Vec2::ZERO;
 	Vec2 gun_position;
-	int Gunflip = GunLeft;/* ÉèÖÃÇ¹¿ÚµÄ·½Ïò */
+	int Gunflip = GunLeft;/* è®¾ç½®æªå£çš„æ–¹å‘ */
 };
 
-//´´Ôì·ÅÖÃÇ¹µÄ²ã¡ª¡ªÈËÎïrobot
+//åˆ›é€ æ”¾ç½®æªçš„å±‚â€”â€”äººç‰©robot
 class GunLayer_robot :public Layer
 {
 public:
 	CREATE_FUNC(GunLayer_robot);
 	virtual bool init();
-	//³ÖĞøÒÆ¶¯º¯Êı
+	//æŒç»­ç§»åŠ¨å‡½æ•°
 	virtual void update(float delta);
-	//ÅĞ¶ÏÊÇ·ñ×ß³ö±ß½ç
+	//åˆ¤æ–­æ˜¯å¦èµ°å‡ºè¾¹ç•Œ
 	void falling_judge();
-	//µ÷ÓÃ¹¥»÷º¯Êı
+	//è°ƒç”¨æ”»å‡»å‡½æ•°
 	int bullet_attack();
+
 	
-	//¼ñÆğÎäÆ÷
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 	PhysicsBody* body_gun3 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
@@ -136,7 +142,11 @@ public:
 	PhysicsBody* body_bullet1 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bullet2 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bullet3 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+=======
+	//æ¡èµ·æ­¦å™¨
+	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+
 	
 private:
 	Bomb bomb;
@@ -149,8 +159,11 @@ private:
 	Sprite* _land4 = Sprite::create("land3(2).png");
 	Sprite* _land5 = Sprite::create("land3(1).png");
 	Sprite* _land6 = Sprite::create("land3(1).png");
-	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//´æ·Å°´¼üµÄ×´Ì¬ÊÇ²»ÊÇ°´Ñ¹ÖĞ
+	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//å­˜æ”¾æŒ‰é”®çš„çŠ¶æ€æ˜¯ä¸æ˜¯æŒ‰å‹ä¸­
 	Vec2 offset = Vec2::ZERO;
 	Vec2 gun_position;
-	int Gunflip = GunLeft;/* ÉèÖÃÇ¹¿ÚµÄ·½Ïò */
+
+	int Gunflip = GunLeft;/* è®¾ç½®æªå£çš„æ–¹å‘ */
 };
+
+

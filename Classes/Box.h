@@ -10,9 +10,11 @@ class Box:public Layer
 public:
 	CREATE_FUNC(Box);
 	 virtual bool init();
-	 void drop(int* boxes_type, int* boxes_position, int times);
-	 int producePositionx(int width2)const;//降落位置随机生成
-	 int produceType()const;//两种枪加炸弹随机生成
+
+	 void drop(int* boxes_type, int* boxes_positionx, int* boxes_positiony,int times);
+
+	 int producePositionx(int width2)const;//闄嶈惤浣嶇疆闅忔満鐢熸垚
+	 int produceType()const;//涓ょ鏋姞鐐稿脊闅忔満鐢熸垚
 
 private:
 };

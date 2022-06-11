@@ -10,6 +10,7 @@ Scene* GameSceneMountain::createScene()
 
 int GameSceneMountain::_boxes_type[15] = {0};
 int GameSceneMountain::_boxes_positionx[15] = {0};
+
 Box* GameSceneMountain::box = Box::create();
 
 bool GameSceneMountain::init()
@@ -17,16 +18,18 @@ bool GameSceneMountain::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-	//ÉèÖÃÎïÀíÊÀ½çËÙ¶È
+
+	//è®¾ç½®ç‰©ç†ä¸–ç•Œé€Ÿåº¦
 	//this->getPhysicsWorld()->setSpeed(1.2);
-	//ÉèÖÃ±³¾°Í¼Æ¬
+	//è®¾ç½®èƒŒæ™¯å›¾ç‰‡
+
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
 
-	//ÉèÖÃlable1-6µÄËùÓÐ¾²Ì¬¸ÕÌå
+//è®¾ç½®lable1-6çš„æ‰€æœ‰é™æ€åˆšä½“
 	_land1->setPosition(Vec2(230, 350));
 	_land1->setTag(3);
 	auto body1 = PhysicsBody::createBox(_land1->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
@@ -72,6 +75,8 @@ bool GameSceneMountain::init()
 
 
 
+
+
 	this->addChild(_land1);
 	this->addChild(_land2);
 	this->addChild(_land3);
@@ -81,13 +86,31 @@ bool GameSceneMountain::init()
 
 
 
-	//ÑªÌõÏÔÊ¾
+
+
+	//åŠ å…¥è¡€æ¡
+	this->scheduleUpdate();//ï¿½ï¿½ï¿½Ã¶ï¿½Ê±ï¿½ï¿½Øµï¿½ï¿½ï¿½
+
+
+
+	//Ñªï¿½ï¿½ï¿½ï¿½Ê¾
 	auto myloadingbar = MyLoadingBar::create();
 	this->addChild(myloadingbar);
+	if (myloadingbar->getHP_wmale() <= 0|| myloadingbar->getHP_robot()<=0) {
+		auto layerend = MyLayerWinner::create();
+		this->addChild(layerend);
+	}
+
+
 
 	box = Box::create();
     this->addChild(box);
-	//Ã¿Ê®ÎåÃëµôÂäÒ»¸ö±¦Ïä£¬×î¶àÊ®Îå¸ö
+
+
+
+	//æ¯åç§’æŽ‰è½ä¸€ä¸ªå®ç®±ï¼Œæœ€å¤šåäº”ä¸ª
+
+
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -97,15 +120,18 @@ bool GameSceneMountain::init()
 		else {
 			if(drop_times!=0)
 			    box->removeAllChildren();
-			box->drop(_boxes_type,_boxes_positionx,drop_times);
+
+			box->drop(_boxes_type,_boxes_positionx,_boxes_positiony,drop_times);
+
 			++drop_times;
 		}
-		}, 15.f, "schedule");
+		}, 10.f, "schedule");
 
-	//ÈËÎï½ÇÉ«
+
+	//ï¿½ï¿½ï¿½ï¿½ï¿½É«
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
-	//»úÆ÷ÈË½ÇÉ«
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ë½ï¿½É«
 	auto robot = CharacterRobot::create();
 	this->addChild(robot);
 
@@ -115,16 +141,16 @@ bool GameSceneMountain::init()
 	auto gun_robot = GunLayer_robot::create();
 	this->addChild(gun_robot);
 
-	//ÓÒÉÏ½Ç²Ëµ¥
+
+	//å³ä¸Šè§’èœå•
 	auto mylayer = MyLayer::create();
 	this->addChild(mylayer,100);
 
-	//ÉèÖÃÑÚÂë
+	//è®¾ç½®æŽ©ä½“
 	robot->body->setContactTestBitmask(1);
 	robot->body->setCategoryBitmask(1);
 	robot->body->setCollisionBitmask(1);
 	robot->body->setContactTestBitmask(1);
-
 
 	wmale->body->setContactTestBitmask(2);
 	wmale->body->setCategoryBitmask(2);
@@ -192,17 +218,17 @@ bool GameSceneMountain::init()
 	gun_robot->body_bomb->setContactTestBitmask(2);
 	gun_robot->body_bomb->setCategoryBitmask(2);
 	gun_robot->body_bomb->setCollisionBitmask(2);
-	gun_robot->body_bomb->setContactTestBitmask(2);
 
-	// ×¢²áÅö×²¼àÌýÊÂ¼þ
+
+	// ×¢ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 	EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
 	hitListener->onContactBegin = [=](PhysicsContact& contact)
 	{
-		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //·¢ÉúÅö×²µÄÎïÌå1¡ª¡ªgun_wmaleµÄ×Óµ¯ºÍrobot
-		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //·¢ÉúÅö×²µÄÎïÌå2¡ª¡ªgun_robotµÄ×Óµ¯ºÍwmale
+		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½gun_wmaleï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½robot
+		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½gun_robotï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½wmale
 
 
-		//×Óµ¯¹¥»÷
+		//ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
 		if (body_1->getTag() == 1) {
 			myloadingbar->setHP_robot(gun_wmale->bullet_attack());
 		}
@@ -215,9 +241,6 @@ bool GameSceneMountain::init()
 	Director::getInstance()->getEventDispatcher()
 		->addEventListenerWithSceneGraphPriority(hitListener, this);
 
-
-}
-
 int* GameSceneMountain::getBoxesType()
 {
 	return _boxes_type;
@@ -228,10 +251,16 @@ int* GameSceneMountain::getBoxesPositionx()
 	return _boxes_positionx;
 }
 
+int* GameSceneMountain::getBoxesPositiony()
+{
+	return  _boxes_positiony;
+}
+
 Box* GameSceneMountain::getBoxes()
 {
 	return box;
 }
+
 
 
 
@@ -240,7 +269,9 @@ Scene* GameSceneForest::createScene()
 	return GameSceneForest::create();
 }
 
-bool GameSceneForest::init()//ÓëmountainsceneÀàËÆ
+
+bool GameSceneForest::init()//ä¸Žmountainsceneç±»ä¼¼
+
 {
 	if (!Scene::create())
 		return false;
@@ -274,14 +305,14 @@ bool GameSceneForest::init()//ÓëmountainsceneÀàËÆ
 
 
 
-void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//single°´Å¥µÄ»Øµ÷º¯Êý
+void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//singleæŒ‰é’®çš„å›žè°ƒå‡½æ•°
 {
 	Scene* pScene = ChooseSingle::createScene();
 
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 }
 
-void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)//double°´Å¥µÄ»Øµ÷º¯Êý
+void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)//doubleæŒ‰é’®çš„å›žè°ƒå‡½æ•°
 {
 	Scene* pScene = ChooseDouble::createScene();
 
@@ -289,7 +320,8 @@ void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)//double°´Å¥µÄ»Øµ÷º¯Êý
 }
 
 
-Menu* MyMenu::create_button_single()//´´½¨single°´Å¥
+
+Menu* MyMenu::create_button_single()//åˆ›å»ºsingleæŒ‰é’®
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_single = MenuItemImage::create(
@@ -301,7 +333,8 @@ Menu* MyMenu::create_button_single()//´´½¨single°´Å¥
 	return menu_bottle_single;
 }
 
-Menu* MyMenu::create_button_double()//´´½¨double°´Å¥
+
+Menu* MyMenu::create_button_double()//åˆ›å»ºdoubleæŒ‰é’®
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_double = MenuItemImage::create(
@@ -315,13 +348,16 @@ Menu* MyMenu::create_button_double()//´´½¨double°´Å¥
 
 
 
-void ChooseScene::create_button_gun()//´´½¨Ç¹µÄ°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé£©
+
+void ChooseScene::create_button_gun()//åˆ›å»ºæžªçš„æŒ‰é’®ï¼ˆä½†æ— äº‹ä»¶ç›‘å¬å™¨ï¼Œç±»ä¼¼ç²¾çµï¼‰
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Gun", "fonts/Marker Felt.ttf", 40);
 	label->setPosition(Vec2(50, visibleSize.height - 415));
 
+
 	Sprite* shou = Sprite::create("shou.png");
+
 	shou->setPosition(Vec2(400, visibleSize.height - 430));
 	Sprite* juji = Sprite::create("juji.png");
 	juji->setPosition(Vec2(700, visibleSize.height - 430));
@@ -339,7 +375,8 @@ void ChooseScene::create_button_gun()//´´½¨Ç¹µÄ°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé£©
 
 }
 
-void ChooseScene::create_button_scene()//´´½¨mountainµÄ°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé£©
+
+void ChooseScene::create_button_scene()//åˆ›å»ºmountainçš„æŒ‰é’®ï¼ˆä½†æ— äº‹ä»¶ç›‘å¬å™¨ï¼Œç±»ä¼¼ç²¾çµï¼‰
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Label* label = Label::createWithTTF("Scene", "fonts/Marker Felt.ttf", 40);
@@ -366,7 +403,8 @@ void ChooseScene::create_button_scene()//´´½¨mountainµÄ°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàË
 
 
 
-void ChooseScene::create_button_begin()//´´½¨¿ªÊ¼µÄ°´Å¥
+
+void ChooseScene::create_button_begin()//åˆ›å»ºå¼€å§‹çš„æŒ‰é’®
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_button_begin->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
@@ -393,7 +431,8 @@ Scene* ChooseSingle::createScene()
 	return ChooseSingle::create();
 }
 
-void ChooseSingle::SetBG()//ÉèÖÃ±³¾°Í¼Æ¬
+
+void ChooseSingle::SetBG()//è®¾ç½®èƒŒæ™¯å›¾ç‰‡
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_bg = Sprite::create("singlebg.jpg");
@@ -402,7 +441,8 @@ void ChooseSingle::SetBG()//ÉèÖÃ±³¾°Í¼Æ¬
 	_bg->setPosition(Vec2(visibleSize / 2));
 }
 
-Menu* ChooseSingle::create_button_char()//ÉèÖÃÈËÎï°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé£©
+
+Menu* ChooseSingle::create_button_char()//è®¾ç½®äººç‰©æŒ‰é’®ï¼ˆä½†æ— äº‹ä»¶ç›‘å¬å™¨ï¼Œç±»ä¼¼ç²¾çµï¼‰
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 
@@ -418,7 +458,8 @@ Menu* ChooseSingle::create_button_char()//ÉèÖÃÈËÎï°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé
 	label3->setPosition(Vec2(370, visibleSize.height - 35));
 	this->addChild(label3);
 
-	Label*label4= Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K","fonts/Marker Felt.ttf", 30);
+
+	Label*label4= Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K\npick:L","fonts/Marker Felt.ttf", 30);
 	label4->setPosition(Vec2(670, visibleSize.height - 255));
 	this->addChild(label4);
 
@@ -459,7 +500,8 @@ Scene* ChooseDouble::createScene()
 	return ChooseDouble::create();
 }
 
-void ChooseDouble::SetBG()//ÉèÖÃ±³¾°Í¼Æ¬
+
+void ChooseDouble::SetBG()//è®¾ç½®èƒŒæ™¯å›¾ç‰‡
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_bg = Sprite::create("doublebg.jpg");
@@ -468,7 +510,8 @@ void ChooseDouble::SetBG()//ÉèÖÃ±³¾°Í¼Æ¬
 	_bg->setPosition(Vec2(visibleSize / 2));
 }
 
-Menu* ChooseDouble::create_button_char()//ÉèÖÃÈËÎï°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé£©
+
+Menu* ChooseDouble::create_button_char()//è®¾ç½®äººç‰©æŒ‰é’®ï¼ˆä½†æ— äº‹ä»¶ç›‘å¬å™¨ï¼Œç±»ä¼¼ç²¾çµï¼‰
 {
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -485,11 +528,12 @@ Menu* ChooseDouble::create_button_char()//ÉèÖÃÈËÎï°´Å¥£¨µ«ÎÞÊÂ¼þ¼àÌýÆ÷£¬ÀàËÆ¾«Áé
 	label3->setPosition(Vec2(670, visibleSize.height - 35));
 	this->addChild(label3);
 
-	Label* label4 = Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K", "fonts/Marker Felt.ttf", 30);
+
+	Label* label4 = Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K\npick:L", "fonts/Marker Felt.ttf", 30);
 	label4->setPosition(Vec2(670, visibleSize.height - 255));
 	this->addChild(label4);
 
-	Label* label5 = Label::createWithTTF("move:arrow keys\nbullet:mouse\nbomb:space", "fonts/Marker Felt.ttf", 30);
+	Label* label5 = Label::createWithTTF("move:arrow keys\nbullet:mouse\nbomb:space\npick:enter", "fonts/Marker Felt.ttf", 30);
 	label5->setPosition(Vec2(370, visibleSize.height - 255));
 	this->addChild(label5);
 
