@@ -14,10 +14,9 @@ public:
 	//判断机器人是否走出边界
 	void falling_judge();
 
-	//传递机器人坐标
+		//传递机器人坐标
 	Vec2 getchacaterWmaleposition();
-
-	PhysicsBody* body = PhysicsBody::createBox(Size(1.15f, 1.15f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body = PhysicsBody::createBox(Size(10.0f, 10.0f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 
 private:
 	Sprite* _land1 = Sprite::create("land3(2).png");

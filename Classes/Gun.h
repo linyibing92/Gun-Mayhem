@@ -1,4 +1,5 @@
 #pragma once
+#include"GameScene.h"
 #include"weapon.h"
 #include "cocos2d.h"
 #include "Character_wmale.h"
@@ -8,9 +9,14 @@
 #define gunp92_choice 2
 #define gunm249_choice 3
 #define gun98k_choice 4
-
-
 USING_NS_CC;
+
+
+
+class GunLayer_wmale;
+class GunLayer_robot;
+
+
 
 /* 创建枪类 */
 class Gun :public weapon 
@@ -29,13 +35,12 @@ public:
 	Sprite* spriteGun = Sprite::create("M249.png");
 	/* 移动子弹 */
 	void bulletmove(int _flip) const;
-
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
-
-	//���ù����
+	//设置攻击力
 	int GetWeaponpower();
 protected:
+
 	int MyPower = 5;
 };
 
@@ -46,13 +51,10 @@ public:
 	Sprite* spriteGun = Sprite::create("P92.png");
 	/* 移动子弹 */
 	void bulletmove(int _flip) const;
-
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
-
-	//���ù����
+	//设置攻击力
 	int GetWeaponpower();
-
 protected:
 	int MyPower = 5;
 };
@@ -61,14 +63,12 @@ protected:
 class Gun98K : public Gun
 {
 public:
-
 	Sprite* spriteGun = Sprite::create("98K.png");
-	/* �ƶ��ӵ� */
+	/* 移动子弹 */
 	void bulletmove(int _flip) const;
-
 	/* 攻击函数 */
 	int attack(Vec2 characterposition);
-	//���ù����
+	//设置攻击力
 	int GetWeaponpower();
 protected:
 	int MyPower = 10;
@@ -77,7 +77,7 @@ protected:
 
 
 //创造放置枪的层——人物wmale
-class GunLayer_wmale:public Layer
+class GunLayer_wmale :public Layer
 {
 public:
 	CREATE_FUNC(GunLayer_wmale);
@@ -86,13 +86,12 @@ public:
 	virtual void update(float delta);
 	//判断是否走出边界
 	void falling_judge();
-
-	//���ù�����
+	//调用攻击函数
 	int bullet_attack();
-
 	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f)); 
+	
 private:
 	Bomb bomb;
 	Gun98K gun98k;
@@ -120,13 +119,13 @@ public:
 	virtual void update(float delta);
 	//判断是否走出边界
 	void falling_judge();
-
-	//���ù�����
+	//调用攻击函数
 	int bullet_attack();
-
+	//捡起武器
 	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f,1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	
 private:
 	Bomb bomb;
 	Gun98K gun98k;

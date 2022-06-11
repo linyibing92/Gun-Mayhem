@@ -6,9 +6,10 @@ bool MyLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	if (!Layer::create())
 		return false;
-	static int _backgroundAudioID = AudioEngine::play2d("bgmusic.mp3", true);
+	static int _backgroundAudioID = AudioEngine::play2d("bgmusic.mp3", true);//开始播放背景音乐
 
 	_button_sound->setPosition(Vec2(visibleSize) - Vec2(180, 35));
+	//点击后弹出mylayermusic
 	_button_sound->addClickEventListener([this,visibleSize](Ref* sender) {
         auto sprite_bg = Sprite::create("musiclayer(1).png");
 		sprite_bg->setPosition(Vec2(visibleSize/2));
@@ -26,6 +27,7 @@ bool MyLayer::init()
 		Button* _button_return = ui::Button::create("return.png", "return.png");
 		_button_return->setScale(1.8f);
 		_button_return->setPosition(Vec2(pLayer->getContentSize()) / 2 + Vec2(200, 30));
+		//点击返回键后退出mylayermusic
 		_button_return->addClickEventListener([pLayer](Ref* sender) {
 			pLayer->removeAllChildren();
 			});
@@ -36,9 +38,10 @@ bool MyLayer::init()
 		});
 	    
 	this->addChild(_button_sound);
-
+	//退出按钮
 	Button* button_end = create_button_end();
 	this->addChild(button_end);
+	//暂停按钮
 	Button* button_pause = create_button_pause();
 	this->addChild(button_pause);
 	return true;
@@ -46,7 +49,7 @@ bool MyLayer::init()
 
 
 
-Button* MyLayer::create_button_end()
+Button* MyLayer::create_button_end()//退出游戏的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_end = ui::Button::create(
@@ -60,7 +63,7 @@ Button* MyLayer::create_button_end()
 	return button_end;
 }
 
-Button* MyLayer::create_button_pause()
+Button* MyLayer::create_button_pause()//暂停游戏的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_pause = ui::Button::create(
@@ -69,15 +72,15 @@ Button* MyLayer::create_button_pause()
 	button_pause->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	button_pause->setPosition(Vec2(visibleSize) - Vec2(100, 35));
 	button_pause->addClickEventListener([this](Ref* sender) {
-		Director::getInstance()->stopAnimation();
 		auto button_restart = create_button_restart();
 		this->addChild(button_restart);
+		Director::getInstance()->stopAnimation();
 		});
 	return button_pause;
 
 }
 
-Button* MyLayer::create_button_restart()
+Button* MyLayer::create_button_restart()//重新开始音乐的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_restart = ui::Button::create(
@@ -93,7 +96,7 @@ Button* MyLayer::create_button_restart()
 }
 
 
-void MyLayerMusic::create_button_music_pause(int _backgroundAudioID)
+void MyLayerMusic::create_button_music_pause(int _backgroundAudioID)//暂停背景音乐的按钮
 {
 	_button_music_pause->setScale(1.13f);
 	_button_music_pause->setPosition(Vec2(_pLayer->getContentSize())/2);
@@ -108,7 +111,7 @@ void MyLayerMusic::create_button_music_pause(int _backgroundAudioID)
 	_pLayer->addChild(_button_music_pause);
 }
 
- void MyLayerMusic::create_button_music_up(int _backgroundAudioID)
+ void MyLayerMusic::create_button_music_up(int _backgroundAudioID)//音乐增大的按钮
 {
 	 _button_music_up->setScale(1.6f);
 	_button_music_up->setPosition(Vec2(_pLayer->getContentSize()) / 2+Vec2(150,0));
@@ -118,7 +121,7 @@ void MyLayerMusic::create_button_music_pause(int _backgroundAudioID)
 	_pLayer->addChild(_button_music_up);
 }
 
-void MyLayerMusic::create_button_music_down(int _backgroundAudioID)
+void MyLayerMusic::create_button_music_down(int _backgroundAudioID)//音乐减小的按钮
 {
 	_button_music_down->setScale(1.6f);
 	_button_music_down->setPosition(Vec2(_pLayer->getContentSize()) / 2-Vec2(150,0));
@@ -162,7 +165,7 @@ bool MyLayerGameOver::init()
 	return true;
 }
 
-Sprite* MyLayerEnd::set_bg() 
+Sprite* MyLayerEnd::set_bg ()const //设置背景图片
 {
 	auto bg = Sprite::create("layerbg.png");
 	bg->setScale(3.f);
@@ -172,7 +175,7 @@ Sprite* MyLayerEnd::set_bg()
 	return bg;
 }
 
-Button* MyLayerEnd::create_button_restart()
+Button* MyLayerEnd::create_button_restart()//设置重新开始的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Button* button_restart = ui::Button::create("restart.png", "restart.png");
@@ -186,7 +189,7 @@ Button* MyLayerEnd::create_button_restart()
 	return button_restart;
 }
 
-Button* MyLayerEnd::create_button_exit()
+Button* MyLayerEnd::create_button_exit()//设置退出游戏的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Button* button_exit = ui::Button::create("exit.png", "exit,png");
