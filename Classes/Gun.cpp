@@ -1,7 +1,8 @@
+
 #include "Gun.h"
 USING_NS_CC;
 
-//×Óµ¯ÒÆ¶¯º¯Êý
+//å­å¼¹ç§»åŠ¨å‡½æ•°
 void GunM249::bulletmove(int _flip) const
 {
 	if (_flip == GunRight)
@@ -9,20 +10,20 @@ void GunM249::bulletmove(int _flip) const
 		sprite_bullet->setFlippedX(false);
 		auto moveTo = MoveBy::create(0.5, Point(240, 0));
 
-		auto bulletHide = Hide::create();//Ö´ÐÐÍê¶¯×÷ºóÒþ²Ø¾«Áé
+		auto bulletHide = Hide::create();//æ‰§è¡Œå®ŒåŠ¨ä½œåŽéšè—ç²¾çµ
 		auto bulletShow = Show::create();
 		auto seq = Sequence::create(bulletShow, moveTo, bulletHide, NULL);
-		//ÉèÖÃÖØ¸´¶¯×÷£¬Íê³É»ú¹ØÇ¹µÄ¶à´ÎÉä»÷
+		//è®¾ç½®é‡å¤åŠ¨ä½œï¼Œå®Œæˆæœºå…³æžªçš„å¤šæ¬¡å°„å‡»
 		sprite_bullet->runAction(seq);
 	}
 	else
 	{
 		sprite_bullet->setFlippedX(true);
 		auto moveToLeft = MoveBy::create(0.5, Point(-240, 0));
-		auto bulletHide = Hide::create();//Ö´ÐÐÍê¶¯×÷ºóÒþ²Ø¾«Áé
+		auto bulletHide = Hide::create();//æ‰§è¡Œå®ŒåŠ¨ä½œåŽéšè—ç²¾çµ
 		auto bulletShow = Show::create();
 		auto seq = Sequence::create(bulletShow, moveToLeft, bulletHide, NULL);
-		//ÉèÖÃÖØ¸´¶¯×÷£¬Íê³É»ú¹ØÇ¹µÄ¶à´ÎÉä»÷
+		//è®¾ç½®é‡å¤åŠ¨ä½œï¼Œå®Œæˆæœºå…³æžªçš„å¤šæ¬¡å°„å‡»
 		sprite_bullet->runAction(seq);
 	}
 
@@ -72,7 +73,7 @@ void Gun98K::bulletmove(int _flip) const
 	}
 }
 
-//»ñÈ¡ÎäÆ÷¹¥»÷Á¦¡¤º¯Êý
+//èŽ·å–æ­¦å™¨æ”»å‡»åŠ›Â·å‡½æ•°
 int GunM249::GetWeaponpower()
 {
 	return GunM249::MyPower;
@@ -90,7 +91,7 @@ int Gun98K::GetWeaponpower()
 
 
 
-//¹¥»÷º¯Êý
+//æ”»å‡»å‡½æ•°
 int GunLayer_robot::bullet_attack()
 {
 	int harm = 0;
@@ -130,7 +131,7 @@ int GunLayer_wmale::bullet_attack()
 
 
 
-//ÉèÖÃÈËÎïwmaleµÄÇ¹Ö§Í¼²ã
+//è®¾ç½®äººç‰©wmaleçš„æžªæ”¯å›¾å±‚
 bool GunLayer_wmale::init()
 {
 	if (!Scene::create())
@@ -139,7 +140,7 @@ bool GunLayer_wmale::init()
 	_land5->setPosition(Vec2(750, 620));
 	this->scheduleUpdate();
 
-	//´´½¨Ç¹µÄ½ÇÉ«
+	//åˆ›å»ºæžªçš„è§’è‰²
 	gunp92.spriteGun->setScale(0.25f);
 	gun98k.spriteGun->setScale(0.25f);
 	gunm249.spriteGun->setScale(0.25f);
@@ -151,11 +152,11 @@ bool GunLayer_wmale::init()
 	gun98k.spriteGun->setPhysicsBody(body_gun2);
 	gunm249.spriteGun->setPhysicsBody(body_gun3);
 
-	//×Óµ¯
+	//å­å¼¹
 	this->addChild(gunp92.sprite_bullet);
 	this->addChild(gun98k.sprite_bullet);
 	this->addChild(gunm249.sprite_bullet);
-	//¸ÕÌåÉèÖÃ
+	//åˆšä½“è®¾ç½®
 	gunp92.sprite_bullet->setTag(1);
 	body_bullet1->setGravityEnable(false);
 	gunp92.sprite_bullet->setPhysicsBody(body_bullet1);
@@ -168,24 +169,24 @@ bool GunLayer_wmale::init()
 	body_bullet3->setGravityEnable(false);
 	gunm249.sprite_bullet->setPhysicsBody(body_bullet3);
 
-	//ÉèÖÃÇ¹Ö§×´Ì¬Îªpicked
+	//è®¾ç½®æžªæ”¯çŠ¶æ€ä¸ºpicked
 	gunp92.SetWeaponState(true);
 	gun98k.SetWeaponState(false);
 	gunm249.SetWeaponState(false);
 	bomb.SetWeaponState(false);
 
-	//´´½¨Õ¨µ¯µÄ½ÇÉ«
+	//åˆ›å»ºç‚¸å¼¹çš„è§’è‰²
 	this->addChild(bomb.sprite_bomb);
-	//¸ÕÌåÉèÖÃ
+	//åˆšä½“è®¾ç½®
 	bomb.sprite_bomb->setTag(1);
 	body_bomb->setGravityEnable(false);
 	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­ÕýÖÐ¼ä 
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢æ­£ä¸­é—´ 
 	gun_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2);
 
 
-	//Òþ²Ø¾«Áé
+	//éšè—ç²¾çµ
 	gunp92.spriteGun->setVisible(true);
 	gunp92.spriteGun->setPosition(gun_position + offset);
 	gun98k.spriteGun->setVisible(false);
@@ -195,14 +196,14 @@ bool GunLayer_wmale::init()
 	bomb.sprite_bomb->setVisible(false);
 	bomb.sprite_bomb->setPosition(0, 0);
 
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_W||keycode == EventKeyboard::KeyCode::KEY_CAPITAL_W)
 		{
-			//Ç¹ÐµÏòÉÏÏòÏÂ
+			//æžªæ¢°å‘ä¸Šå‘ä¸‹
 			FiniteTimeAction* gun_jump1 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump2 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump3 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
@@ -224,7 +225,7 @@ bool GunLayer_wmale::init()
 			gunm249.spriteGun->runAction(gun_down3);
 			//bomb.sprite_bomb->runAction(gun_down4);
 		}
-		else if (keycode == EventKeyboard::KeyCode::KEY_J || keycode == EventKeyboard::KeyCode::KEY_CAPITAL_J) //½«°´¼üJ×÷ÎªÈËÎïwmaleµÄ×Óµ¯Éä»÷·½Ê½
+		else if (keycode == EventKeyboard::KeyCode::KEY_J || keycode == EventKeyboard::KeyCode::KEY_CAPITAL_J) //å°†æŒ‰é”®Jä½œä¸ºäººç‰©wmaleçš„å­å¼¹å°„å‡»æ–¹å¼
 		{
 			auto soundbullet = AudioEngine::play2d("bullet.mp3", false);
 			if (gunp92.GetweaponState()) {
@@ -242,9 +243,9 @@ bool GunLayer_wmale::init()
 				}
 			}
 		}
-		else if (keycode == EventKeyboard::KeyCode::KEY_K||keycode == EventKeyboard::KeyCode::KEY_CAPITAL_K) //°´¼üK×÷ÎªÈËÎïwmaleÕ¨µ¯µÄÍ¶·Å
+		else if (keycode == EventKeyboard::KeyCode::KEY_K||keycode == EventKeyboard::KeyCode::KEY_CAPITAL_K) //æŒ‰é”®Kä½œä¸ºäººç‰©wmaleç‚¸å¼¹çš„æŠ•æ”¾
 		{
-			//ÉèÖÃÕ¨µ¯×´Ì¬ 
+			//è®¾ç½®ç‚¸å¼¹çŠ¶æ€ 
 			if (bomb.GetweaponState() == true) {
 				bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 				bomb.bomb_move(gunp92.spriteGun->getPosition(),Gunflip);
@@ -257,7 +258,7 @@ bool GunLayer_wmale::init()
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
-	//±¦ÏäÊ°È¡¼àÌýÆ÷
+	//å®ç®±æ‹¾å–ç›‘å¬å™¨
 	GameSceneMountain scene;
 	auto boxes = scene.getBoxes();
 	int* boxes_type = scene.getBoxesType();
@@ -327,7 +328,7 @@ void GunLayer_wmale::update(float delta)
 	if (keyMap[EventKeyboard::KeyCode::KEY_A])
 	{
 		offset.x -= 5.f;
-		//Ç¹¿Ú·½Ïò·­×ª
+		//æžªå£æ–¹å‘ç¿»è½¬
 		Gunflip = GunLeft;
 		gunp92.spriteGun->setFlippedX(false);
 		gunp92.spriteGun->runAction(moveBy_left1);
@@ -366,7 +367,7 @@ void GunLayer_wmale::falling_judge()
 
 
 
-//ÉèÖÃÈËÎïrobotµÄÇ¹Ö§Í¼²ã
+//è®¾ç½®äººç‰©robotçš„æžªæ”¯å›¾å±‚
 bool GunLayer_robot::init()
 {
 	if (!Scene::create())
@@ -375,7 +376,7 @@ bool GunLayer_robot::init()
 	_land5->setPosition(Vec2(750, 620));
 	this->scheduleUpdate();
 
-	//´´½¨Ç¹µÄ½ÇÉ«
+	//åˆ›å»ºæžªçš„è§’è‰²
 	gunp92.spriteGun->setScale(0.25f);
 	this->addChild(gunp92.spriteGun);
 	gunp92.spriteGun->setPhysicsBody(body_gun1);
@@ -389,11 +390,11 @@ bool GunLayer_robot::init()
 	gunm249.spriteGun->setPhysicsBody(body_gun3);
 
 
-	//×Óµ¯
+	//å­å¼¹
 	this->addChild(gunp92.sprite_bullet);
 	this->addChild(gunm249.sprite_bullet);
 	this->addChild(gun98k.sprite_bullet);
-	//¸ÕÌåÉèÖÃ
+	//åˆšä½“è®¾ç½®
 	gunp92.sprite_bullet->setTag(2);
 	body_bullet1->setGravityEnable(false);
 	gunp92.sprite_bullet->setPhysicsBody(body_bullet1);
@@ -406,24 +407,24 @@ bool GunLayer_robot::init()
 	body_bullet3->setGravityEnable(false);
 	gunm249.sprite_bullet->setPhysicsBody(body_bullet3);
 
-	//ÉèÖÃÇ¹Ö§×´Ì¬Îªpicked
+	//è®¾ç½®æžªæ”¯çŠ¶æ€ä¸ºpicked
 	gunp92.SetWeaponState(true);
 	gun98k.SetWeaponState(false);
 	gunm249.SetWeaponState(false);
 	bomb.SetWeaponState(false);
 
-	//´´½¨Õ¨µ¯µÄ½ÇÉ«
+	//åˆ›å»ºç‚¸å¼¹çš„è§’è‰²
 	this->addChild(bomb.sprite_bomb);
-	//¸ÕÌåÉèÖÃ
+	//åˆšä½“è®¾ç½®
 	bomb.sprite_bomb->setTag(2);
 	body_bomb->setGravityEnable(false);
 	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
-	//ÉèÖÃ¾«ÁéÆðÊ¼Î»ÖÃÔÚ×î¸ßÕÏ°­ÕýÖÐ¼ä 
+	//è®¾ç½®ç²¾çµèµ·å§‹ä½ç½®åœ¨æœ€é«˜éšœç¢æ­£ä¸­é—´ 
 	gun_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2);
 
 
-	//Òþ²Ø¾«Áé
+	//éšè—ç²¾çµ
 	gunp92.spriteGun->setVisible(true);
 	gunp92.spriteGun->setPosition(gun_position + offset);
 	gun98k.spriteGun->setVisible(false);
@@ -434,14 +435,14 @@ bool GunLayer_robot::init()
 	bomb.sprite_bomb->setPosition(0, 0);
 
 
-	//ÊµÏÖÍ¨¹ý¼üÅÌ¿ØÖÆÈËÎïÒÆ¶¯
-	auto keyListener = EventListenerKeyboard::create();//´´½¨Ò»¸öÊÂ¼þ¼àÌýÆ÷¼àÌý¼üÅÌÊÂ¼þ(¼àÊÓ¼üÎ»µÄ°´ÏÂºÍËÉ¿ª)
+	//å®žçŽ°é€šè¿‡é”®ç›˜æŽ§åˆ¶äººç‰©ç§»åŠ¨
+	auto keyListener = EventListenerKeyboard::create();//åˆ›å»ºä¸€ä¸ªäº‹ä»¶ç›‘å¬å™¨ç›‘å¬é”®ç›˜äº‹ä»¶(ç›‘è§†é”®ä½çš„æŒ‰ä¸‹å’Œæ¾å¼€)
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event* event)
 	{
 		keyMap[keycode] = true;
 		if (keycode == EventKeyboard::KeyCode::KEY_UP_ARROW)
 		{
-			//Ç¹ÐµÏòÉÏÏòÏÂ
+			//æžªæ¢°å‘ä¸Šå‘ä¸‹
 			FiniteTimeAction* gun_jump1 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump2 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump3 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
@@ -465,7 +466,7 @@ bool GunLayer_robot::init()
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_SPACE) 
 		{
-			//ÉèÖÃÕ¨µ¯×´Ì¬ 
+			//è®¾ç½®ç‚¸å¼¹çŠ¶æ€ 
 			if (bomb.GetweaponState() == true) {
                 bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 			    bomb.bomb_move(gunp92.spriteGun->getPosition(),Gunflip);
@@ -480,9 +481,9 @@ bool GunLayer_robot::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
 
-	//´´½¨ÊÂ¼þ¼àÌýÆ÷Êó±êÊÂ¼þ¡ª¡ª¿ØÖÆ×Óµ¯Éä»÷
+	//åˆ›å»ºäº‹ä»¶ç›‘å¬å™¨é¼ æ ‡äº‹ä»¶â€”â€”æŽ§åˆ¶å­å¼¹å°„å‡»
 	auto myMouseListener = EventListenerMouse::create();
-	//Êó±ê×ó¼ü°´ÏÂ
+	//é¼ æ ‡å·¦é”®æŒ‰ä¸‹
 	myMouseListener->onMouseDown = [=](Event* event)
 	{
 		auto soundbullet = AudioEngine::play2d("bullet.mp3", false);
@@ -502,10 +503,10 @@ bool GunLayer_robot::init()
 		}
 	};
 
-	//½«ÊÂ¼þ¼àÌýÆ÷Óë³¡¾°°ó¶¨
+	//å°†äº‹ä»¶ç›‘å¬å™¨ä¸Žåœºæ™¯ç»‘å®š
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
 
-	//±¦ÏäÊ°È¡¼àÌýÆ÷
+	//å®ç®±æ‹¾å–ç›‘å¬å™¨
 	GameSceneMountain scene;
 	auto boxes = scene.getBoxes();
 	int* boxes_type = scene.getBoxesType();
@@ -574,7 +575,7 @@ void GunLayer_robot::update(float delta)
 	if (keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		offset.x -= 5.f;
-		//Ç¹¿Ú·½Ïò·­×ª
+		//æžªå£æ–¹å‘ç¿»è½¬
 		Gunflip = GunLeft;
 		gunp92.spriteGun->setFlippedX(false);
 		gunp92.spriteGun->runAction(moveBy_left1);
@@ -610,7 +611,5 @@ void GunLayer_robot::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 
 }
-
-
 
 
