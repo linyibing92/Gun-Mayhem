@@ -4,13 +4,21 @@ bool CharacterRobot::init()
 {
 	if (!Layer::create())
 		return false;
+
 	_land5->setPosition(Vec2(750, 620));
-	this->scheduleUpdate();
+
+	this->scheduleUpdate();//回调更新函数
 	//创建机器人角色
 	character_robot->setScale(1.15f);
 	this->addChild(character_robot, 7);
-	//设置精灵起始位置在最高障碍正中间 
-	robot_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height / 2);
+
+	//设置刚体形状、参数
+	character_robot->setTag(1);
+//	character_robot->setPhysicsBody(body);
+
+
+	//设置精灵起始位置在最高障碍偏左 
+	robot_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height+20 ); //Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_robot->getContentSize().height * 2);
 	//隐藏精灵
 	character_robot->setVisible(true);
 	character_robot->setPosition(robot_position + offset);
@@ -31,13 +39,13 @@ bool CharacterRobot::init()
 			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
 			robotmove_images_up.pushBack(cache_up->getSpriteFrameByName("character_robot_idle.png"));
 			Animation* robotmove_up_animation = Animation::createWithSpriteFrames(robotmove_images_up, 0.5f / 5);
-			FiniteTimeAction* robot_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
+			FiniteTimeAction* robot_jump = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			robot_up = Spawn::create(robot_jump, Animate::create(robotmove_up_animation), nullptr);
 			character_robot->runAction(robot_up);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
 		{
-			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -20.f));
+			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -40.f));
 			offset.y -= 20.f;
 			character_robot->runAction(move_down);
 		}
@@ -123,3 +131,9 @@ void CharacterRobot::falling_judge()
 	_land5->setPosition(Vec2(750, 620));
 	_land6->setPosition(Vec2(550, 450));
 }
+
+//Vec2 CharacterRobot::getchacaterRobotposition()
+//{
+//	Vec2 chacaterRobotposition = character_robot->getPosition();
+//	return chacaterRobotposition;
+//}

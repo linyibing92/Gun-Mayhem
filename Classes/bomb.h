@@ -6,6 +6,12 @@ USING_NS_CC;
 class Bomb : public weapon
 {
 public:
-	Sprite* sprite_bomb = Sprite::create("bomb.png");//创建炸弹精灵
-	void bomb_move(Vec2 characterposition) const ;
+	Sprite* sprite_bomb = Sprite::create("bomb.png");
+	//炸弹运动轨迹
+	void bomb_move(Vec2 characterposition,int _flip) const;
+	//设置攻击力
+	int GetWeaponpower();
+protected:
+	int MyPower = 20;
+	
 };

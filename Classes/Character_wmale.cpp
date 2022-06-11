@@ -4,13 +4,22 @@ bool CharacterWmale::init()
 {
 	if (!Layer::create())
 		return false;
+
+	
 	_land5->setPosition(Vec2(750, 620));
-	this->scheduleUpdate();
+
+	this->scheduleUpdate();//回调更新函数
 	//创建机器人角色
 	character_wmale->setScale(1.15f);
 	this->addChild(character_wmale, 7);
+
+	//设置刚体形状、参数
+	character_wmale->setTag(2);
+	//character_wmale->setPhysicsBody(body);
+
 	//设置精灵起始位置在最高障碍正中间 
-	wmale_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height / 2);
+	wmale_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height+20);//Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height*2 );
+
 	//隐藏精灵
 	character_wmale->setVisible(true);
 	character_wmale->setPosition(wmale_position + offset);
@@ -31,13 +40,13 @@ bool CharacterWmale::init()
 			wmalemove_images_up.pushBack(cache_up->getSpriteFrameByName("character_wmale_idle.png"));
 			wmalemove_images_up.pushBack(cache_up->getSpriteFrameByName("character_wmale_idle.png"));
 			Animation* wmalemove_up_animation = Animation::createWithSpriteFrames(wmalemove_images_up, 0.5f / 5);
-			FiniteTimeAction* wmale_jump = JumpBy::create(0.5, Vec2(0, 0), 70, 1);
+			FiniteTimeAction* wmale_jump = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			wmale_up = Spawn::create(wmale_jump, Animate::create(wmalemove_up_animation), nullptr);
 			character_wmale->runAction(wmale_up);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_S)
 		{
-			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -20.f));
+			FiniteTimeAction* move_down = MoveBy::create(0.5f, Vec2(0, -40.f));
 			offset.y -= 20.f;
 			character_wmale->runAction(move_down);
 		}
@@ -123,3 +132,9 @@ void CharacterWmale::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 
 }
+
+//Vec2 CharacterWmale::getchacaterWmaleposition()
+//{
+//	Vec2 chacaterWmalposition = character_wmale->getPosition();
+//	return chacaterWmalposition;
+//}
