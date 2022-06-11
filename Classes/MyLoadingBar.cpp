@@ -55,8 +55,9 @@ void MyLoadingBar::setHP_robot(int harm)
 
 void MyLoadingBar::update(float delta)
 {
-	auto scene = ChooseDouble::create();
-	if (!scene->getInfinity()) {
+	auto scene1=ChooseDouble::create();
+	auto scene2= ChooseSingle::create();
+	if (!scene1->getInfinity()&& !scene2->getInfinity()) {
 		_myLoadingBar_1->setPercent(HP_robot);
 		_myLoadingBar_2->setPercent(HP_wmale);
 	}

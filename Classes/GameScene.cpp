@@ -488,6 +488,15 @@ bool ChooseSingle::init()
 	create_button_gun();
 	create_button_char();
 	create_button_begin();
+
+	Button* infinity = ui::Button::create("infinity.png", "infinity(1).png", "infinity.png");
+	infinity->setScale(0.7f);
+	infinity->setPosition(Vec2(400, 110));
+	infinity->addClickEventListener([&](Ref* sender) {
+		setInfinity(true);
+		});
+	this->addChild(infinity);
+
 	auto layer = MyLayer::create();
 	this->addChild(layer);
 	return true;
@@ -549,6 +558,19 @@ Menu* ChooseDouble::create_button_char()//设置人物按钮（但无事件监听器，类似精灵
 	return nullptr;
 
 }
+
+bool ChooseSingle::_infinity_s = false;
+
+bool ChooseSingle::getInfinity()
+{
+	return _infinity_s;
+}
+
+void ChooseSingle::setInfinity(bool infinity)
+{
+	_infinity_s = infinity;
+}
+
 bool ChooseDouble::_infinity = false;
 
 bool ChooseDouble::getInfinity()
