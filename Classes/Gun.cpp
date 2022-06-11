@@ -184,10 +184,12 @@ bool GunLayer_wmale::init()
 	gun_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2);
 
 
+
 	//隐藏精灵
-	gunp92.spriteGun->setVisible(false);
+	gunp92.spriteGun->setVisible(true);
+
 	gunp92.spriteGun->setPosition(gun_position + offset);
-	gun98k.spriteGun->setVisible(true);
+	gun98k.spriteGun->setVisible(false);
 	gun98k.spriteGun->setPosition(gun_position + offset);
 	gunm249.spriteGun->setVisible(false);
 	gunm249.spriteGun->setPosition(gun_position + offset);
@@ -205,23 +207,23 @@ bool GunLayer_wmale::init()
 			FiniteTimeAction* gun_jump1 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump2 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			FiniteTimeAction* gun_jump3 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
-			FiniteTimeAction* gun_jump4 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
+			//FiniteTimeAction* gun_jump4 = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
 			gunp92.spriteGun->runAction(gun_jump1);
 			gun98k.spriteGun->runAction(gun_jump2);
 			gunm249.spriteGun->runAction(gun_jump3);
-			bomb.sprite_bomb->runAction(gun_jump4);
+			//bomb.sprite_bomb->runAction(gun_jump4);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_S|| keycode == EventKeyboard::KeyCode::KEY_CAPITAL_S)
 		{
 			FiniteTimeAction* gun_down1 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			FiniteTimeAction* gun_down2 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			FiniteTimeAction* gun_down3 = MoveBy::create(0.5f, Vec2(0, -40.f));
-			FiniteTimeAction* gun_down4 = MoveBy::create(0.5f, Vec2(0, -40.f));
+			//FiniteTimeAction* gun_down4 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			offset.y -= 20.f;
 			gunp92.spriteGun->runAction(gun_down1);
 			gun98k.spriteGun->runAction(gun_down2);
 			gunm249.spriteGun->runAction(gun_down3);
-			bomb.sprite_bomb->runAction(gun_down4);
+			//bomb.sprite_bomb->runAction(gun_down4);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_J || keycode == EventKeyboard::KeyCode::KEY_CAPITAL_J) //将按键J作为人物wmale的子弹射击方式
 		{
@@ -298,7 +300,7 @@ bool GunLayer_wmale::init()
 						gunp92.spriteGun->setVisible(false);
 						gun98k.spriteGun->setVisible(false);
 						gunm249.spriteGun->setVisible(false);
-						bomb.sprite_bomb->setVisible(true);
+						bomb.sprite_bomb->setVisible(false);
 					}
 					boxes->removeAllChildren();
 				}
@@ -320,8 +322,8 @@ void GunLayer_wmale::update(float delta)
 	auto moveBy_right2 = MoveBy::create(0.7f, Vec2(5.f, 0));
 	auto moveBy_left3 = MoveBy::create(0.7f, Vec2(-5.f, 0));
 	auto moveBy_right3 = MoveBy::create(0.7f, Vec2(5.f, 0));
-	auto moveBy_left4 = MoveBy::create(0.7f, Vec2(-5.f, 0));
-	auto moveBy_right4 = MoveBy::create(0.7f, Vec2(5.f, 0));
+	//auto moveBy_left4 = MoveBy::create(0.7f, Vec2(-5.f, 0));
+	//auto moveBy_right4 = MoveBy::create(0.7f, Vec2(5.f, 0));
 	if (keyMap[EventKeyboard::KeyCode::KEY_A])
 	{
 		offset.x -= 5.f;
@@ -334,7 +336,7 @@ void GunLayer_wmale::update(float delta)
 		gunm249.spriteGun->setFlippedX(false);
 		gunm249.spriteGun->runAction(moveBy_left3);
 		bomb.sprite_bomb->setFlippedX(false);
-		bomb.sprite_bomb->runAction(moveBy_left4);
+		//bomb.sprite_bomb->runAction(moveBy_left4);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_D])
 	{
@@ -347,7 +349,7 @@ void GunLayer_wmale::update(float delta)
 		gunm249.spriteGun->setFlippedX(true);
 		gunm249.spriteGun->runAction(moveBy_right3);
 		bomb.sprite_bomb->setFlippedX(true);
-		bomb.sprite_bomb->runAction(moveBy_right4);
+		//bomb.sprite_bomb->runAction(moveBy_right4);
 	}
 }
 
@@ -450,12 +452,12 @@ bool GunLayer_robot::init()
 			FiniteTimeAction* gun_down1 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			FiniteTimeAction* gun_down2 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			FiniteTimeAction* gun_down3 = MoveBy::create(0.5f, Vec2(0, -40.f));
-			FiniteTimeAction* gun_down4 = MoveBy::create(0.5f, Vec2(0, -40.f));
+			//FiniteTimeAction* gun_down4 = MoveBy::create(0.5f, Vec2(0, -40.f));
 			offset.y -= 20.f;
 			gunp92.spriteGun->runAction(gun_down1);
 			gunm249.spriteGun->runAction(gun_down2);
 			gun98k.spriteGun->runAction(gun_down3);
-			bomb.sprite_bomb->runAction(gun_down4);
+			//bomb.sprite_bomb->runAction(gun_down4);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_SPACE) 
 		{
@@ -542,7 +544,7 @@ bool GunLayer_robot::init()
 						gunp92.spriteGun->setVisible(false);
 						gun98k.spriteGun->setVisible(false);
 						gunm249.spriteGun->setVisible(false);
-						bomb.sprite_bomb->setVisible(true);
+						bomb.sprite_bomb->setVisible(false);
 					}
 					boxes->removeAllChildren();
 				}
@@ -563,8 +565,8 @@ void GunLayer_robot::update(float delta)
 	auto moveBy_right2 = MoveBy::create(0.7f, Vec2(5.f, 0));
 	auto moveBy_left3 = MoveBy::create(0.7f, Vec2(-5.f, 0));
 	auto moveBy_right3 = MoveBy::create(0.7f, Vec2(5.f, 0));
-	auto moveBy_left4 = MoveBy::create(0.7f, Vec2(-5.f, 0));
-	auto moveBy_right4 = MoveBy::create(0.7f, Vec2(5.f, 0));
+	//auto moveBy_left4 = MoveBy::create(0.7f, Vec2(-5.f, 0));
+	//auto moveBy_right4 = MoveBy::create(0.7f, Vec2(5.f, 0));
 	if (keyMap[EventKeyboard::KeyCode::KEY_LEFT_ARROW])
 	{
 		offset.x -= 5.f;
@@ -577,7 +579,7 @@ void GunLayer_robot::update(float delta)
 		gunm249.spriteGun->setFlippedX(false);
 		gunm249.spriteGun->runAction(moveBy_left3);
 		bomb.sprite_bomb->setFlippedX(false);
-		bomb.sprite_bomb->runAction(moveBy_left4);
+		//bomb.sprite_bomb->runAction(moveBy_left4);
 	}
 	else if (keyMap[EventKeyboard::KeyCode::KEY_RIGHT_ARROW])
 	{
@@ -590,7 +592,7 @@ void GunLayer_robot::update(float delta)
 		gunm249.spriteGun->setFlippedX(true);
 		gunm249.spriteGun->runAction(moveBy_right3);
 		bomb.sprite_bomb->setFlippedX(true);
-		bomb.sprite_bomb->runAction(moveBy_right4);
+		//bomb.sprite_bomb->runAction(moveBy_right4);
 	}
 }
 

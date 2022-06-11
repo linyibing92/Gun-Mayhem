@@ -81,13 +81,23 @@ bool GameSceneMountain::init()
 
 
 
+
 	//加入血条
+	this->scheduleUpdate();//���ö�ʱ��ص���
+
 	auto myloadingbar = MyLoadingBar::create();
 	this->addChild(myloadingbar);
+	if (myloadingbar->getHP_wmale() <= 0|| myloadingbar->getHP_robot()<=0) {
+		auto layerend = MyLayerWinner::create();
+		this->addChild(layerend);
+	}
+
 
 
 	box = Box::create();
     this->addChild(box);
+
+
 	//每十秒掉落一个宝箱，最多十五个
 
 	this->schedule([&](float dlt) {
@@ -102,7 +112,7 @@ bool GameSceneMountain::init()
 			box->drop(_boxes_type,_boxes_positionx,_boxes_positiony,drop_times);
 			++drop_times;
 		}
-		}, 15.f, "schedule");
+		}, 10.f, "schedule");
 
 
 	auto wmale=CharacterWmale::create();
@@ -215,7 +225,7 @@ Scene* GameSceneForest::createScene()
 	return GameSceneForest::create();
 }
 
-bool GameSceneForest::init()//��mountainscene����
+bool GameSceneForest::init()//与mountainscene类似
 {
 	if (!Scene::create())
 		return false;
