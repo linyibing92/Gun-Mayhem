@@ -9,15 +9,15 @@ bool Box::init()
 
 void Box::drop(int* boxes_type,int*boxes_positionx,int* boxes_positiony,int times)
 {
-	//»ñÈ¡Í¼Æ¬µÄ´óĞ¡
+		//è·å–å›¾ç‰‡çš„å¤§å°
 	Sprite* _land1 = Sprite::create("land3(1).png");
 	Sprite* _land2 = Sprite::create("land3(2).png");
 	int width1 = static_cast<int>(_land1->getContentSize().width);
 	int width2 = static_cast<int>(_land2->getContentSize().width);
-	int _type =produceType();//Á½ÖÖÇ¹¼ÓÕ¨µ¯Ëæ»úÉú³É
-	int _position_x = producePositionx(width2);//½µÂäÎ»ÖÃËæ»úÉú³É
+	int _type =produceType();////ä¸¤ç§æªåŠ ç‚¸å¼¹éšæœºç”Ÿæˆ
+	int _position_x = producePositionx(width2);////é™è½ä½ç½®éšæœºç”Ÿæˆ
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	// ºá×ø±êµÄ²»Í¬Î»ÖÃ¾ö¶¨ÊúÖ±·½Ïò½µÂä¶àÉÙ
+// æ¨ªåæ ‡çš„ä¸åŒä½ç½®å†³å®šç«–ç›´æ–¹å‘é™è½å¤šå°‘
 	Action* drop= MoveBy::create(1.f, Vec2(0, 370 - visibleSize.height));
 	if (_position_x > (230 - width2 / 2) && _position_x < (550 - width1 / 2)) {
 		drop = MoveBy::create(1.f, Vec2(0, 370 - visibleSize.height));
@@ -36,7 +36,7 @@ void Box::drop(int* boxes_type,int*boxes_positionx,int* boxes_positiony,int time
 		drop = MoveBy::create(1.f, Vec2(0, 520 - visibleSize.height));
 		boxes_positiony[times] = visibleSize.height - 520;
 	}
-	//²»Í¬ÖÖÀà±¦ÏäÓÃ²»Í¬µÄ¾«Áé
+//ä¸åŒç§ç±»å®ç®±ç”¨ä¸åŒçš„ç²¾çµ
 	if (_type == 1) {
 		Sprite* juji = Sprite::create("juji.png");
 		juji->setScale(0.43f);
@@ -49,7 +49,9 @@ void Box::drop(int* boxes_type,int*boxes_positionx,int* boxes_positiony,int time
 		jiguan->setScale(0.43f);
 		this->addChild(jiguan);
 		jiguan->setPosition(static_cast<float>(_position_x), static_cast<float>(visibleSize.height));
+
 		jiguan->runAction(drop);
+
 	}
 	else {
 		Sprite* bomb = Sprite::create("bomb.png");
@@ -57,18 +59,18 @@ void Box::drop(int* boxes_type,int*boxes_positionx,int* boxes_positiony,int time
 		bomb->setPosition(static_cast<float>(_position_x), static_cast<float>(visibleSize.height));
 		bomb->runAction(drop);
 	}
-	//¼ÇÂ¼±¦ÏäÀàĞÍºÍÎ»ÖÃ
+	//è®°å½•å®ç®±ç±»å‹å’Œä½ç½®
 	boxes_type[times] = _type;
 	boxes_positionx[times] = _position_x;
 }
 
-int Box::producePositionx(int width2)const//½µÂäÎ»ÖÃËæ»úÉú³É
+int Box::producePositionx(int width2)const//é™è½ä½ç½®éšæœºç”Ÿæˆ
 {
 	int _position_x = rand() % ((1170 + width2 / 2) - (230 - width2 / 2) + 1) + (230 - width2 / 2);
 	return _position_x;
 }
 
-int Box::produceType()const//Á½ÖÖÇ¹¼ÓÕ¨µ¯Ëæ»úÉú³É
+int Box::produceType()const//ä¸¤ç§æªåŠ ç‚¸å¼¹éšæœºç”Ÿæˆ
 {
 	srand((unsigned)time(NULL));
 	int type = rand() % 3 + 1;
