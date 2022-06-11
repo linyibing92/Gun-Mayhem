@@ -5,18 +5,18 @@ void weapon::SetWeaponState(bool Is_picked)
 	_Is_picked = Is_picked;
 }
 
-bool weapon::GetweaponState()
+bool weapon::GetweaponState()const
 {
 	return _Is_picked;
 }
 
 
-int weapon::GetWeaponpower()
+int weapon::GetWeaponpower()const
 {
 	return 0;
 }
 
-Vec2 weapon::getWeaponPosition()
+Vec2 weapon::getWeaponPosition()const
 {
 
 	return Vec2();

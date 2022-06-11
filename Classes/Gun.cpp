@@ -7,25 +7,23 @@ void GunM249::bulletmove(int _flip) const
 	if (_flip == GunRight)
 	{
 		sprite_bullet->setFlippedX(false);
-		auto moveTo = MoveBy::create(1, Point(240, 0));
+		auto moveTo = MoveBy::create(0.5, Point(240, 0));
 
 		auto bulletHide = Hide::create();//执行完动作后隐藏精灵
 		auto bulletShow = Show::create();
 		auto seq = Sequence::create(bulletShow, moveTo, bulletHide, NULL);
 		//设置重复动作，完成机关枪的多次射击
-		auto repeat = Repeat::create(seq, 3);
-		sprite_bullet->runAction(repeat);
+		sprite_bullet->runAction(seq);
 	}
 	else
 	{
 		sprite_bullet->setFlippedX(true);
-		auto moveToLeft = MoveBy::create(1, Point(-240, 0));
+		auto moveToLeft = MoveBy::create(0.5, Point(-240, 0));
 		auto bulletHide = Hide::create();//执行完动作后隐藏精灵
 		auto bulletShow = Show::create();
 		auto seq = Sequence::create(bulletShow, moveToLeft, bulletHide, NULL);
 		//设置重复动作，完成机关枪的多次射击
-		auto repeat = Repeat::create(seq, 3);
-		sprite_bullet->runAction(repeat);
+		sprite_bullet->runAction(seq);
 	}
 
 }
@@ -145,33 +143,36 @@ bool GunLayer_wmale::init()
 	gunp92.spriteGun->setScale(0.25f);
 	gun98k.spriteGun->setScale(0.25f);
 	gunm249.spriteGun->setScale(0.25f);
-	this->addChild(gunp92.spriteGun); 
+	this->addChild(gunp92.spriteGun);
 	this->addChild(gun98k.spriteGun);
 	this->addChild(gunm249.spriteGun);
 
-	/*gunp92.spriteGun->setPhysicsBody(body_gun);
-	gun98k.spriteGun->setPhysicsBody(body_gun);
-	gunm249.spriteGun->setPhysicsBody(body_gun);*/
+	gunp92.spriteGun->setPhysicsBody(body_gun1);
+	gun98k.spriteGun->setPhysicsBody(body_gun2);
+	gunm249.spriteGun->setPhysicsBody(body_gun3);
 
 	//子弹
 	this->addChild(gunp92.sprite_bullet);
 	this->addChild(gun98k.sprite_bullet);
 	this->addChild(gunm249.sprite_bullet);
 	//刚体设置
-	//gunp92.sprite_bullet->setTag(1);
-	//body_bullet->setGravityEnable(false);
-	//gunp92.sprite_bullet->setPhysicsBody(body_bullet);
+	gunp92.sprite_bullet->setTag(1);
+	body_bullet1->setGravityEnable(false);
+	gunp92.sprite_bullet->setPhysicsBody(body_bullet1);
 
-	//gun98k.sprite_bullet->setTag(1);
-	//gun98k.sprite_bullet->setPhysicsBody(body_bullet);
+	gun98k.sprite_bullet->setTag(1);
+	body_bullet2->setGravityEnable(false);
+	gun98k.sprite_bullet->setPhysicsBody(body_bullet2);
 
-	//gunm249.sprite_bullet->setTag(1);
-	//gunm249.sprite_bullet->setPhysicsBody(body_bullet);
+	gunm249.sprite_bullet->setTag(1);
+	body_bullet3->setGravityEnable(false);
+	gunm249.sprite_bullet->setPhysicsBody(body_bullet3);
 
 	//设置枪支状态为picked
 	gunp92.SetWeaponState(true);
 	gun98k.SetWeaponState(false);
 	gunm249.SetWeaponState(false);
+	bomb.SetWeaponState(false);
 
 	//创建炸弹的角色
 	this->addChild(bomb.sprite_bomb);
@@ -181,7 +182,7 @@ bool GunLayer_wmale::init()
 	bomb.sprite_bomb->setPhysicsBody(body_bomb);
 
 	//设置精灵起始位置在最高障碍正中间 
-	gun_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height / 2);
+	gun_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2);
 
 
 	//隐藏精灵
@@ -192,7 +193,7 @@ bool GunLayer_wmale::init()
 	gunm249.spriteGun->setVisible(false);
 	gunm249.spriteGun->setPosition(gun_position + offset);
 	bomb.sprite_bomb->setVisible(false);
-	bomb.sprite_bomb->setPosition(gun_position + offset);
+	bomb.sprite_bomb->setPosition(0, 0);
 
 	//实现通过键盘控制人物移动
 	auto keyListener = EventListenerKeyboard::create();//创建一个事件监听器监听键盘事件(监视键位的按下和松开)
@@ -225,6 +226,7 @@ bool GunLayer_wmale::init()
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_J || keycode == EventKeyboard::KeyCode::KEY_CAPITAL_J) //将按键J作为人物wmale的子弹射击方式
 		{
+			auto soundbullet = AudioEngine::play2d("bullet.mp3", false);
 			if (gunp92.GetweaponState()) {
 				gunp92.sprite_bullet->setPosition(gunp92.spriteGun->getPosition());
 				gunp92.bulletmove(Gunflip);
@@ -269,7 +271,7 @@ bool GunLayer_wmale::init()
 			float gun_positiony = gunp92.spriteGun->getPosition().y;
 			int i = 0;
 			for (; i < 15; ++i) {
-				if (fabs(gun_positionx - boxes_positionx[i]) < 40&& fabs(gun_positiony - boxes_positiony[i]) < 100) {
+				if (fabs(gun_positionx - boxes_positionx[i]) < 50&& fabs(gun_positiony - boxes_positiony[i]) < 70) {
 					if (boxes_type[i] == 1) {
 						gunp92.SetWeaponState(false);
 						gun98k.SetWeaponState(true);
@@ -376,15 +378,15 @@ bool GunLayer_robot::init()
 	//创建枪的角色
 	gunp92.spriteGun->setScale(0.25f);
 	this->addChild(gunp92.spriteGun);
-	//gunp92.spriteGun->setPhysicsBody(body_gun);
+	gunp92.spriteGun->setPhysicsBody(body_gun1);
 
 	gun98k.spriteGun->setScale(0.25f);
 	this->addChild(gun98k.spriteGun);
-	//gun98k.spriteGun->setPhysicsBody(body_gun);
+	gun98k.spriteGun->setPhysicsBody(body_gun2);
 
 	gunm249.spriteGun->setScale(0.25f);
 	this->addChild(gunm249.spriteGun);
-	//gunm249.spriteGun->setPhysicsBody(body_gun);
+	gunm249.spriteGun->setPhysicsBody(body_gun3);
 
 
 	//子弹
@@ -392,20 +394,23 @@ bool GunLayer_robot::init()
 	this->addChild(gunm249.sprite_bullet);
 	this->addChild(gun98k.sprite_bullet);
 	//刚体设置
-	/*gunp92.sprite_bullet->setTag(2);
-	body_bullet->setGravityEnable(false);
-	gunp92.sprite_bullet->setPhysicsBody(body_bullet);
+	gunp92.sprite_bullet->setTag(2);
+	body_bullet1->setGravityEnable(false);
+	gunp92.sprite_bullet->setPhysicsBody(body_bullet1);
 
 	gun98k.sprite_bullet->setTag(2);
-	gun98k.sprite_bullet->setPhysicsBody(body_bullet);
+	body_bullet2->setGravityEnable(false);
+	gun98k.sprite_bullet->setPhysicsBody(body_bullet2);
 
 	gunm249.sprite_bullet->setTag(2);
-	gunm249.sprite_bullet->setPhysicsBody(body_bullet);*/
+	body_bullet3->setGravityEnable(false);
+	gunm249.sprite_bullet->setPhysicsBody(body_bullet3);
 
 	//设置枪支状态为picked
 	gunp92.SetWeaponState(true);
 	gun98k.SetWeaponState(false);
 	gunm249.SetWeaponState(false);
+	bomb.SetWeaponState(false);
 
 	//创建炸弹的角色
 	this->addChild(bomb.sprite_bomb);
@@ -426,7 +431,8 @@ bool GunLayer_robot::init()
 	gunm249.spriteGun->setVisible(false);
 	gunm249.spriteGun->setPosition(gun_position + offset);
 	bomb.sprite_bomb->setVisible(false);
-	bomb.sprite_bomb->setPosition(gun_position + offset);
+	bomb.sprite_bomb->setPosition(0, 0);
+
 
 	//实现通过键盘控制人物移动
 	auto keyListener = EventListenerKeyboard::create();//创建一个事件监听器监听键盘事件(监视键位的按下和松开)
@@ -443,7 +449,7 @@ bool GunLayer_robot::init()
 			gunp92.spriteGun->runAction(gun_jump1);
 			gun98k.spriteGun->runAction(gun_jump2);
 			gunm249.spriteGun->runAction(gun_jump3);
-			bomb.sprite_bomb->runAction(gun_jump4);
+			//bomb.sprite_bomb->runAction(gun_jump4);
 		}
 		else if (keycode == EventKeyboard::KeyCode::KEY_DOWN_ARROW)
 		{
@@ -463,7 +469,6 @@ bool GunLayer_robot::init()
 			if (bomb.GetweaponState() == true) {
                 bomb.sprite_bomb->setPosition(gunp92.spriteGun->getPosition());
 			    bomb.bomb_move(gunp92.spriteGun->getPosition(),Gunflip);
-				bomb.SetWeaponState(false);
 			};
 			
 		}
@@ -480,6 +485,7 @@ bool GunLayer_robot::init()
 	//鼠标左键按下
 	myMouseListener->onMouseDown = [=](Event* event)
 	{
+		auto soundbullet = AudioEngine::play2d("bullet.mp3", false);
 		if (gunp92.GetweaponState()) {
 			gunp92.sprite_bullet->setPosition(gunp92.spriteGun->getPosition());
 			gunp92.bulletmove(Gunflip);
@@ -513,7 +519,7 @@ bool GunLayer_robot::init()
 			float gun_positiony= gunp92.spriteGun->getPosition().y;
 			int i = 0;
 			for (; i < 15; ++i) {
-				if (fabs(gun_positionx - boxes_positionx[i]) < 40 && fabs(gun_positiony - boxes_positiony[i]) < 100) {
+				if (fabs(gunp92.spriteGun->getPosition().x - boxes_positionx[i]) < 50 && fabs(gunp92.spriteGun->getPosition().y - boxes_positiony[i]) < 70) {
 					if (boxes_type[i] == 1) {
 						gunp92.SetWeaponState(false);
 						gun98k.SetWeaponState(true);

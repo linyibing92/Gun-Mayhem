@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "Character_wmale.h"
 #include "bomb.h"
+#include "audio/include/AudioEngine.h"
 #define GunLeft 0
 #define GunRight 1
 #define gunp92_choice 2
@@ -19,7 +20,7 @@ class GunLayer_robot;
 
 
 /* 创建枪类 */
-class Gun :public weapon 
+class Gun :public weapon
 {
 public:
 	Sprite* sprite_bullet = Sprite::create("bullet.png");/* 创建子弹精灵 */
@@ -88,10 +89,16 @@ public:
 	void falling_judge();
 	//调用攻击函数
 	int bullet_attack();
-	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f)); 
-	
+
+	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun3 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+
+	PhysicsBody* body_bullet1 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet2 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet3 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+
 private:
 	Bomb bomb;
 	Gun98K gun98k;
@@ -121,11 +128,17 @@ public:
 	void falling_judge();
 	//调用攻击函数
 	int bullet_attack();
+
 	//捡起武器
-	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun3 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+
+	PhysicsBody* body_bullet1 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet2 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet3 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
-	
+
 private:
 	Bomb bomb;
 	Gun98K gun98k;

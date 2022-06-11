@@ -21,20 +21,20 @@ void Box::drop(int* boxes_type,int*boxes_positionx,int* boxes_positiony,int time
 	Action* drop= MoveBy::create(1.f, Vec2(0, 370 - visibleSize.height));
 	if (_position_x > (230 - width2 / 2) && _position_x < (550 - width1 / 2)) {
 		drop = MoveBy::create(1.f, Vec2(0, 370 - visibleSize.height));
-		boxes_positiony[times] = visibleSize.height - 370;
+		boxes_positiony[times] = 370;
 	}
 	else if (_position_x > (550 - width1 / 2) && _position_x < (750 - width1 / 2)) {
 		drop = MoveBy::create(1.f, Vec2(0, 470 - visibleSize.height));
-		boxes_positiony[times] = visibleSize.height - 470;
+		boxes_positiony[times] = 470;
 	}
 	else if (_position_x > (750 - width1 / 2) && _position_x < (750 + width1 / 2)) {
         drop = MoveBy::create(1.f, Vec2(0, 640 - visibleSize.height));
-		boxes_positiony[times] = visibleSize.height - 640;
+		boxes_positiony[times] = 640;
 	}
 		
 	else if (_position_x > (750 + width1 / 2) && _position_x < (1170 + width2 / 2)) {
 		drop = MoveBy::create(1.f, Vec2(0, 520 - visibleSize.height));
-		boxes_positiony[times] = visibleSize.height - 520;
+		boxes_positiony[times] =  520;
 	}
 	//不同种类宝箱用不同的精灵
 	if (_type == 1) {

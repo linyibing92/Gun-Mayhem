@@ -12,4 +12,6 @@ public:
 	CREATE_FUNC(SelectScene);
 	static Scene* createScene();
 	virtual bool init();
+private:
+
 };

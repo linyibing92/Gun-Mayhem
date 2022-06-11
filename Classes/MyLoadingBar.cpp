@@ -21,7 +21,7 @@ bool MyLoadingBar::init()
 	_myLoadingBar_2->setAnchorPoint(Vec2::ANCHOR_TOP_LEFT);
 	_myLoadingBar_2->setPosition(Vec2(610, visibleSize.height - 40));
 	_myLoadingBar_2->loadTexture("myloadingbar(2).png");
-	//this->scheduleUpdate();//启用定时器回调函数
+	this->scheduleUpdate();//启用定时器回调函数
 	_myLoadingBar_2->setPercent(HP_wmale);
 	_myLoadingBar_2->setDirection(LoadingBar::Direction::LEFT);
 	this->addChild(_myLoadingBar_2);
@@ -38,12 +38,12 @@ void MyLoadingBar::setHP_wmale(int harm)
 	HP_wmale = HP_wmale-harm;
 }
 
-float MyLoadingBar::getHP_robot()
+float MyLoadingBar::getHP_robot()const//获取人物血量
 {
 	return HP_robot;
 }
 
-float MyLoadingBar::getHP_wmale()
+float MyLoadingBar::getHP_wmale()const//获取人物血量
 {
 	return HP_wmale;
 }
@@ -55,6 +55,9 @@ void MyLoadingBar::setHP_robot(int harm)
 
 void MyLoadingBar::update(float delta)
 {
-	_myLoadingBar_1->setPercent(HP_robot);
-	_myLoadingBar_2->setPercent(HP_wmale);
+	auto scene = ChooseDouble::create();
+	if (!scene->getInfinity()) {
+		_myLoadingBar_1->setPercent(HP_robot);
+		_myLoadingBar_2->setPercent(HP_wmale);
+	}
 }

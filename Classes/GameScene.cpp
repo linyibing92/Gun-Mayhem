@@ -19,59 +19,56 @@ bool GameSceneMountain::init()
 		return false;
 
 	//设置物理世界速度
-	//this->getPhysicsWorld()->setSpeed(1.2);
+	//this->getPhysicsWorld()->setSpeed(1.2f);
 	//设置背景图片
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
-
 	//设置lable1-6的所有静态刚体
 	_land1->setPosition(Vec2(230, 350));
-	//_land1->setTag(3);
-	//auto body1 = PhysicsBody::createBox(_land1->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body1->setDynamic(false);
-	//_land1->setPhysicsBody(body1);
-	//body1->setContactTestBitmask(0);
+	_land1->setTag(3);
+	auto body1 = PhysicsBody::createBox(_land1->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body1->setDynamic(false);
+	_land1->setPhysicsBody(body1);
+	body1->setContactTestBitmask(0);
 
 	_land2->setPosition(Vec2(970, 280));
-	//_land2->setTag(3);
-	//auto body2 = PhysicsBody::createBox(_land2->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body2->setDynamic(false);
-	//_land2->setPhysicsBody(body2);
-	//body2->setContactTestBitmask(0);
+	_land2->setTag(3);
+	auto body2 = PhysicsBody::createBox(_land2->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body2->setDynamic(false);
+	_land2->setPhysicsBody(body2);
+	body2->setContactTestBitmask(0);
 
 	_land3->setPosition(Vec2(700, 170));
-	//_land3->setTag(3);
-	//auto body3 = PhysicsBody::createBox(_land3->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body3->setDynamic(false);
-	//_land3->setPhysicsBody(body3);
-	//body3->setContactTestBitmask(0);
+	_land3->setTag(3);
+	auto body3 = PhysicsBody::createBox(_land3->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body3->setDynamic(false);
+	_land3->setPhysicsBody(body3);
+	body3->setContactTestBitmask(0);
 
 	_land4->setPosition(Vec2(1170, 500));
-	//_land4->setTag(3);
-	//auto body4 = PhysicsBody::createBox(_land4->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body4->setDynamic(false);
-	//_land4->setPhysicsBody(body4);
-	//body4->setContactTestBitmask(0);
+	_land4->setTag(3);
+	auto body4 = PhysicsBody::createBox(_land4->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body4->setDynamic(false);
+	_land4->setPhysicsBody(body4);
+	body4->setContactTestBitmask(0);
 
 	_land5->setPosition(Vec2(750, 620));
-	//_land5->setTag(3);
-	//auto body5 = PhysicsBody::createBox(_land5->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body5->setDynamic(false);
-	//_land5->setPhysicsBody(body5);
-	//body5->setContactTestBitmask(0);
+	_land5->setTag(3);
+	auto body5 = PhysicsBody::createBox(_land5->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body5->setDynamic(false);
+	_land5->setPhysicsBody(body5);
+	body5->setContactTestBitmask(0);
 
 
 	_land6->setPosition(Vec2(550, 450));
-	//_land6->setTag(3);
-	//auto body6 = PhysicsBody::createBox(_land6->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	//body6->setDynamic(false);
-	//_land6->setPhysicsBody(body6);
-	//body6->setContactTestBitmask(0);
-
-
+	_land6->setTag(3);
+	auto body6 = PhysicsBody::createBox(_land6->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	body6->setDynamic(false);
+	_land6->setPhysicsBody(body6);
+	body6->setContactTestBitmask(0);
 
 	this->addChild(_land1);
 	this->addChild(_land2);
@@ -82,15 +79,12 @@ bool GameSceneMountain::init()
 
 
 
+
 	//血条显示
 	this->scheduleUpdate();//启用定时器回调函数
-	auto myloadingbar = MyLoadingBar::create();
-	this->addChild(myloadingbar);
-	if (myloadingbar->getHP_wmale() <= 0|| myloadingbar->getHP_robot()<=0) {
-		auto layerend = MyLayerWinner::create();
-		this->addChild(layerend);
-	}
-
+	_myloadingbar = MyLoadingBar::create();
+	this->addChild(_myloadingbar);
+	
 
 	box = Box::create();
     this->addChild(box);
@@ -113,21 +107,33 @@ bool GameSceneMountain::init()
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
 	//机器人角色
+	MyMenu menu;
 	auto robot = CharacterRobot::create();
-	this->addChild(robot);
+	auto gun_robot = GunLayer_robot::create();
+	if (!menu.getSingle()) {
+		this->addChild(robot);
+	    this->addChild(gun_robot);
+	}
+	else {
+	   auto ai = CharacterAI::create();
+		this->addChild(ai);
+		ai->body->setContactTestBitmask(1);
+		ai->body->setCategoryBitmask(1);
+		ai->body->setCollisionBitmask(1);
+		ai->body->setContactTestBitmask(1);
+	}
 
 	auto gun_wmale = GunLayer_wmale::create();
 	this->addChild(gun_wmale);
 
-	auto gun_robot = GunLayer_robot::create();
-	this->addChild(gun_robot);
+	
 
 	//右上角菜单
 	auto mylayer = MyLayer::create();
 	this->addChild(mylayer,100);
 
 	//设置掩码
-	/*robot->body->setContactTestBitmask(1);
+	robot->body->setContactTestBitmask(1);
 	robot->body->setCategoryBitmask(1);
 	robot->body->setCollisionBitmask(1);
 	robot->body->setContactTestBitmask(1);
@@ -138,77 +144,122 @@ bool GameSceneMountain::init()
 	wmale->body->setCollisionBitmask(2);
 	wmale->body->setContactTestBitmask(2);
 
-	gun_wmale->body_gun->setContactTestBitmask(8);
-	gun_wmale->body_gun->setCategoryBitmask(8);
-	gun_wmale->body_gun->setCollisionBitmask(8);
-	gun_wmale->body_gun->setContactTestBitmask(8);
+	gun_wmale->body_gun1->setContactTestBitmask(8);
+	gun_wmale->body_gun1->setCategoryBitmask(8);
+	gun_wmale->body_gun1->setCollisionBitmask(8);
+	gun_wmale->body_gun1->setContactTestBitmask(8);
+	gun_robot->body_gun1->setContactTestBitmask(8);
+	gun_robot->body_gun1->setCategoryBitmask(8);
+	gun_robot->body_gun1->setCollisionBitmask(8);
+	gun_robot->body_gun1->setContactTestBitmask(8);
 
-	gun_robot->body_gun->setContactTestBitmask(8);
-	gun_robot->body_gun->setCategoryBitmask(8);
-	gun_robot->body_gun->setCollisionBitmask(8);
-	gun_robot->body_gun->setContactTestBitmask(8);
+	gun_wmale->body_gun2->setContactTestBitmask(8);
+	gun_wmale->body_gun2->setCategoryBitmask(8);
+	gun_wmale->body_gun2->setCollisionBitmask(8);
+	gun_wmale->body_gun2->setContactTestBitmask(8);
+	gun_robot->body_gun2->setContactTestBitmask(8);
+	gun_robot->body_gun2->setCategoryBitmask(8);
+	gun_robot->body_gun2->setCollisionBitmask(8);
+	gun_robot->body_gun2->setContactTestBitmask(8);
 
-	gun_wmale->body_bullet->setContactTestBitmask(1);
-	gun_wmale->body_bullet->setCategoryBitmask(1);
-	gun_wmale->body_bullet->setCollisionBitmask(1);
-	gun_wmale->body_bullet->setContactTestBitmask(1);
+	gun_wmale->body_gun3->setContactTestBitmask(8);
+	gun_wmale->body_gun3->setCategoryBitmask(8);
+	gun_wmale->body_gun3->setCollisionBitmask(8);
+	gun_wmale->body_gun3->setContactTestBitmask(8);
+	gun_robot->body_gun3->setContactTestBitmask(8);
+	gun_robot->body_gun3->setCategoryBitmask(8);
+	gun_robot->body_gun3->setCollisionBitmask(8);
+	gun_robot->body_gun3->setContactTestBitmask(8);
+
+	gun_wmale->body_bullet1->setContactTestBitmask(1);
+	gun_wmale->body_bullet1->setCategoryBitmask(1);
+	gun_wmale->body_bullet1->setCollisionBitmask(1);
+	gun_wmale->body_bullet1->setContactTestBitmask(1);
+	gun_wmale->body_bullet2->setContactTestBitmask(1);
+	gun_wmale->body_bullet2->setCategoryBitmask(1);
+	gun_wmale->body_bullet2->setCollisionBitmask(1);
+	gun_wmale->body_bullet2->setContactTestBitmask(1);
+	gun_wmale->body_bullet3->setContactTestBitmask(1);
+	gun_wmale->body_bullet3->setCategoryBitmask(1);
+	gun_wmale->body_bullet3->setCollisionBitmask(1);
+	gun_wmale->body_bullet3->setContactTestBitmask(1);
 
 	gun_wmale->body_bomb->setContactTestBitmask(1);
 	gun_wmale->body_bomb->setCategoryBitmask(1);
 	gun_wmale->body_bomb->setCollisionBitmask(1);
 	gun_wmale->body_bomb->setContactTestBitmask(1);
 
-	gun_robot->body_bullet->setContactTestBitmask(2);
-	gun_robot->body_bullet->setCategoryBitmask(2);
-	gun_robot->body_bullet->setCollisionBitmask(2);
-	gun_robot->body_bullet->setContactTestBitmask(2);
+	gun_robot->body_bullet1->setContactTestBitmask(2);
+	gun_robot->body_bullet1->setCategoryBitmask(2);
+	gun_robot->body_bullet1->setCollisionBitmask(2);
+	gun_robot->body_bullet1->setContactTestBitmask(2);
+	gun_robot->body_bullet2->setContactTestBitmask(2);
+	gun_robot->body_bullet2->setCategoryBitmask(2);
+	gun_robot->body_bullet2->setCollisionBitmask(2);
+	gun_robot->body_bullet2->setContactTestBitmask(2);
+	gun_robot->body_bullet3->setContactTestBitmask(2);
+	gun_robot->body_bullet3->setCategoryBitmask(2);
+	gun_robot->body_bullet3->setCollisionBitmask(2);
+	gun_robot->body_bullet3->setContactTestBitmask(2);
 
 	gun_robot->body_bomb->setContactTestBitmask(2);
 	gun_robot->body_bomb->setCategoryBitmask(2);
 	gun_robot->body_bomb->setCollisionBitmask(2);
-	gun_robot->body_bomb->setContactTestBitmask(2);*/
+	gun_robot->body_bomb->setContactTestBitmask(2);
 
 	// 注册碰撞监听事件
-	//EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
-	//hitListener->onContactBegin = [=](PhysicsContact& contact)
-	//{
-	//	auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //发生碰撞的物体1——gun_wmale的子弹和robot
-	//	auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //发生碰撞的物体2——gun_robot的子弹和wmale
+	EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
+	hitListener->onContactBegin = [=](PhysicsContact& contact)
+	{
+		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //发生碰撞的物体1——gun_wmale的子弹和robot
+		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //发生碰撞的物体2——gun_robot的子弹和wmale
 
-	//	//子弹攻击
-	//	if (body_1->getTag() == 1) {
-	//		myloadingbar->setHP_robot(gun_wmale->bullet_attack());
-	//	}
-	//	if (body_2->getTag() == 2) {
-	//		myloadingbar->setHP_wmale(gun_robot->bullet_attack());
-	//	}
 
-	//	return true;
-	//};
-	//Director::getInstance()->getEventDispatcher()
-	//	->addEventListenerWithSceneGraphPriority(hitListener, this);
+		//子弹攻击
+		if (body_1->getTag() == 1) {
+			_myloadingbar->setHP_robot(gun_wmale->bullet_attack());
+		}
+		if (body_2->getTag() == 2) {
+			_myloadingbar->setHP_wmale(gun_robot->bullet_attack());
+		}
+
+		return true;
+	};
+	Director::getInstance()->getEventDispatcher()
+		->addEventListenerWithSceneGraphPriority(hitListener, this);
 	return true;
 }
 
-int* GameSceneMountain::getBoxesType()
+int* GameSceneMountain::getBoxesType()const//获取宝箱类型
 {
 	return _boxes_type;
 }
 
-int* GameSceneMountain::getBoxesPositionx()
+int* GameSceneMountain::getBoxesPositionx()const//获取宝箱横坐标
 {
 	return _boxes_positionx;
 }
 
-int* GameSceneMountain::getBoxesPositiony()
+int* GameSceneMountain::getBoxesPositiony()const//获取宝箱纵坐标
 {
 	return  _boxes_positiony;
 }
 
-Box* GameSceneMountain::getBoxes()
+Box* GameSceneMountain::getBoxes()const//获取宝箱
 {
 	return box;
 }
+
+void GameSceneMountain::update(float delta)//监测血量
+
+{
+	if (_myloadingbar->getHP_wmale() <= 0 || _myloadingbar->getHP_robot() <= 0) {
+		auto layerend = MyLayerWinner::create();
+		this->addChild(layerend);
+	}
+
+}
+
 
 
 
@@ -249,10 +300,11 @@ bool GameSceneForest::init()//与mountainscene类似
 	return true;
 }
 
-
+bool MyMenu::_single = false;
 
 void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//single按钮的回调函数
 {
+	_single = true;
 	Scene* pScene = ChooseSingle::createScene();
 
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
@@ -266,7 +318,7 @@ void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)//double按钮的回调函数
 }
 
 
-Menu* MyMenu::create_button_single()//创建single按钮
+Menu* MyMenu::create_button(int x)//创建single按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_single = MenuItemImage::create(
@@ -278,7 +330,7 @@ Menu* MyMenu::create_button_single()//创建single按钮
 	return menu_bottle_single;
 }
 
-Menu* MyMenu::create_button_double()//创建double按钮
+Menu* MyMenu::create_button(double x)//创建double按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_double = MenuItemImage::create(
@@ -288,6 +340,11 @@ Menu* MyMenu::create_button_double()//创建double按钮
 	button_double->setPosition(Vec2(visibleSize / 2) + Vec2(200, 0));
 	auto menu_bottle_double = Menu::create(button_double, NULL);
 	return menu_bottle_double;
+}
+
+bool MyMenu::getSingle()const
+{
+	return _single;
 }
 
 
@@ -362,6 +419,11 @@ void ChooseScene::create_button_begin()//创建开始的按钮
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
 		});
 	this->addChild(_button_begin);
+}
+
+Menu* ChooseScene::create_button_char()
+{
+	return nullptr;
 }
 
 
@@ -487,6 +549,17 @@ Menu* ChooseDouble::create_button_char()//设置人物按钮（但无事件监听器，类似精灵
 	return nullptr;
 
 }
+bool ChooseDouble::_infinity = false;
+
+bool ChooseDouble::getInfinity()
+{
+	return _infinity;
+}
+
+void ChooseDouble::setInfinity(bool infinity)
+{
+	_infinity = infinity;
+}
 
 bool ChooseDouble::init()
 {
@@ -498,6 +571,15 @@ bool ChooseDouble::init()
 	create_button_gun();
 	create_button_char();
 	create_button_begin();
+
+	Button* infinity = ui::Button::create("infinity.png", "infinity(1).png", "infinity.png");
+	infinity->setScale(0.7f);
+	infinity->setPosition(Vec2(400, 110));
+	infinity->addClickEventListener([&](Ref* sender) {
+		setInfinity(true);
+		});
+	this->addChild(infinity);
+
 	auto layer = MyLayer::create();
 	this->addChild(layer);
 	return true;

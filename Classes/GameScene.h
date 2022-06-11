@@ -15,8 +15,9 @@ using namespace ui;
 #include "Box.h"
 #include"Character_wmale.h"
 #include"Character_robot.h"
-
+#include"AI.h"
 class Box;
+class MyLoadingBar;
 
 class GameSceneMountain :public Scene
 {
@@ -24,10 +25,12 @@ public:
 	CREATE_FUNC(GameSceneMountain);
 	static Scene* createScene();
 	virtual bool init();
-	int* getBoxesType();
-	int* getBoxesPositionx();
-	int* getBoxesPositiony();
-	Box* getBoxes();
+	int* getBoxesType()const;
+	int* getBoxesPositionx()const;
+	int* getBoxesPositiony()const;
+	Box* getBoxes()const;
+	virtual void update(float delta);
+
 private:
 	//背景图
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
@@ -49,6 +52,8 @@ private:
 	static int _boxes_positionx[15]; ////两个数组分别记录宝箱的类型和位置
 	static int _boxes_positiony[15];
 	static Box* box;
+	MyLoadingBar*_myloadingbar;
+
 	
 };
 
@@ -78,8 +83,11 @@ class MyMenu :public Menu
 public:
 	void menuSingleCallback(cocos2d::Ref* pSender);
 	void menuDoubleCallback(cocos2d::Ref* pSender);
-	Menu* create_button_single();
-	Menu* create_button_double();
+	Menu* create_button(int x);
+	Menu* create_button(double x);
+	bool getSingle()const;
+private:
+	static bool _single;//是否为单人模式
 };
 
 
@@ -128,5 +136,7 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
-
+	bool getInfinity();
+	void setInfinity(bool infinity);
+	static bool _infinity;
 };

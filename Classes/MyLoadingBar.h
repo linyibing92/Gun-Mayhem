@@ -6,6 +6,7 @@ USING_NS_CC;
 using namespace ui;
 #include"Gun.h"
 #include"MyLayer.h"
+#include"GameScene.h"
 class MyLoadingBar:public Layer
 {
 public :
@@ -13,8 +14,8 @@ public :
 	virtual bool init();
 	void setHP_robot(int harm);//设置人物1robot的血量
 	void setHP_wmale(int harm);//设置人物2wmale的血量
-	float getHP_robot();
-	float getHP_wmale();
+	float getHP_robot()const;
+	float getHP_wmale()const;
 	virtual void update(float delta);
 private:
 	LoadingBar* _myLoadingBar_1 = LoadingBar::create();
