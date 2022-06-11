@@ -15,6 +15,7 @@ public:
 	int* getBoxesType();
 	int* getBoxesPositionx();
 	int* getBoxesPositiony();
+
 	Box* getBoxes();
 private:
 	//背景图
@@ -34,9 +35,11 @@ private:
 	Sequence* robot_up1;
 	Spawn* robot_down;
 
+
 	static int _boxes_type[15]; //;
 	static int _boxes_positionx[15]; ////�������ֱ��¼��������ͺ�λ��
 	static int _boxes_positiony[15];
+
 	static Box* box;
 	
 };
@@ -73,6 +76,7 @@ public:
 
 
 class ChooseScene :public Scene//���࣬���ѡ�񳡾����еĳ�Ա
+
 {
 public:
 	void create_button_scene();//选择场景按钮

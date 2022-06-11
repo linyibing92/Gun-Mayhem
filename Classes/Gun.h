@@ -18,7 +18,9 @@ class GunLayer_robot;
 
 
 
+
 /* 创建枪类 */
+
 class Gun :public weapon 
 {
 public:
@@ -76,7 +78,9 @@ protected:
 
 
 
+
 //创造放置枪的层——人物wmale
+
 class GunLayer_wmale :public Layer
 {
 public:
@@ -88,8 +92,15 @@ public:
 	void falling_judge();
 	//调用攻击函数
 	int bullet_attack();
-	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+
+	
+	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun3= PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+
+	PhysicsBody* body_bullet1 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet2 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet3 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f)); 
 	
 private:
@@ -121,10 +132,21 @@ public:
 	void falling_judge();
 	//调用攻击函数
 	int bullet_attack();
+
+	
+	//��������
+	PhysicsBody* body_gun1 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun2 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+	PhysicsBody* body_gun3 = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+
+	PhysicsBody* body_bullet1 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet2 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+	PhysicsBody* body_bullet3 = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+=======
 	//捡起武器
 	PhysicsBody* body_gun = PhysicsBody::createBox(Size(0.2f, 0.2f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 	PhysicsBody* body_bullet = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
-	PhysicsBody* body_bomb = PhysicsBody::createBox(Size(1.0f, 1.0f), PhysicsMaterial(1.0f, 0.0f, 0.0f));
+
 	
 private:
 	Bomb bomb;
@@ -140,6 +162,8 @@ private:
 	std::map<cocos2d::EventKeyboard::KeyCode, bool> keyMap;//存放按键的状态是不是按压中
 	Vec2 offset = Vec2::ZERO;
 	Vec2 gun_position;
+
 	int Gunflip = GunLeft;/* 设置枪口的方向 */
 };
+
 

@@ -1,5 +1,6 @@
 #include <bomb.h>
 
+
 //设置炸弹抛物线
 void Bomb::bomb_move(Vec2 characterposition,int _flip) const
 {

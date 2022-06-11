@@ -21,7 +21,9 @@ this->scheduleUpdate();//回调更新函数
 	//设置精灵起始位置在最高障碍正中间 
 	wmale_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height+20);//Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height*2 );
 
-	//隐藏精灵
+	//���þ�����ʼλ��������ϰ����м� 
+	wmale_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height*2 );
+
 
 	character_wmale->setVisible(true);
 	character_wmale->setPosition(wmale_position + offset);
@@ -134,13 +136,4 @@ void CharacterWmale::falling_judge()
 	_land6->setPosition(Vec2(550, 450));
 
 }
-
-
-
-Vec2 CharacterWmale::getchacaterWmaleposition()
-{
-	Vec2 chacaterWmalposition = character_wmale->getPosition();
-	return chacaterWmalposition;
-}
-
 

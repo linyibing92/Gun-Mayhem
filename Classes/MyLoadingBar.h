@@ -25,6 +25,7 @@ private:
 	float HP_robot = 120;//人物1血量
 	float HP_wmale = 120;//人物2血量
 
+
 };
 
 

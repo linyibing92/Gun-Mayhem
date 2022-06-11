@@ -16,7 +16,8 @@ public:
 
 	//传递机器人坐标
 	Vec2 getchacaterRobotposition();
-	PhysicsBody* body = PhysicsBody::createBox(Size(10.0f, 10.0f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
+
+	PhysicsBody* body = PhysicsBody::createBox(Size(10.0f, 9.0f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
 
 private:
 	Sprite* _land1 = Sprite::create("land3(2).png");
