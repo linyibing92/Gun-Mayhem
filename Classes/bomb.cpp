@@ -1,4 +1,4 @@
-#include <bomb.h>
+#include "bomb.h"
 
 
 //设置炸弹抛物线
@@ -15,6 +15,7 @@ void Bomb::bomb_move(Vec2 characterposition,int _flip) const
 		auto bombShow = Show::create();
 		auto seq = Sequence::create(bombShow, BezierTo, bombHide, NULL);
 		sprite_bomb->runAction(seq);
+		auto soundbomb = AudioEngine::play2d("bomb.mp3", false);
 	}
 	else {
 		ccBezierConfig bezier;//贝塞尔曲线动作
@@ -27,10 +28,11 @@ void Bomb::bomb_move(Vec2 characterposition,int _flip) const
 		auto bombShow = Show::create();
 		auto seq = Sequence::create(bombShow, BezierTo, bombHide, NULL);
 		sprite_bomb->runAction(seq);
+		auto soundbomb = AudioEngine::play2d("bomb.mp3", false);
 	}
 }
 
-int Bomb::GetWeaponpower()
+int Bomb::GetWeaponpower()const
 {
 	return Bomb::MyPower;
 }

@@ -10,7 +10,7 @@ Scene* GameSceneMountain::createScene()
 
 int GameSceneMountain::_boxes_type[15] = {0};
 int GameSceneMountain::_boxes_positionx[15] = {0};
-
+int GameSceneMountain::_boxes_positiony[15] = { 0 };
 Box* GameSceneMountain::box = Box::create();
 
 bool GameSceneMountain::init()
@@ -18,18 +18,15 @@ bool GameSceneMountain::init()
 	if (!Scene::initWithPhysics())
 		return false;
 
-
 	//设置物理世界速度
-	//this->getPhysicsWorld()->setSpeed(1.2);
+	//this->getPhysicsWorld()->setSpeed(1.2f);
 	//设置背景图片
-
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	_gamebg->setContentSize(Size(1400, 960));
 	_gamebg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_gamebg->setPosition(visibleSize / 2);
 	this->addChild(_gamebg);
-
-//设置lable1-6的所有静态刚体
+	//设置lable1-6的所有静态刚体
 	_land1->setPosition(Vec2(230, 350));
 	_land1->setTag(3);
 	auto body1 = PhysicsBody::createBox(_land1->getContentSize(), PhysicsMaterial(50.0f, 0.0f, 0.0f));
@@ -73,10 +70,6 @@ bool GameSceneMountain::init()
 	_land6->setPhysicsBody(body6);
 	body6->setContactTestBitmask(0);
 
-
-
-
-
 	this->addChild(_land1);
 	this->addChild(_land2);
 	this->addChild(_land3);
@@ -87,30 +80,15 @@ bool GameSceneMountain::init()
 
 
 
-
-	//加入血条
-	this->scheduleUpdate();//���ö�ʱ��ص���
-
-
-
-	//Ѫ����ʾ
-	auto myloadingbar = MyLoadingBar::create();
-	this->addChild(myloadingbar);
-	if (myloadingbar->getHP_wmale() <= 0|| myloadingbar->getHP_robot()<=0) {
-		auto layerend = MyLayerWinner::create();
-		this->addChild(layerend);
-	}
-
-
+	//血条显示
+	this->scheduleUpdate();//启用定时器回调函数
+	_myloadingbar = MyLoadingBar::create();
+	this->addChild(_myloadingbar);
+	
 
 	box = Box::create();
     this->addChild(box);
-
-
-
 	//每十秒掉落一个宝箱，最多十五个
-
-
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
 		if (drop_times > 15) {
@@ -120,37 +98,46 @@ bool GameSceneMountain::init()
 		else {
 			if(drop_times!=0)
 			    box->removeAllChildren();
-
 			box->drop(_boxes_type,_boxes_positionx,_boxes_positiony,drop_times);
-
 			++drop_times;
 		}
 		}, 10.f, "schedule");
 
-
-	//�����ɫ
+	//人物角色
 	auto wmale=CharacterWmale::create();
 	this->addChild(wmale);
-	//�����˽�ɫ
+	//机器人角色
+	MyMenu menu;
 	auto robot = CharacterRobot::create();
-	this->addChild(robot);
+	auto gun_robot = GunLayer_robot::create();
+	if (!menu.getSingle()) {
+		this->addChild(robot);
+	    this->addChild(gun_robot);
+	}
+	else {
+	   auto ai = CharacterAI::create();
+		this->addChild(ai);
+		ai->body->setContactTestBitmask(1);
+		ai->body->setCategoryBitmask(1);
+		ai->body->setCollisionBitmask(1);
+		ai->body->setContactTestBitmask(1);
+	}
 
 	auto gun_wmale = GunLayer_wmale::create();
 	this->addChild(gun_wmale);
 
-	auto gun_robot = GunLayer_robot::create();
-	this->addChild(gun_robot);
-
+	
 
 	//右上角菜单
 	auto mylayer = MyLayer::create();
 	this->addChild(mylayer,100);
 
-	//设置掩体
+	//设置掩码
 	robot->body->setContactTestBitmask(1);
 	robot->body->setCategoryBitmask(1);
 	robot->body->setCollisionBitmask(1);
 	robot->body->setContactTestBitmask(1);
+
 
 	wmale->body->setContactTestBitmask(2);
 	wmale->body->setCategoryBitmask(2);
@@ -218,47 +205,59 @@ bool GameSceneMountain::init()
 	gun_robot->body_bomb->setContactTestBitmask(2);
 	gun_robot->body_bomb->setCategoryBitmask(2);
 	gun_robot->body_bomb->setCollisionBitmask(2);
+	gun_robot->body_bomb->setContactTestBitmask(2);
 
-
-	// ע����ײ�����¼�
+	// 注册碰撞监听事件
 	EventListenerPhysicsContact* hitListener = EventListenerPhysicsContact::create();
 	hitListener->onContactBegin = [=](PhysicsContact& contact)
 	{
-		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //������ײ������1����gun_wmale���ӵ���robot
-		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //������ײ������2����gun_robot���ӵ���wmale
+		auto body_1 = (Sprite*)contact.getShapeA()->getBody()->getNode(); //发生碰撞的物体1——gun_wmale的子弹和robot
+		auto body_2 = (Sprite*)contact.getShapeB()->getBody()->getNode(); //发生碰撞的物体2——gun_robot的子弹和wmale
 
 
-		//�ӵ�����
+		//子弹攻击
 		if (body_1->getTag() == 1) {
-			myloadingbar->setHP_robot(gun_wmale->bullet_attack());
+			_myloadingbar->setHP_robot(gun_wmale->bullet_attack());
 		}
 		if (body_2->getTag() == 2) {
-			myloadingbar->setHP_wmale(gun_robot->bullet_attack());
+			_myloadingbar->setHP_wmale(gun_robot->bullet_attack());
 		}
 
 		return true;
 	};
 	Director::getInstance()->getEventDispatcher()
 		->addEventListenerWithSceneGraphPriority(hitListener, this);
+	return true;
+}
 
-int* GameSceneMountain::getBoxesType()
+int* GameSceneMountain::getBoxesType()const//获取宝箱类型
 {
 	return _boxes_type;
 }
 
-int* GameSceneMountain::getBoxesPositionx()
+int* GameSceneMountain::getBoxesPositionx()const//获取宝箱横坐标
 {
 	return _boxes_positionx;
 }
 
-int* GameSceneMountain::getBoxesPositiony()
+int* GameSceneMountain::getBoxesPositiony()const//获取宝箱纵坐标
 {
 	return  _boxes_positiony;
 }
 
-Box* GameSceneMountain::getBoxes()
+Box* GameSceneMountain::getBoxes()const//获取宝箱
 {
 	return box;
+}
+
+void GameSceneMountain::update(float delta)//监测血量
+
+{
+	if (_myloadingbar->getHP_wmale() <= 0 || _myloadingbar->getHP_robot() <= 0) {
+		auto layerend = MyLayerWinner::create();
+		this->addChild(layerend);
+	}
+
 }
 
 
@@ -269,9 +268,7 @@ Scene* GameSceneForest::createScene()
 	return GameSceneForest::create();
 }
 
-
 bool GameSceneForest::init()//与mountainscene类似
-
 {
 	if (!Scene::create())
 		return false;
@@ -303,10 +300,11 @@ bool GameSceneForest::init()//与mountainscene类似
 	return true;
 }
 
-
+bool MyMenu::_single = false;
 
 void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//single按钮的回调函数
 {
+	_single = true;
 	Scene* pScene = ChooseSingle::createScene();
 
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
@@ -320,8 +318,7 @@ void MyMenu::menuDoubleCallback(cocos2d::Ref* pSender)//double按钮的回调函
 }
 
 
-
-Menu* MyMenu::create_button_single()//创建single按钮
+Menu* MyMenu::create_button(int x)//创建single按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_single = MenuItemImage::create(
@@ -333,8 +330,7 @@ Menu* MyMenu::create_button_single()//创建single按钮
 	return menu_bottle_single;
 }
 
-
-Menu* MyMenu::create_button_double()//创建double按钮
+Menu* MyMenu::create_button(double x)//创建double按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto button_double = MenuItemImage::create(
@@ -346,6 +342,10 @@ Menu* MyMenu::create_button_double()//创建double按钮
 	return menu_bottle_double;
 }
 
+bool MyMenu::getSingle()const
+{
+	return _single;
+}
 
 
 
@@ -355,9 +355,7 @@ void ChooseScene::create_button_gun()//创建枪的按钮（但无事件监听�
 	Label* label = Label::createWithTTF("Gun", "fonts/Marker Felt.ttf", 40);
 	label->setPosition(Vec2(50, visibleSize.height - 415));
 
-
-	Sprite* shou = Sprite::create("shou.png");
-
+	Sprite* shou = Sprite::create("shou(1).png");
 	shou->setPosition(Vec2(400, visibleSize.height - 430));
 	Sprite* juji = Sprite::create("juji.png");
 	juji->setPosition(Vec2(700, visibleSize.height - 430));
@@ -374,7 +372,6 @@ void ChooseScene::create_button_gun()//创建枪的按钮（但无事件监听�
 	this->addChild(jiguan);
 
 }
-
 
 void ChooseScene::create_button_scene()//创建mountain的按钮（但无事件监听器，类似精灵）
 {
@@ -403,7 +400,6 @@ void ChooseScene::create_button_scene()//创建mountain的按钮（但无事件�
 
 
 
-
 void ChooseScene::create_button_begin()//创建开始的按钮
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -425,12 +421,16 @@ void ChooseScene::create_button_begin()//创建开始的按钮
 	this->addChild(_button_begin);
 }
 
+Menu* ChooseScene::create_button_char()
+{
+	return nullptr;
+}
+
 
 Scene* ChooseSingle::createScene()
 {
 	return ChooseSingle::create();
 }
-
 
 void ChooseSingle::SetBG()//设置背景图片
 {
@@ -440,7 +440,6 @@ void ChooseSingle::SetBG()//设置背景图片
 	_bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_bg->setPosition(Vec2(visibleSize / 2));
 }
-
 
 Menu* ChooseSingle::create_button_char()//设置人物按钮（但无事件监听器，类似精灵）
 {
@@ -457,7 +456,6 @@ Menu* ChooseSingle::create_button_char()//设置人物按钮（但无事件监�
 	Label* label3 = Label::createWithTTF("Robot", "fonts/Marker Felt.ttf", 40);
 	label3->setPosition(Vec2(370, visibleSize.height - 35));
 	this->addChild(label3);
-
 
 	Label*label4= Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K\npick:L","fonts/Marker Felt.ttf", 30);
 	label4->setPosition(Vec2(670, visibleSize.height - 255));
@@ -500,7 +498,6 @@ Scene* ChooseDouble::createScene()
 	return ChooseDouble::create();
 }
 
-
 void ChooseDouble::SetBG()//设置背景图片
 {
 	auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -509,7 +506,6 @@ void ChooseDouble::SetBG()//设置背景图片
 	_bg->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
 	_bg->setPosition(Vec2(visibleSize / 2));
 }
-
 
 Menu* ChooseDouble::create_button_char()//设置人物按钮（但无事件监听器，类似精灵）
 {
@@ -527,7 +523,6 @@ Menu* ChooseDouble::create_button_char()//设置人物按钮（但无事件监�
 	Label* label3 = Label::createWithTTF("P2", "fonts/Marker Felt.ttf", 40);
 	label3->setPosition(Vec2(670, visibleSize.height - 35));
 	this->addChild(label3);
-
 
 	Label* label4 = Label::createWithTTF("move:W/A/S/D\nbullet:J\nbomb:K\npick:L", "fonts/Marker Felt.ttf", 30);
 	label4->setPosition(Vec2(670, visibleSize.height - 255));
@@ -554,6 +549,17 @@ Menu* ChooseDouble::create_button_char()//设置人物按钮（但无事件监�
 	return nullptr;
 
 }
+bool ChooseDouble::_infinity = false;
+
+bool ChooseDouble::getInfinity()
+{
+	return _infinity;
+}
+
+void ChooseDouble::setInfinity(bool infinity)
+{
+	_infinity = infinity;
+}
 
 bool ChooseDouble::init()
 {
@@ -565,6 +571,15 @@ bool ChooseDouble::init()
 	create_button_gun();
 	create_button_char();
 	create_button_begin();
+
+	Button* infinity = ui::Button::create("infinity.png", "infinity(1).png", "infinity.png");
+	infinity->setScale(0.7f);
+	infinity->setPosition(Vec2(400, 110));
+	infinity->addClickEventListener([&](Ref* sender) {
+		setInfinity(true);
+		});
+	this->addChild(infinity);
+
 	auto layer = MyLayer::create();
 	this->addChild(layer);
 	return true;

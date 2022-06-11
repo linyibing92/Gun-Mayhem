@@ -11,11 +11,11 @@ public:
 	void SetWeaponState(bool Is_picked);
 
 	/* 获取武器状态 */
-	bool GetweaponState();
+	bool GetweaponState()const;
 
 	/* 武器攻击与玩家交互 */
-	virtual int GetWeaponpower();/* 获取攻击力 */
-	Vec2 getWeaponPosition();
+	virtual int GetWeaponpower()const;/* 获取攻击力 */
+	Vec2 getWeaponPosition()const;
 
 	/* 实现不同武器的攻击方式 */
 	virtual int attack();

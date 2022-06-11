@@ -7,17 +7,13 @@ class CharacterWmale :public Layer
 public:
 	CREATE_FUNC(CharacterWmale);
 	virtual bool init();
-	//新加机器人移动函数
+	//新加人物移动函数
 	ActionInterval* wmalemove(EventKeyboard::KeyCode keycode);
 	//机器人持续移动函数
 	virtual void update(float delta);
 	//判断机器人是否走出边界
 	void falling_judge();
-
-		//传递机器人坐标
-	Vec2 getchacaterWmaleposition();
 	PhysicsBody* body = PhysicsBody::createBox(Size(10.0f, 9.0f), PhysicsMaterial(50.0f, 0.0f, 0.0f));
-
 private:
 	Sprite* _land1 = Sprite::create("land3(2).png");
 	Sprite* _land2 = Sprite::create("land3(2).png");

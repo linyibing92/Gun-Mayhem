@@ -5,26 +5,22 @@ bool CharacterWmale::init()
 	if (!Layer::create())
 		return false;
 
-
 	
 	_land5->setPosition(Vec2(750, 620));
 
-this->scheduleUpdate();//回调更新函数
-	//创建机器人角色
+	this->scheduleUpdate();//回调更新函数
+	//创建人角色
 	character_wmale->setScale(1.15f);
 	this->addChild(character_wmale, 7);
 
 	//设置刚体形状、参数
 	character_wmale->setTag(2);
-	//character_wmale->setPhysicsBody(body);
+	character_wmale->setPhysicsBody(body);
 
 	//设置精灵起始位置在最高障碍正中间 
-	wmale_position = _land5->getPosition() + Vec2(0, _land5->getContentSize().height+20);//Vec2(0, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height*2 );
+	wmale_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height * 2);
 
-	//���þ�����ʼλ��������ϰ����м� 
-	wmale_position = _land5->getPosition() + Vec2(_land5->getContentSize().width / 5, _land5->getContentSize().height / 2) + Vec2(0, character_wmale->getContentSize().height*2 );
-
-
+	//隐藏精灵
 	character_wmale->setVisible(true);
 	character_wmale->setPosition(wmale_position + offset);
 	//实现通过键盘控制人物移动
@@ -44,7 +40,7 @@ this->scheduleUpdate();//回调更新函数
 			wmalemove_images_up.pushBack(cache_up->getSpriteFrameByName("character_wmale_idle.png"));
 			wmalemove_images_up.pushBack(cache_up->getSpriteFrameByName("character_wmale_idle.png"));
 			Animation* wmalemove_up_animation = Animation::createWithSpriteFrames(wmalemove_images_up, 0.5f / 5);
-			FiniteTimeAction* wmale_jump = JumpBy::create(0.5, Vec2(0, 0), 120, 1);
+			FiniteTimeAction* wmale_jump = JumpBy::create(0.5, Vec2(0, 0), 150, 1);
 			wmale_up = Spawn::create(wmale_jump, Animate::create(wmalemove_up_animation), nullptr);
 			character_wmale->runAction(wmale_up);
 		}
@@ -66,6 +62,7 @@ this->scheduleUpdate();//回调更新函数
 
 ActionInterval* CharacterWmale::wmalemove(EventKeyboard::KeyCode keycode)
 {
+	ActionInterval* wmalemove_animation;
 	if (keycode == EventKeyboard::KeyCode::KEY_A)
 	{
 		//人动画(向左)
@@ -106,6 +103,7 @@ ActionInterval* CharacterWmale::wmalemove(EventKeyboard::KeyCode keycode)
 		ActionInterval* wmalemove_right_animation1 = Animate::create(wmalemove_right_animation);
 		return wmalemove_right_animation1;
 	}
+	return wmalemove_animation;
 }
 
 void CharacterWmale::update(float delta)

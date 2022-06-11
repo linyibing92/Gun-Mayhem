@@ -1,10 +1,23 @@
+#pragma once
+#include"cocos2d.h"
+USING_NS_CC;//using namespace cocosd的宏定义
+
+#include"ui/CocosGUI.h"
+using namespace ui;
+
+#include "audio/include/AudioEngine.h"
+#include"HelloWorldScene.h"
+#include "Gun.h"
+#include "weapon.h"
+#include"MyLayer.h"
 #include"MyLoadingBar.h"
 #include "bomb.h"
 #include "Box.h"
 #include"Character_wmale.h"
 #include"Character_robot.h"
-
+#include"AI.h"
 class Box;
+class MyLoadingBar;
 
 class GameSceneMountain :public Scene
 {
@@ -12,11 +25,12 @@ public:
 	CREATE_FUNC(GameSceneMountain);
 	static Scene* createScene();
 	virtual bool init();
-	int* getBoxesType();
-	int* getBoxesPositionx();
-	int* getBoxesPositiony();
+	int* getBoxesType()const;
+	int* getBoxesPositionx()const;
+	int* getBoxesPositiony()const;
+	Box* getBoxes()const;
+	virtual void update(float delta);
 
-	Box* getBoxes();
 private:
 	//背景图
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
@@ -34,13 +48,12 @@ private:
 	Spawn* robot_up;
 	Sequence* robot_up1;
 	Spawn* robot_down;
-
-
 	static int _boxes_type[15]; //;
-	static int _boxes_positionx[15]; ////�������ֱ��¼��������ͺ�λ��
+	static int _boxes_positionx[15]; ////两个数组分别记录宝箱的类型和位置
 	static int _boxes_positiony[15];
-
 	static Box* box;
+	MyLoadingBar*_myloadingbar;
+
 	
 };
 
@@ -70,13 +83,15 @@ class MyMenu :public Menu
 public:
 	void menuSingleCallback(cocos2d::Ref* pSender);
 	void menuDoubleCallback(cocos2d::Ref* pSender);
-	Menu* create_button_single();
-	Menu* create_button_double();
+	Menu* create_button(int x);
+	Menu* create_button(double x);
+	bool getSingle()const;
+private:
+	static bool _single;//是否为单人模式
 };
 
 
-class ChooseScene :public Scene//���࣬���ѡ�񳡾����еĳ�Ա
-
+class ChooseScene :public Scene//父类，两个选择场景共有的成员
 {
 public:
 	void create_button_scene();//选择场景按钮
@@ -99,6 +114,10 @@ protected:
 
 
 
+
+
+
+
 class  ChooseSingle :public ChooseScene
 {
 public:
@@ -117,5 +136,7 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
-
+	bool getInfinity();
+	void setInfinity(bool infinity);
+	static bool _infinity;
 };
