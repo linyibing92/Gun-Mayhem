@@ -94,11 +94,14 @@ private:
 class ChooseScene :public Scene//父类，两个选择场景共有的成员
 {
 public:
+
+
 	void create_button_scene();//选择场景按钮
 	void create_button_gun();//选择枪类按钮
 	void create_button_begin();//进入游戏按钮
 	virtual void SetBG() = 0;//设置背景图片
 	virtual Menu* create_button_char() = 0;//选择人物按钮
+
 protected:
 	Sprite* _bg;
 	bool  _char_whitemale_status = false;
@@ -109,6 +112,8 @@ protected:
 	Button* _button_mountain = ui::Button::create("button_mountain.png", "button_mountain.png", "button_mountain.png");
 	Button* _button_forest = ui::Button::create("button_forest.png", "button_forest.png", "button_forest.png");
 	Button* _button_begin = ui::Button::create("begin.png", "begin.png", "begin.png");
+
+	
 
 };
 
@@ -126,6 +131,10 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
+	bool getInfinity();//ѡ������ģʽ
+	void setInfinity(bool infinity);
+private:
+	static bool _infinity_s;
 
 };
 class  ChooseDouble :public ChooseScene
@@ -136,7 +145,9 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
-	bool getInfinity();
+	bool getInfinity();//ѡ������ģʽ
 	void setInfinity(bool infinity);
+private:
 	static bool _infinity;
+
 };
