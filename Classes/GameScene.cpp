@@ -8,9 +8,9 @@ Scene* GameSceneMountain::createScene()
 	return GameSceneMountain::create();
 }
 
-int GameSceneMountain::_boxes_type[15] = {0};
-int GameSceneMountain::_boxes_positionx[15] = {0};
-int GameSceneMountain::_boxes_positiony[15] = { 0 };
+int GameSceneMountain::_boxes_type[30] = {0};
+int GameSceneMountain::_boxes_positionx[30] = {0};
+int GameSceneMountain::_boxes_positiony[30] = { 0 };
 Box* GameSceneMountain::box = Box::create();
 
 bool GameSceneMountain::init()
@@ -88,10 +88,12 @@ bool GameSceneMountain::init()
 
 	box = Box::create();
     this->addChild(box);
-	//每十秒掉落一个宝箱，最多十五个
+
+	//每十秒掉落一个宝箱，最多三十个
+
 	this->schedule([&](float dlt) {
 		static int drop_times = 0;
-		if (drop_times > 15) {
+		if (drop_times > 30 ){
 			this->unschedule("schedule");
 			return;
 		}
@@ -114,13 +116,14 @@ bool GameSceneMountain::init()
 		this->addChild(robot);
 	    this->addChild(gun_robot);
 	}
-	else {
+	else {	
 	   auto ai = CharacterAI::create();
 		this->addChild(ai);
 		ai->body->setContactTestBitmask(1);
 		ai->body->setCategoryBitmask(1);
 		ai->body->setCollisionBitmask(1);
 		ai->body->setContactTestBitmask(1);
+		menu.setSingle(false);//������һ��Ĭ��single
 	}
 
 	auto gun_wmale = GunLayer_wmale::create();
@@ -302,9 +305,13 @@ bool GameSceneForest::init()//与mountainscene类似
 
 bool MyMenu::_single = false;
 
-void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//single按钮的回调函数
+void MyMenu::setSingle(bool single)
 {
-	_single = true;
+	_single = single;
+}
+void MyMenu::menuSingleCallback(cocos2d::Ref* pSender)//single��ť�Ļص���
+{
+	setSingle(true);
 	Scene* pScene = ChooseSingle::createScene();
 
 	Director::getInstance()->replaceScene(TransitionFade::create(0.5f, pScene));
