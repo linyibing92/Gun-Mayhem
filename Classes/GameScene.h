@@ -48,9 +48,9 @@ private:
 	Spawn* robot_up;
 	Sequence* robot_up1;
 	Spawn* robot_down;
-	static int _boxes_type[15]; //;
-	static int _boxes_positionx[15]; ////两个数组分别记录宝箱的类型和位置
-	static int _boxes_positiony[15];
+	static int _boxes_type[30]; //;
+	static int _boxes_positionx[30]; ////两个数组分别记录宝箱的类型和位置
+	static int _boxes_positiony[30];
 	static Box* box;
 	MyLoadingBar*_myloadingbar;
 
@@ -86,6 +86,7 @@ public:
 	Menu* create_button(int x);
 	Menu* create_button(double x);
 	bool getSingle()const;
+	void setSingle(bool single);
 private:
 	static bool _single;//是否为单人模式
 };
