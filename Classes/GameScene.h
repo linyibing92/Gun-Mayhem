@@ -1,6 +1,6 @@
 #pragma once
 #include"cocos2d.h"
-USING_NS_CC;//using namespace cocosdµÄºê¶¨Òå
+USING_NS_CC;//using namespace cocosdçš„å®å®šä¹‰
 
 #include"ui/CocosGUI.h"
 using namespace ui;
@@ -32,7 +32,7 @@ public:
 	virtual void update(float delta);
 
 private:
-	//±³¾°Í¼
+	//èƒŒæ™¯å›¾
 	Sprite* _gamebg = Sprite::create("gamebg(1)(1)(1).jpg");
 	Sprite* _land1 = Sprite::create("land3(2).png");
 	Sprite* _land2 = Sprite::create("land3(2).png");
@@ -48,9 +48,11 @@ private:
 	Spawn* robot_up;
 	Sequence* robot_up1;
 	Spawn* robot_down;
+
 	static int _boxes_type[30]; //;
-	static int _boxes_positionx[30]; ////Á½¸öÊı×é·Ö±ğ¼ÇÂ¼±¦ÏäµÄÀàĞÍºÍÎ»ÖÃ
+	static int _boxes_positionx[30]; ////ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½Î»ï¿½ï¿½
 	static int _boxes_positiony[30];
+
 	static Box* box;
 	MyLoadingBar*_myloadingbar;
 
@@ -64,10 +66,10 @@ public:
 	static Scene* createScene();
 	virtual bool init();
 private:
-	//±³¾°Í¼
+	//èƒŒæ™¯å›¾
 	Sprite* _gamebg = Sprite::create("gamebg2.jpg");
 
-	//ÍÁµØ
+	//åœŸåœ°
 	Sprite* _land1 = Sprite::create("land1(1)(1).png");
 	Sprite* _land2 = Sprite::create("land1(1)(1).png");
 	Sprite* _land3 = Sprite::create("land1(1)(1).png");
@@ -88,18 +90,21 @@ public:
 	bool getSingle()const;
 	void setSingle(bool single);
 private:
-	static bool _single;//ÊÇ·ñÎªµ¥ÈËÄ£Ê½
+	static bool _single;//æ˜¯å¦ä¸ºå•äººæ¨¡å¼
 };
 
 
-class ChooseScene :public Scene//¸¸Àà£¬Á½¸öÑ¡Ôñ³¡¾°¹²ÓĞµÄ³ÉÔ±
+class ChooseScene :public Scene//çˆ¶ç±»ï¼Œä¸¤ä¸ªé€‰æ‹©åœºæ™¯å…±æœ‰çš„æˆå‘˜
 {
 public:
-	void create_button_scene();//Ñ¡Ôñ³¡¾°°´Å¥
-	void create_button_gun();//Ñ¡ÔñÇ¹Àà°´Å¥
-	void create_button_begin();//½øÈëÓÎÏ·°´Å¥
-	virtual void SetBG()=0 ;//ÉèÖÃ±³¾°Í¼Æ¬
-	virtual Menu* create_button_char()=0;//Ñ¡ÔñÈËÎï°´Å¥	
+
+
+	void create_button_scene();//é€‰æ‹©åœºæ™¯æŒ‰é’®
+	void create_button_gun();//é€‰æ‹©æªç±»æŒ‰é’®
+	void create_button_begin();//è¿›å…¥æ¸¸æˆæŒ‰é’®
+	virtual void SetBG() = 0;//è®¾ç½®èƒŒæ™¯å›¾ç‰‡
+	virtual Menu* create_button_char() = 0;//é€‰æ‹©äººç‰©æŒ‰é’®
+
 protected:
 	Sprite* _bg;
 	bool  _char_whitemale_status = false;
@@ -129,7 +134,7 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
-	bool getInfinity();//Ñ¡ÔñÎŞÏŞÄ£Ê½
+	bool getInfinity();//Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 	void setInfinity(bool infinity);
 private:
 	static bool _infinity_s;
@@ -143,7 +148,7 @@ public:
 	void SetBG();
 	Menu* create_button_char();
 	virtual bool init();
-	bool getInfinity();//Ñ¡ÔñÎŞÏŞÄ£Ê½
+	bool getInfinity();//Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 	void setInfinity(bool infinity);
 private:
 	static bool _infinity;
